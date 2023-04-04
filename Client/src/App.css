@@ -1,0 +1,784 @@
+* {
+  margin: 0%;
+  padding: 0%;
+}
+
+#root {
+  font-size: 16px;
+}
+
+/* Animations */
+@keyframes itemanimation {
+  0% {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0px);
+
+    opacity: 1;
+
+  }
+
+}
+
+@keyframes pageanimation {
+  0% {
+    opacity: 0;
+  }
+
+  25% {
+
+    opacity: 0.25;
+
+  }
+
+  50% {
+
+    opacity: 0.50;
+
+  }
+
+  75% {
+
+    opacity: 0.75;
+
+  }
+
+  100% {
+
+    opacity: 1;
+
+  }
+
+}
+
+@keyframes arrowbuttionanimation {
+  0% {
+    transform: translateX(0px);
+  }
+
+  50% {
+    transform: translateX(-15px);
+  }
+
+  100% {
+    transform: translateX(0px);
+
+    opacity: 1;
+
+  }
+
+}
+
+@keyframes arrowbuttionanimationreverse {
+  0% {
+    transform: translateX(0px);
+
+  }
+
+  50% {
+    transform: translateX(15px);
+  }
+
+  100% {
+    transform: translateX(0px);
+
+    opacity: 1;
+
+  }
+
+}
+
+@keyframes itemanimation2 {
+  0% {
+    transform: translateX(-50px);
+    z-index: -1;
+    opacity: 0;
+
+  }
+
+  25% {
+    z-index: -1;
+
+  }
+
+  50% {
+    z-index: -1;
+
+  }
+
+  75% {
+    z-index: -1;
+
+  }
+
+  100% {
+    transform: translateX(0px);
+    opacity: 1;
+    z-index: -1;
+
+  }
+}
+
+/* Sidebar  */
+
+
+.sidebar-header {
+  position: absolute;
+  width: 100%;
+  z-index: 3;
+  height: 100%;
+
+
+}
+
+.sidebar {
+  position: absolute;
+  background-color: #0f238c;
+  display: flex;
+  width: 250px;
+  height: fit-content;
+  flex-direction: column;
+  z-index: 2;
+  top: 0px;
+  transition: width 0.5s linear;
+}
+
+.sidebar-logo {
+  position: relative;
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s linear;
+
+}
+
+.sidebar-logo img {
+  height: 50px;
+  width: 100%;
+  object-fit: contain;
+  transition: all 0.5s linear;
+
+}
+
+.sidebar-logo:hover {
+  cursor: pointer;
+}
+
+.searchbox {
+
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  align-items: center;
+  width: 100%;
+}
+
+textarea:focus,
+input:focus {
+  outline: none;
+}
+
+input[id=searchtext] {
+  width: 80%;
+  padding-left: 10px;
+  height: 25px;
+  background-color: transparent;
+  border: 1px solid white;
+  transition: all 300ms linear;
+  margin-bottom: 15px;
+  margin-top: 10px;
+}
+
+
+input[type=text]:focus {
+  background-color: white;
+  border: 1px solid white;
+  transition: all 300ms linear;
+}
+
+/* Sidebar Person */
+.sidebar-person {
+  position: relative;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #0f238c;
+
+}
+
+.sidebar-person img {
+  width: 100px;
+  height: fit-content;
+  border-radius: 50%;
+  border: 2px solid white;
+  transition: all 0.5s linear;
+
+}
+
+.sidebar-person h1 {
+  font-size: 1rem;
+  font-weight: 400;
+  color: white;
+
+}
+
+.sidebar-person h3 {
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: white;
+
+}
+
+
+/* Sidebar Menu items */
+
+.sidebar-menu {
+  position: relative;
+
+  padding-bottom: 300px;
+
+}
+
+.sidebar-menu-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  animation: itemanimation;
+  animation-duration: 2s;
+
+}
+
+.hidesidebar-menu-item {
+  animation: itemanimation2;
+  animation-duration: 2s;
+
+}
+
+.sidebar-menu-item h1 {
+
+
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+.sidebar-menu-item a {
+
+  position: relative;
+  height: 50px;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  align-items: center;
+  color: white;
+
+}
+
+.sidebar-menu-item i {
+  font-size: 0.9rem;
+  margin-right: 0px;
+}
+
+.sidebar-menu-item a:hover {
+  cursor: pointer;
+  background-color: white;
+  color: #0f238c;
+  transition: all 400ms ease-out;
+
+
+}
+
+.pullright {
+  position: absolute;
+  right: 4%;
+}
+
+.itemtree {
+
+
+  position: relative;
+  background-color: #063ed1;
+
+}
+
+
+.itemtree li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 25px;
+  animation: itemanimation2;
+  animation-duration: 1s;
+
+}
+
+.itemtree a {
+  width: 100%;
+  height: 25px;
+  padding-left: 25px;
+  text-decoration: none;
+
+
+}
+
+.itemtree li h4 {
+  font-size: 0.8rem;
+  font-weight: 400;
+  margin-left: 5px;
+
+}
+
+
+
+.itemtree a:hover {
+  cursor: pointer;
+  background-color: white;
+  color: #0f238c;
+  transition: all 400ms ease-out;
+
+}
+
+
+.hide-itemtree {
+  display: none;
+
+
+}
+
+.header {
+  position: relative;
+  background-color: #0f238c;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 250px;
+  transition: margin-left 0.5s linear;
+}
+
+.header h1 {
+  font-size: 1.1rem;
+  color: white;
+}
+
+.hide-menu {
+  height: 100%;
+  width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #063ed1;
+  color: white;
+
+}
+
+.hide-menu:hover#hidebutton i {
+  animation: arrowbuttionanimation;
+  animation-duration: 1s;
+  animation-delay: 200ms;
+}
+
+.hide-menu:hover#extendbutton i {
+  animation: arrowbuttionanimationreverse;
+  animation-duration: 1s;
+  animation-delay: 200ms;
+}
+
+.hide-menu i {
+  font-size: 1.5rem;
+  width: 100%;
+  height: 100%;
+
+}
+
+
+
+.header-title-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-title-content span i {
+  font-size: 1.1rem;
+  color: white;
+
+}
+
+/* Hiding side bar  */
+
+.hidesidebar {
+  position: absolute;
+  background-color: #0f238c;
+  display: flex;
+  width: 50px;
+  height: fit-content;
+  flex-direction: column;
+  top: 0px;
+
+  transition: width 0.5s linear;
+
+}
+
+.hidesidebar-menu-item h1 {
+  display: none;
+
+}
+
+.hidesidebar-menu-item a {
+
+  position: relative;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  color: white;
+  justify-content: center;
+
+
+}
+
+.hidesidebar-menu-item i {
+  font-size: 0.9rem;
+  margin-right: 5px;
+  margin-left: 5px;
+  transition: all 400ms linear;
+
+}
+
+.hidesidebar-menu-item a:hover {
+  cursor: pointer;
+  background-color: white;
+  color: #0f238c;
+  transition: all 400ms ease-out;
+
+
+}
+
+
+
+
+
+
+.hidesidebar-person {
+  position: relative;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px 10px;
+
+}
+
+.hidesidebar-person img {
+  width: 40px;
+  height: fit-content;
+  border-radius: 50%;
+  border: 2px solid white;
+  transition: width 0.5s linear;
+
+}
+
+.hidesidebar-person h1 {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: white;
+
+}
+
+.hidesidebar-person h3 {
+  font-size: 0.7rem;
+  font-weight: 300;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 10px;
+
+}
+
+.extendheader {
+  position: relative;
+  background-color: #0f238c;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 50px;
+  transition: margin-left 0.5s linear;
+
+}
+
+.extendheader h1 {
+  font-size: 1.1rem;
+  color: white;
+}
+
+#smallitemtree {
+  margin-left: 50px;
+  position: absolute;
+  margin-top: -50px;
+  width: 170px;
+  animation: itemanimation2;
+  animation-duration: 1s;
+}
+
+#smallitemtree a {
+  height: 100%;
+  width: 100%;
+  padding-left: 10px;
+  justify-content: flex-start;
+  align-items: center;
+text-decoration: none;
+}
+
+#smallitemtree li {
+  height: 25px;
+  width: 100%;
+}
+
+.hidesidebar-menu-item:hover.hidesidebar-menu-item span i {
+  font-size: 1.5rem;
+  transition: all 300ms linear;
+}
+
+/*  Pages   */
+
+.mainboard {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  transition: all 0.5s linear;
+  z-index: 4;
+
+}
+
+.Appointment {
+  display: flex;
+  background-color: white;
+  margin: 25px;
+  padding: 55px;
+  width: 100%;
+  flex-direction: column;
+  gap: 50px;
+  animation: pageanimation;
+  animation-duration: 1s;
+}
+
+input[id=appointmenttext] {
+  width: 50%;
+  height: 30px;
+  background-color: transparent;
+  border: 1px solid #e4e5e7;
+  transition: all 300ms linear;
+  border-radius: 3px;
+
+}
+
+input[id=appointmenttext]:focus {
+  border: 1px solid #0f238c;
+  border-radius: 3px;
+
+}
+
+.Appointment form {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  margin-left: 3%;
+  flex-direction: column;
+  gap: 30px;
+
+  margin: 0%;
+  
+}
+
+
+.Appointment label {
+  width: 20%;
+
+}
+
+.Appointment label h4 {
+  font-size: 16px;
+  color: #374767;
+}
+
+.Appointment form section {
+  display: flex;
+  justify-content: center;
+  animation: pageanimation;
+  animation-duration: 500ms;
+}
+
+#doctors {
+  width: 50%;
+  border: 1px solid #e4e5e7;
+  height: 30px;
+  border-radius: 3px;
+
+}
+
+#meeting-date {
+  width: 50%;
+  height: 30px;
+  border: 1px solid #e4e5e7;
+  position: relative;
+  border-radius: 3px;
+
+}
+
+#phone {
+  width: 50%;
+  height: 30px;
+  position: relative;
+  border-radius: 3px;
+  border: 1px solid #e4e5e7;
+
+}
+
+#phone:focus {
+
+  border: 1px solid #0f238c;
+
+}
+
+#meeting-date::-webkit-calendar-picker-indicator {
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+  background: transparent;
+
+}
+
+.textarea {
+
+  width: 100%;
+}
+
+textarea[id="appointmentproblemtext"] {
+  width: 50%;
+  min-height: 150px;
+  height: fit-content;
+  display: flex;
+  background-color: transparent;
+  border: 1px solid #e4e5e7;
+  border-radius: 3px;
+
+}
+
+textarea[id="appointmentproblemtext"]:focus {
+
+  border: 1px solid #0f238c;
+
+
+}
+
+.Appointment-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.Appointment h1 {
+  font-size: 1.3rem;
+}
+
+.Appointment span i {
+  font-size: 1.3rem;
+}
+
+/* IOS Toggle  */
+
+
+
+
+.toggleWrapper {
+  height: 30px;
+  width: 50%;
+  display: flex;
+}
+
+input[type=checkbox] {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+}
+
+#switchlabel {
+  cursor: pointer;
+  width: 50px;
+  height: 25px;
+  background: grey;
+  display: block;
+  border-radius: 100px;
+  position: relative;
+}
+
+#switchlabel:after {
+  content: '';
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  width: 25px;
+  height: 23px;
+  background: #fff;
+  border-radius: 90px;
+  transition: 0.3s;
+}
+
+input:checked+#switchlabel {
+  background: #4CAF50;
+
+}
+
+input:checked+#switchlabel:after {
+  left: calc(100% - 1px);
+  transform: translateX(-100%);
+}
+
+
+.SaveOrCancelButtons {
+  display: flex;
+  width: 50%;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+#savebutton {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#cancelbutton {
+  background-color: #f44336;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+}
