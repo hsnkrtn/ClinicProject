@@ -128,8 +128,8 @@
 .sidebar-header {
   position: absolute;
   width: 100%;
-  z-index: 3;
-  height: 100%;
+  /* z-index: 3; */
+  /* height: 100%; */
 
 
 }
@@ -141,7 +141,7 @@
   width: 250px;
   height: fit-content;
   flex-direction: column;
-  z-index: 2;
+  z-index: 6;
   top: 0px;
   transition: width 0.5s linear;
 }
@@ -240,7 +240,6 @@ input[type=text]:focus {
 
 .sidebar-menu {
   position: relative;
-
   padding-bottom: 300px;
 
 }
@@ -301,10 +300,7 @@ input[type=text]:focus {
 
 .itemtree {
 
-
-  position: relative;
   background-color: #063ed1;
-
 }
 
 
@@ -313,9 +309,6 @@ input[type=text]:focus {
   flex-direction: row;
   align-items: center;
   height: 25px;
-  animation: itemanimation2;
-  animation-duration: 1s;
-
 }
 
 .itemtree a {
@@ -422,7 +415,7 @@ input[type=text]:focus {
   height: fit-content;
   flex-direction: column;
   top: 0px;
-
+  z-index: 6;
   transition: width 0.5s linear;
 
 }
@@ -526,8 +519,8 @@ input[type=text]:focus {
   position: absolute;
   margin-top: -50px;
   width: 170px;
-  animation: itemanimation2;
-  animation-duration: 1s;
+  /* animation: itemanimation2;
+  animation-duration: 1s; */
 }
 
 #smallitemtree a {
@@ -536,7 +529,7 @@ input[type=text]:focus {
   padding-left: 10px;
   justify-content: flex-start;
   align-items: center;
-text-decoration: none;
+  text-decoration: none;
 }
 
 #smallitemtree li {
@@ -597,7 +590,7 @@ input[id=appointmenttext]:focus {
   gap: 30px;
 
   margin: 0%;
-  
+
 }
 
 
