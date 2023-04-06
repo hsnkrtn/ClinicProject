@@ -47,10 +47,22 @@ function Appointment() {
       <div className="Appointment">
         <div className="Appointment-header" style={themecolor}>
           {" "}
-          <span>
-            <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
-          </span>
-          <h1>Randevu Ekle</h1>{" "}
+          {registeredpatient ? (
+            <>
+              {" "}
+              <span>
+                <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
+              </span>
+              <h1>Randevu Ekle</h1>{" "}
+            </>
+          ) : (
+            <>
+              <span>
+                <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
+              </span>
+              <h1>Ön Kayıt Ekle</h1>
+            </>
+          )}
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -141,7 +153,11 @@ function Appointment() {
           <section>
             {" "}
             <label for="fname">
-              <h4>Açıklama</h4>
+              {registeredpatient ? (
+                <h4> Yapılacak İşlem </h4>
+              ) : (
+                <h4>Açıklama</h4>
+              )}
             </label>
             <textarea
               type="textarea"
@@ -151,19 +167,23 @@ function Appointment() {
               onChange={(e) => setComment(e.target.value)}
             ></textarea>{" "}
           </section>
-          <section>
-            {" "}
-            <label for="fname">
-              <h4>Referans</h4>
-            </label>
-            <input
-              type="text"
-              id="appointmenttext"
-              name="fname"
-              placeholder="Referans"
-              onChange={(e) => setReference(e.target.value)}
-            ></input>{" "}
-          </section>
+          {!registeredpatient ? (
+            <section>
+              {" "}
+              <label for="fname">
+                <h4>Referans</h4>
+              </label>
+              <input
+                type="text"
+                id="appointmenttext"
+                name="fname"
+                placeholder="Referans"
+                onChange={(e) => setReference(e.target.value)}
+              ></input>{" "}
+            </section>
+          ) : (
+            <></>
+          )}
           <section>
             <label>
               <h4>SMS Gönder</h4>

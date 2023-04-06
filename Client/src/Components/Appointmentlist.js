@@ -31,7 +31,7 @@ function Appointmentlist() {
     Axios.get(`${URL}/GetAppointmentList`).then((reponse) =>
       setAppointmentList(reponse.data.reverse())
     );
-  console.log(AppointmentList);
+    console.log(AppointmentList);
   }, []);
 
   return (

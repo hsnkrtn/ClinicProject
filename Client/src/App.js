@@ -5,6 +5,8 @@ import Appointment from "./Components/Appointment";
 import { useState, createContext } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Appointmentlist from "./Components/Appointmentlist";
+import AgendaPlan from "./Components/AgendaPlan";
+import Agenda from "./Components/Agenda";
 
 export const Sidebarinfo = createContext();
 
@@ -22,6 +24,12 @@ function App() {
           </Routes>
           <Routes>
             <Route path={`Randevulistesi`} element={<Appointmentlist />} />
+          </Routes>
+          <Routes>
+            <Route path={`PlanEkle`} element={<AgendaPlan />} />
+          </Routes>
+          <Routes>
+            <Route path={`Ajanda`} element={<Agenda />} />
           </Routes>
         </Sidebarinfo.Provider>
       </div>

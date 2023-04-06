@@ -16,8 +16,20 @@ const db = mysql.createPool({
 app.listen(3001, () => {
   console.log("working");
 });
+ 
 app.get("/GetAppointmentList", (req, res) => {
   db.query("SELECT * FROM  clinic.randevular", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+      console.log(result);
+
+    }
+  });
+});
+app.get("/GetFullagenda", (req, res) => {
+  db.query("SELECT * FROM  clinic.ajanda", (err, result) => {
     if (err) {
       console.log(err);
     } else {
