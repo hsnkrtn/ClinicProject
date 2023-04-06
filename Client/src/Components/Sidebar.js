@@ -193,7 +193,7 @@ function Sidebar() {
                       </li>
                     );
                   })}
-                </ul>
+                </ul> 
               </li>
             );
           })}
