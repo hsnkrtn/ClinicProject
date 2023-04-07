@@ -5,22 +5,48 @@
 
 #root {
   font-size: 16px;
+  color: white;
+  font-family: Söhne, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, Helvetica Neue, Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+}
+
+#root a {
+  color: white;
+}
+
+#root a:hover {
+  color: #0f238c;
 }
 
 /* Animations */
 @keyframes itemanimation {
   0% {
-    transform: translateX(-30px);
+    transform: translateX(-50px);
+    z-index: -1;
     opacity: 0;
+
+  }
+
+  25% {
+    z-index: -1;
+
+  }
+
+  50% {
+    z-index: -1;
+
+  }
+
+  75% {
+    z-index: -1;
+
   }
 
   100% {
     transform: translateX(0px);
-
     opacity: 1;
+    z-index: -1;
 
   }
-
 }
 
 @keyframes pageanimation {
@@ -125,48 +151,67 @@
 /* Sidebar  */
 
 
-.sidebar-header {
-  position: absolute;
-  width: 100%;
-  /* z-index: 3; */
-  /* height: 100%; */
 
-
-}
 
 .sidebar {
   position: absolute;
   background-color: #0f238c;
   display: flex;
-  width: 250px;
-  height: fit-content;
   flex-direction: column;
-  z-index: 6;
   top: 0px;
   transition: width 0.5s linear;
+  height: 100vh;
+  width: 250px;
+  z-index: 6;
+
 }
 
 .sidebar-logo {
   position: relative;
   width: 100%;
-  height: fit-content;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 0.5s linear;
 
 }
 
 .sidebar-logo img {
-  height: 50px;
+  height: 100%;
   width: 100%;
   object-fit: contain;
-  transition: all 0.5s linear;
-
 }
 
 .sidebar-logo:hover {
   cursor: pointer;
+}
+
+.hidesidebarbutton {
+  position: absolute;
+  height: 50px;
+  width: 40px;
+  right: -40px;
+  transition: width 0.5s linear;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: #063ed1;
+  border-radius: 0px 10px 10px 0px;
+}
+
+.hidesidebarbutton span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.hidesidebarbutton span i {
+  font-size: 1rem;
+  margin: 0%;
+  padding: 0%;
+
 }
 
 .searchbox {
@@ -201,81 +246,114 @@ input[type=text]:focus {
   transition: all 300ms linear;
 }
 
+.sidebar section {
+  animation: itemanimation;
+  animation-duration: 2s;
+
+}
+
+.hidesidebar section {
+  animation: itemanimation2;
+  animation-duration: 2s;
+
+}
+
+.hidesidebar-searchbox {
+  display: flex;
+  border: 1px solid white;
+  height: 25px;
+  width: 25px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+
+}
+
+.hidesidebar-searchbox span {
+
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hidesidebar-searchbox i {
+  font-size: 0.9rem;
+}
+
 /* Sidebar Person */
 .sidebar-person {
   position: relative;
-  min-height: 150px;
+  height: 130px;
+  width: 100%;
+  justify-content: flex-start;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #0f238c;
 
 }
 
 .sidebar-person img {
   width: 100px;
-  height: fit-content;
   border-radius: 50%;
-  border: 2px solid white;
+  transition: all 0.5s linear;
+  border: 1px solid white;
+
+}
+
+.sidebar-person-title {
+
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+}
+
+.sidebar-person-title h1 {
+  font-size: 0.7em;
+  font-weight: 400;
   transition: all 0.5s linear;
 
 }
 
-.sidebar-person h1 {
-  font-size: 1rem;
-  font-weight: 400;
-  color: white;
-
-}
-
 .sidebar-person h3 {
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   font-weight: 300;
-  color: white;
+  transition: all 0.5s linear;
 
 }
+
 
 
 /* Sidebar Menu items */
 
 .sidebar-menu {
   position: relative;
-  padding-bottom: 300px;
+  justify-content: center;
+  align-items: center;
+
 
 }
 
-.sidebar-menu-item {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  animation: itemanimation;
-  animation-duration: 2s;
 
-}
-
-.hidesidebar-menu-item {
-  animation: itemanimation2;
-  animation-duration: 2s; 
-
-}
 
 .sidebar-menu-item h1 {
 
-
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: 400;
   margin-left: 10px;
 }
 
 .sidebar-menu-item a {
-
   position: relative;
   height: 50px;
   padding-left: 10px;
   padding-right: 10px;
   display: flex;
   align-items: center;
-  color: white;
 
 }
 
@@ -288,7 +366,6 @@ input[type=text]:focus {
   cursor: pointer;
   background-color: white;
   color: #0f238c;
-  transition: all 400ms ease-out;
 
 
 }
@@ -298,9 +375,83 @@ input[type=text]:focus {
   right: 4%;
 }
 
-.itemtree {
 
+/* Hiding sidebar  */
+.hidesidebar .sidebar-person-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.hidesidebar {
+  position: absolute;
+  background-color: #0f238c;
+  display: flex;
+  flex-direction: column;
+  top: 0px;
+  transition: width 0.5s linear;
+  height: 100vh;
+  width: 75px;
+  left: 0px;
+  z-index: 6;
+}
+
+
+
+.hidesidebar .sidebar-person img {
+  width: 60px;
+}
+
+.hidesidebar-menu {
+  display: flex;
+  justify-content: center;
+
+}
+
+
+.hidesidebar-menu li {
+  display: flex;
+  width: 100%;
+  list-style: none;
+}
+
+
+.hidesidebar-menu ul {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.hidesidebar-menu .sidebar-menu-item a {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+
+
+.itemtree {
+  max-height: 1000px;
+  transition: all 3s cubic-bezier(0.22, 0.61, 0.36, 1);
   background-color: #063ed1;
+  opacity: 1;
+
+}
+
+.hide-itemtree {
+  max-height: 0;
+  opacity: 0;
+
+}
+
+.hide-itemtree li {
+  display: none;
 }
 
 
@@ -309,6 +460,7 @@ input[type=text]:focus {
   flex-direction: row;
   align-items: center;
   height: 25px;
+
 }
 
 .itemtree a {
@@ -320,6 +472,8 @@ input[type=text]:focus {
 
 }
 
+
+
 .itemtree li h4 {
   font-size: 0.8rem;
   font-weight: 400;
@@ -329,198 +483,15 @@ input[type=text]:focus {
 
 
 
-.itemtree a:hover {
-  cursor: pointer;
-  background-color: white;
-  color: #0f238c;
-  transition: all 400ms ease-out;
-
-}
-
-
-.hide-itemtree {
-  display: none;
-
-
-}
-
-.header {
-  position: relative;
-  background-color: #0f238c;
-  height: 50px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-left: 250px;
-  transition: margin-left 0.5s linear;
-}
-
-.header h1 {
-  font-size: 1.1rem;
-  color: white;
-}
-
-.hide-menu {
-  height: 100%;
-  width: 70px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #063ed1;
-  color: white;
-
-}
-
-.hide-menu:hover#hidebutton i {
-  animation: arrowbuttionanimation;
-  animation-duration: 1s;
-  animation-delay: 200ms;
-}
-
-.hide-menu:hover#extendbutton i {
-  animation: arrowbuttionanimationreverse;
-  animation-duration: 1s;
-  animation-delay: 200ms;
-}
-
-.hide-menu i {
-  font-size: 1.5rem;
-  width: 100%;
-  height: 100%;
-
-}
 
 
 
-.header-title-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-
-.header-title-content span i {
-  font-size: 1.1rem;
-  color: white;
-
-}
-
-/* Hiding side bar  */
-
-.hidesidebar {
-  position: absolute;
-  background-color: #0f238c;
-  display: flex;
-  width: 50px;
-  height: fit-content;
-  flex-direction: column;
-  top: 0px;
-  z-index: 6;
-  transition: width 0.5s linear;
-
-}
-
-.hidesidebar-menu-item h1 {
-  display: none;
-
-}
-
-.hidesidebar-menu-item a {
-
-  position: relative;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  color: white;
-  justify-content: center;
-
-
-}
-
-.hidesidebar-menu-item i {
-  font-size: 0.9rem;
-  margin-right: 5px;
-  margin-left: 5px;
-  transition: all 400ms linear;
-
-}
-
-.hidesidebar-menu-item a:hover {
-  cursor: pointer;
-  background-color: white;
-  color: #0f238c;
-  transition: all 400ms ease-out;
-
-
-}
-
-
-
-
-
-
-.hidesidebar-person {
-  position: relative;
-  min-height: 150px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0px 10px;
-
-}
-
-.hidesidebar-person img {
-  width: 40px;
-  height: fit-content;
-  border-radius: 50%;
-  border: 2px solid white;
-  transition: width 0.5s linear;
-
-}
-
-.hidesidebar-person h1 {
-  font-size: 0.7rem;
-  font-weight: 400;
-  color: white;
-
-}
-
-.hidesidebar-person h3 {
-  font-size: 0.7rem;
-  font-weight: 300;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin-top: 10px;
-
-}
-
-.extendheader {
-  position: relative;
-  background-color: #0f238c;
-  height: 50px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-left: 50px;
-  transition: margin-left 0.5s linear;
-
-}
-
-.extendheader h1 {
-  font-size: 1.1rem;
-  color: white;
-}
 
 #smallitemtree {
-  margin-left: 50px;
   position: absolute;
-  margin-top: -50px;
-  width: 170px;
-  /* animation: itemanimation2;
-  animation-duration: 1s; */
+  width: 175px;
+  left: 75px;
+  transition: all 1s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 #smallitemtree a {
@@ -537,9 +508,45 @@ input[type=text]:focus {
   width: 100%;
 }
 
-.hidesidebar-menu-item:hover.hidesidebar-menu-item span i {
-  font-size: 1.5rem;
-  transition: all 300ms linear;
+.themebutton {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  height: 50px;
+}
+
+.themetoggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.themetoggle span {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  height: 100%;
+  padding-left: 5px;
+  padding-right: 5px;
+
+}
+
+.sign-out {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sign-out h5 {
+  font-size: 0.7rem;
+  font-weight: 400;
 }
 
 /*  Pages   */
@@ -550,6 +557,7 @@ input[type=text]:focus {
   justify-content: center;
   transition: all 0.5s linear;
   z-index: 4;
+  height: 100%;
 
 }
 
@@ -563,6 +571,7 @@ input[type=text]:focus {
   gap: 50px;
   animation: pageanimation;
   animation-duration: 1s;
+  height: 100%;
 }
 
 input[id=appointmenttext] {
@@ -588,7 +597,6 @@ input[id=appointmenttext]:focus {
   margin-left: 3%;
   flex-direction: column;
   gap: 30px;
-
   margin: 0%;
 
 }
@@ -725,10 +733,10 @@ input[type=checkbox] {
 #switchlabel:after {
   content: '';
   position: absolute;
-  left: 1px;
-  top: 1px;
-  width: 25px;
-  height: 23px;
+  left: 2px;
+  top: 2px;
+  width: 23px;
+  height: 21px;
   background: #fff;
   border-radius: 90px;
   transition: 0.3s;
@@ -740,7 +748,7 @@ input:checked+#switchlabel {
 }
 
 input:checked+#switchlabel:after {
-  left: calc(100% - 1px);
+  left: calc(100% - 2px);
   transform: translateX(-100%);
 }
 
@@ -775,11 +783,3 @@ input:checked+#switchlabel:after {
   font-size: 16px;
   cursor: pointer;
 }
-
-
-
-
-
-
-
-

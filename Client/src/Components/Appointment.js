@@ -4,22 +4,17 @@ import { Sidebarinfo } from "../App";
 
 function Appointment() {
   const mainboardextend = {
-    height: "35%",
     backgroundColor: "#f1f3f6",
-    marginLeft: 50,
-    height: "100%",
-    top: 50,
+    marginLeft: 75,
   };
   const mainboard = {
-    height: "35%",
     backgroundColor: "#f1f3f6",
     marginLeft: 250,
-    top: 50,
-    height: "100%",
   };
   const themecolor = {
     color: "#0f238c",
   };
+  
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
   const [registeredpatient, setRegisteredpatient] = useState(false);
   const [name, setName] = useState("");

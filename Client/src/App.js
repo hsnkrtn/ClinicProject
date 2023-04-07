@@ -13,11 +13,14 @@ export const Sidebarinfo = createContext();
 function App() {
   const [hidesidebar, setHidesidebar] = useState(false);
   const [URL, setURL] = useState("http://localhost:3001");
+  const [isDark, setisDark] = useState(false);
 
   return (
     <Router>
       <div className="App">
-        <Sidebarinfo.Provider value={{ hidesidebar, setHidesidebar, URL }}>
+        <Sidebarinfo.Provider
+          value={{ hidesidebar, setHidesidebar, URL, setisDark, isDark }}
+        >
           <Sidebar></Sidebar>
           <Routes>
             <Route path={`RandevuEkle`} element={<Appointment />} />

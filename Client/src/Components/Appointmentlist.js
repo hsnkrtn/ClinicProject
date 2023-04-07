@@ -13,7 +13,7 @@ function Appointmentlist() {
   const mainboardextend = {
     height: "35%",
     backgroundColor: "#CCE2FF",
-    marginLeft: 50,
+    marginLeft: 75,
     top: 50,
     flex: 1,
   };

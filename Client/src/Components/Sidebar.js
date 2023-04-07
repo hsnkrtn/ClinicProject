@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 function Sidebar() {
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
+  const { isDark, setisDark } = useContext(Sidebarinfo);
 
   const company = [
     {
@@ -41,12 +42,6 @@ function Sidebar() {
       icon: "fa-heartbeat",
     },
     {
-      name: "Doktor",
-      menu: ["Doktor Ekle", "Doktor Listesi"],
-      icon: "fa-user-md",
-    },
-
-    {
       name: "Duyuru Panosu",
       menu: ["Duyuru Ekle", "Bütün Duyurular"],
       icon: "fa-bullhorn",
@@ -62,13 +57,8 @@ function Sidebar() {
       icon: "fa fa-users",
     },
     {
-      name: "SMS Gönderme",
-      menu: ["SMS Gönder", "Gönderilen SMS'ler"],
-      icon: "fa-comments-o",
-    },
-    {
-      name: "Mail Gönderme",
-      menu: ["Mail Gönder", "Gönderilen Mailler"],
+      name: "SMS / Mail Gönderme",
+      menu: ["SMS Gönder", "Mail Gönder", "Gönderilen SMS / Mailler"],
       icon: "fa-envelope-o",
     },
     {
@@ -111,51 +101,71 @@ function Sidebar() {
   };
 
   return (
-    <div className="sidebar-header">
-      <div className={hidesidebar ? "hidesidebar" : "sidebar"}>
-        <section className="sidebar-logo">
-          <img src={require(`../assets/${company[0].image}`)}></img>
-        </section>
-        <section
-          className={hidesidebar ? "hidesidebar-person" : "sidebar-person"}
-        >
-          <img src={require(`../assets/${user[0].image}`)}></img>
+    <div className={!hidesidebar ? "sidebar" : "hidesidebar"}>
+      <div
+        className="hidesidebarbutton"
+        onClick={() => {
+          setHidesidebar(!hidesidebar);
+          setSidebaritemselect(
+            sidebaritemselect.map((item, i) => {
+              return false;
+            })
+          );
+        }}
+      >
+        <span>
+          {hidesidebar ? (
+            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+          ) : (
+            <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+          )}{" "}
+        </span>{" "}
+      </div>
+      <section className="sidebar-logo">
+        <img src={require(`../assets/${company[0].image}`)}></img>
+      </section>
+      <section className="sidebar-person">
+        <img src={require(`../assets/${user[0].image}`)}></img>
+        <div className="sidebar-person-title">
+          {" "}
           <h1>{user[0].username}</h1>
           <h3>
             <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-            {user[0].authority}
-          </h3>
-        </section>
-        <section className="searchbox">
-          {!hidesidebar ? (
-            <input
-              type="text"
-              id="searchtext"
-              name="fname"
-              placeholder="Hasta Bul"
-            ></input>
-          ) : (
-            <></>
-          )}
-        </section>
-        <ul className="sidebar-menu">
+            &nbsp; {user[0].authority}
+          </h3>{" "}
+        </div>{" "}
+      </section>
+      <section className="searchbox">
+        {!hidesidebar ? (
+          <input
+            type="text"
+            id="searchtext"
+            name="fname"
+            placeholder="Hasta Bul"
+          ></input>
+        ) : (
+          <div className="hidesidebar-searchbox">
+            <span>
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </span>
+          </div>
+        )}
+      </section>
+      <section className={!hidesidebar ? "sidebar-menu" : "hidesidebar-menu"}>
+        <ul>
           {sidebaritems.map((item, index) => {
             return (
-              <li
-                key={index}
-                className={
-                  hidesidebar ? "hidesidebar-menu-item" : "sidebar-menu-item"
-                }
-              >
+              <li key={index} className="sidebar-menu-item">
                 <a onClick={() => updateselectedsidebaritem(index)}>
                   {" "}
-                  <span className="sidebaricons">
+                  <span>
                     {" "}
                     <i class={`fa ${item.icon}`} aria-hidden="true"></i>
                   </span>{" "}
-                  <h1>{item.name}</h1>
                   {!hidesidebar ? (
                     <>
+                      {" "}
+                      <h1>{item.name}</h1>
                       {sidebaritemselect[index] ? (
                         <i
                           class="fa fa-angle-up pullright"
@@ -172,6 +182,7 @@ function Sidebar() {
                     <></>
                   )}
                 </a>
+
                 <ul
                   className={
                     sidebaritemselect[index] ? "itemtree" : "hide-itemtree"
@@ -193,60 +204,39 @@ function Sidebar() {
                       </li>
                     );
                   })}
-                </ul> 
+                </ul>
               </li>
             );
           })}
         </ul>
-      </div>
-      <div className={hidesidebar ? "extendheader" : "header"}>
-        <div
-          className="hide-menu"
-          id={!hidesidebar ? "hidebutton" : "extendbutton"}
-          onClick={() => {
-            setHidesidebar(!hidesidebar);
-            setSidebaritemselect(
-              sidebaritemselect.map((item, i) => {
-                return false;
-              })
-            );
-          }}
-        >
+      </section>
+      <section className="themebutton">
+        <div class="themetoggle">
+          <input
+            type="checkbox"
+            id="themeswitch"
+            onChange={() => {
+              setisDark(!isDark);
+            }}
+          />
+          <label id="switchlabel" for="themeswitch">
+            <span>
+              <i class="fa-solid fa-sun"></i> <i class="fa-solid fa-moon"></i>
+            </span>
+          </label>
+        </div>
+      </section>
+      <section className="sign-out">
+        <div>
           <span>
-            {hidesidebar ? (
-              <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-            ) : (
-              <i class="fa fa-angle-double-left" aria-hidden="true"></i>
-            )}{" "}
+            <i class="fa fa-sign-out fa-rotate-180 " aria-hidden="true"></i>
           </span>
         </div>
-        <div className="header-title">
+        <div>
           {" "}
-          {sidebaritemselect &&
-            sidebaritemselect.map((item, index) => {
-              if (item) {
-                return (
-                  <div className="header-title-content">
-                    {" "}
-                    <span>
-                      {" "}
-                      <i
-                        class={`fa ${sidebaritems[index].icon}`}
-                        aria-hidden="true"
-                      ></i>
-                    </span>{" "}
-                    <h1> {sidebaritems[index].name}</h1>
-                  </div>
-                );
-              }
-            })}{" "}
+          <h5>Çıkış Yap</h5>{" "}
         </div>
-        <div className="hide-menu">
-          <span>
-            <i class="fa fa-bars" aria-hidden="true"></i>
-          </span>
-        </div>
-      </div>{" "}
+      </section>
     </div>
   );
 }
