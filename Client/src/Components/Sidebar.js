@@ -7,7 +7,13 @@ import { Link } from "react-router-dom";
 function Sidebar() {
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
   const { isDark, setisDark } = useContext(Sidebarinfo);
-
+  const selectedListItemBackgroundColor = {
+    backgroundColor: "#31826c",
+    color: "#404040",
+  };
+  const notSelectedListItemBackgroundColor = {};
+  const SidebarStyle = { backgroundColor: "#9bd3c4 ", color: "#404040" };
+  const itemTreeStyle = { backgroundColor: "#6fbcb2   ", color: "#CCCCCC" };
   const company = [
     {
       name: "Hasan Kurtini",
@@ -101,9 +107,13 @@ function Sidebar() {
   };
 
   return (
-    <div className={!hidesidebar ? "sidebar" : "hidesidebar"}>
+    <div
+      className={!hidesidebar ? "sidebar" : "hidesidebar"}
+      style={SidebarStyle}
+    >
       <div
         className="hidesidebarbutton"
+        id={!hidesidebar ? "hidebutton" : "extendbutton"}
         onClick={() => {
           setHidesidebar(!hidesidebar);
           setSidebaritemselect(
@@ -156,7 +166,14 @@ function Sidebar() {
           {sidebaritems.map((item, index) => {
             return (
               <li key={index} className="sidebar-menu-item">
-                <a onClick={() => updateselectedsidebaritem(index)}>
+                <a
+                  onClick={() => updateselectedsidebaritem(index)}
+                  style={
+                    sidebaritemselect[index]
+                      ? selectedListItemBackgroundColor
+                      : notSelectedListItemBackgroundColor
+                  }
+                >
                   {" "}
                   <span>
                     {" "}
@@ -184,6 +201,7 @@ function Sidebar() {
                 </a>
 
                 <ul
+                  style={itemTreeStyle}
                   className={
                     sidebaritemselect[index] ? "itemtree" : "hide-itemtree"
                   }
@@ -198,9 +216,8 @@ function Sidebar() {
                           }}
                         >
                           {" "}
-                          <i class="fa  fa-angle-right" aria-hidden="true"></i>
                           <h4>{menuitem}</h4>{" "}
-                        </Link>
+                        </Link>{" "}
                       </li>
                     );
                   })}
@@ -210,31 +227,33 @@ function Sidebar() {
           })}
         </ul>
       </section>
-      <section className="themebutton">
-        <div class="themetoggle">
-          <input
-            type="checkbox"
-            id="themeswitch"
-            onChange={() => {
-              setisDark(!isDark);
-            }}
-          />
-          <label id="switchlabel" for="themeswitch">
+      <section className="theme-sign-out-button">
+        <div className="themebutton">
+          <div class="themetoggle">
+            <input
+              type="checkbox"
+              id="themeswitch"
+              onChange={() => {
+                setisDark(!isDark);
+              }}
+            />
+            <label id="switchlabel" for="themeswitch">
+              <span>
+                <i class="fa-solid fa-sun"></i> <i class="fa-solid fa-moon"></i>
+              </span>
+            </label>
+          </div>
+        </div>
+        <div className="sign-out">
+          <div>
             <span>
-              <i class="fa-solid fa-sun"></i> <i class="fa-solid fa-moon"></i>
+              <i class="fa fa-sign-out fa-rotate-180 " aria-hidden="true"></i>
             </span>
-          </label>
-        </div>
-      </section>
-      <section className="sign-out">
-        <div>
-          <span>
-            <i class="fa fa-sign-out fa-rotate-180 " aria-hidden="true"></i>
-          </span>
-        </div>
-        <div>
-          {" "}
-          <h5>Çıkış Yap</h5>{" "}
+          </div>
+          <div>
+            {" "}
+            <h5>Çıkış Yap</h5>{" "}
+          </div>
         </div>
       </section>
     </div>

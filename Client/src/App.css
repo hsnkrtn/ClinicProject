@@ -5,46 +5,28 @@
 
 #root {
   font-size: 16px;
-  color: white;
   font-family: Söhne, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, Helvetica Neue, Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 }
 
-#root a {
-  color: white;
-}
 
-#root a:hover {
-  color: #0f238c;
-}
 
 /* Animations */
 @keyframes itemanimation {
   0% {
     transform: translateX(-50px);
-    z-index: -1;
     opacity: 0;
 
   }
 
-  25% {
-    z-index: -1;
+  25% {}
 
-  }
+  50% {}
 
-  50% {
-    z-index: -1;
-
-  }
-
-  75% {
-    z-index: -1;
-
-  }
+  75% {}
 
   100% {
     transform: translateX(0px);
     opacity: 1;
-    z-index: -1;
 
   }
 }
@@ -86,7 +68,7 @@
   }
 
   50% {
-    transform: translateX(-15px);
+    transform: translateX(-10px);
   }
 
   100% {
@@ -105,7 +87,7 @@
   }
 
   50% {
-    transform: translateX(15px);
+    transform: translateX(10px);
   }
 
   100% {
@@ -155,12 +137,11 @@
 
 .sidebar {
   position: absolute;
-  background-color: #0f238c;
   display: flex;
   flex-direction: column;
   top: 0px;
   transition: width 0.5s linear;
-  height: 100vh;
+  min-height: 100%;
   width: 250px;
   z-index: 6;
 
@@ -196,7 +177,7 @@
   justify-content: center;
   align-items: center;
   color: white;
-  background-color: #063ed1;
+  background-color: #31826c;
   border-radius: 0px 10px 10px 0px;
 }
 
@@ -214,6 +195,23 @@
 
 }
 
+.hidesidebarbutton:hover {
+  cursor: pointer;
+
+}
+
+.hidesidebarbutton:hover#hidebutton i {
+  animation: arrowbuttionanimation;
+  animation-duration: 1s;
+  animation-delay: 200ms;
+}
+
+.hidesidebarbutton:hover#extendbutton i {
+  animation: arrowbuttionanimationreverse;
+  animation-duration: 1s;
+  animation-delay: 200ms;
+}
+
 .searchbox {
 
   display: flex;
@@ -221,6 +219,11 @@
   height: 50px;
   align-items: center;
   width: 100%;
+}
+
+.searchbox:hover {
+  cursor: pointer;
+
 }
 
 textarea:focus,
@@ -236,7 +239,8 @@ input[id=searchtext] {
   border: 1px solid white;
   transition: all 300ms linear;
   margin-bottom: 15px;
-  margin-top: 10px;
+  margin-top: 15px;
+  border-radius: 10px;
 }
 
 
@@ -349,7 +353,7 @@ input[type=text]:focus {
 
 .sidebar-menu-item a {
   position: relative;
-  height: 50px;
+  height: 40px;
   padding-left: 10px;
   padding-right: 10px;
   display: flex;
@@ -365,7 +369,7 @@ input[type=text]:focus {
 .sidebar-menu-item a:hover {
   cursor: pointer;
   background-color: white;
-  color: #0f238c;
+  color: #404040;
 
 
 }
@@ -384,7 +388,6 @@ input[type=text]:focus {
 
 .hidesidebar {
   position: absolute;
-  background-color: #0f238c;
   display: flex;
   flex-direction: column;
   top: 0px;
@@ -426,7 +429,7 @@ input[type=text]:focus {
 
 .hidesidebar-menu .sidebar-menu-item a {
   position: relative;
-  height: 50px;
+  height: 40px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -439,14 +442,15 @@ input[type=text]:focus {
 .itemtree {
   max-height: 1000px;
   transition: all 3s cubic-bezier(0.22, 0.61, 0.36, 1);
-  background-color: #063ed1;
   opacity: 1;
 
 }
 
+
 .hide-itemtree {
   max-height: 0;
   opacity: 0;
+
 
 }
 
@@ -468,10 +472,18 @@ input[type=text]:focus {
   height: 25px;
   padding-left: 25px;
   text-decoration: none;
-
+  display: flex;
+  align-items: center;
+  color: #404040;
 
 }
 
+
+.itemtree i {
+
+  font-size: 0.8rem;
+
+}
 
 
 .itemtree li h4 {
@@ -508,6 +520,7 @@ input[type=text]:focus {
   width: 100%;
 }
 
+
 .themebutton {
   display: flex;
   justify-content: center;
@@ -532,6 +545,7 @@ input[type=text]:focus {
   height: 100%;
   padding-left: 5px;
   padding-right: 5px;
+  font-size: 0.8rem;
 
 }
 
@@ -542,11 +556,29 @@ input[type=text]:focus {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+}
+
+.sign-out:hover {
+  cursor: pointer;
 }
 
 .sign-out h5 {
   font-size: 0.7rem;
   font-weight: 400;
+}
+
+.theme-sign-out-button {
+
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  bottom: 0px;
+  flex-direction: column;
+  width: 100%;
+
+
 }
 
 /*  Pages   */
@@ -735,7 +767,7 @@ input[type=checkbox] {
   position: absolute;
   left: 2px;
   top: 2px;
-  width: 23px;
+  width: 21px;
   height: 21px;
   background: #fff;
   border-radius: 90px;
