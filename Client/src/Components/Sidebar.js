@@ -8,7 +8,7 @@ function Sidebar() {
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
   const { isDark, setisDark } = useContext(Sidebarinfo);
   const selectedListItemBackgroundColor = {
-    backgroundColor: "# ",
+    backgroundColor: "#31826c",
     color: "#ffffff",
   };
   const notSelectedListItemBackgroundColor = {};
