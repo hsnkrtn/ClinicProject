@@ -8,8 +8,8 @@ function Sidebar() {
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
   const { isDark, setisDark } = useContext(Sidebarinfo);
   const selectedListItemBackgroundColor = {
-    backgroundColor: "#31826c",
-    color: "#404040",
+    backgroundColor: "# ",
+    color: "#ffffff",
   };
   const notSelectedListItemBackgroundColor = {};
   const SidebarStyle = { backgroundColor: "#9bd3c4 ", color: "#404040" };
@@ -228,7 +228,7 @@ function Sidebar() {
         </ul>
       </section>
       <section className="theme-sign-out-button">
-        <div className="themebutton">
+        {/* <div className="themebutton">
           <div class="themetoggle">
             <input
               type="checkbox"
@@ -243,7 +243,8 @@ function Sidebar() {
               </span>
             </label>
           </div>
-        </div>
+        </div> */}
+        <div style={{height:40}} ></div>
         <div className="sign-out">
           <div>
             <span>
