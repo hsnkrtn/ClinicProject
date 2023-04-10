@@ -33,7 +33,12 @@ function Sidebar() {
     { name: "Analiz", menu: [], icon: "fa-line-chart" },
     {
       name: "Randevu",
-      menu: ["Randevu Ekle", "Randevu Listesi"],
+      menu: [
+        "Randevu Ekle",
+        "Randevu Listesi",
+        "Ön Kayıt Ekle",
+        "Ön Kayıt Listesi",
+      ],
       icon: "fa-calendar-plus-o",
     },
     {
@@ -244,7 +249,7 @@ function Sidebar() {
             </label>
           </div>
         </div> */}
-        <div style={{height:40}} ></div>
+        <div style={{ height: 40 }}></div>
         <div className="sign-out">
           <div>
             <span>

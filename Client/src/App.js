@@ -23,16 +23,19 @@ function App() {
         >
           <Sidebar></Sidebar>
           <Routes>
-            <Route path={`RandevuEkle`} element={<Appointment />} />
+            <Route exact  path={`/`}  element={<Mainboard/>} />
           </Routes>
           <Routes>
-            <Route path={`Randevulistesi`} element={<Appointmentlist />} />
+            <Route exact  path={`/RandevuEkle`}  element={<Appointment />} />
           </Routes>
           <Routes>
-            <Route path={`PlanEkle`} element={<AgendaPlan />} />
+            <Route path={`/RandevuListesi`} element={<Appointmentlist />} />
           </Routes>
           <Routes>
-            <Route path={`Ajanda`} element={<Agenda />} />
+            <Route path={`/PlanEkle`} element={<AgendaPlan />} />
+          </Routes>
+          <Routes>
+            <Route path={`/Ajanda`} element={<Agenda />} />
           </Routes>
         </Sidebarinfo.Provider>
       </div>

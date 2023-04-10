@@ -301,7 +301,7 @@ input[type=text]:focus {
   width: 100px;
   border-radius: 50%;
   transition: all 0.5s linear;
-  border: 1px solid  #31826c;
+  border: 1px solid #31826c;
 
 }
 
@@ -391,7 +391,7 @@ input[type=text]:focus {
   flex-direction: column;
   top: 0px;
   transition: width 0.5s linear;
-  height: 100vh;
+  min-height: 100%;
   width: 75px;
   left: 0px;
   z-index: 6;
@@ -588,25 +588,22 @@ input[type=text]:focus {
   justify-content: center;
   transition: all 0.5s linear;
   z-index: 4;
-  height: 100%;
 
 }
 
 .Appointment {
   display: flex;
   background-color: white;
-  margin: 25px;
   padding: 50px;
   width: 100%;
   flex-direction: column;
-  gap: 50px;
   animation: pageanimation;
   animation-duration: 1s;
-  height: 100%;
+  height: fit-content;
 }
 
 input[id=appointmenttext] {
-  width: 50%;
+  width: 80%;
   height: 30px;
   background-color: transparent;
   border: 1px solid #e4e5e7;
@@ -621,17 +618,32 @@ input[id=appointmenttext]:focus {
 
 }
 
+.AppointmentForm {
+  display: flex;
+  justify-content: center;
+}
+
 .Appointment form {
   display: flex;
-  width: 100%;
+  width: 720px;
   justify-content: flex-start;
-  margin-left: 3%;
   flex-direction: column;
   gap: 30px;
   margin: 0%;
+  /* background-color: rgba(155, 211, 196, 0.3); */
+  padding: 40px;
+  border-radius: 10px;
+  border: 2px solid #31826c;
 
 }
 
+
+.Appointment form section {
+  display: flex;
+  width: 100%;
+  animation: pageanimation;
+  animation-duration: 500ms;
+}
 
 .Appointment label {
   width: 20%;
@@ -643,15 +655,8 @@ input[id=appointmenttext]:focus {
   color: #374767;
 }
 
-.Appointment form section {
-  display: flex;
-  justify-content: center;
-  animation: pageanimation;
-  animation-duration: 500ms;
-}
-
 #doctors {
-  width: 50%;
+  width: 80%;
   border: 1px solid #e4e5e7;
   height: 30px;
   border-radius: 3px;
@@ -667,8 +672,18 @@ input[id=appointmenttext]:focus {
 
 }
 
+#meeting-time {
+  margin-left: 5%;
+  width: 10%;
+  height: 30px;
+  border: 1px solid #e4e5e7;
+  position: relative;
+  border-radius: 3px;
+
+}
+
 #phone {
-  width: 50%;
+  width: 80%;
   height: 30px;
   position: relative;
   border-radius: 3px;
@@ -695,6 +710,19 @@ input[id=appointmenttext]:focus {
   background: transparent;
 
 }
+#meeting-time::-webkit-calendar-picker-indicator {
+  bottom: 0;
+  color: red;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+  background: transparent;
+
+}
 
 .textarea {
 
@@ -702,8 +730,8 @@ input[id=appointmenttext]:focus {
 }
 
 textarea[id="appointmentproblemtext"] {
-  width: 50%;
-  min-height: 150px;
+  width: 80%;
+  min-height: 100px;
   height: fit-content;
   display: flex;
   background-color: transparent;
@@ -741,7 +769,7 @@ textarea[id="appointmentproblemtext"]:focus {
 
 .toggleWrapper {
   height: 30px;
-  width: 50%;
+  width: 80%;
   display: flex;
 }
 
@@ -786,7 +814,7 @@ input:checked+#switchlabel:after {
 
 .SaveOrCancelButtons {
   display: flex;
-  width: 50%;
+  width: 80%;
   justify-content: flex-end;
   gap: 10px;
 }
