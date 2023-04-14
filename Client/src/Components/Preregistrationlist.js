@@ -22,14 +22,13 @@ function Appointmentlist() {
     top: 50,
     flex: 1,
   };
-
   useEffect(() => {
-    console.log(URL);
-    window.scrollTo(0, 0);
-    Axios.get(`${URL}/GetPreregistrationsList`).then((reponse) =>
-      setpreregisrtration(reponse.data)
-    );
-    console.log(preregisrtration);
+    const fetchData = async () => {
+      const result = await Axios.get(`${URL}/GetPreregistrationsList`);
+      setpreregisrtration(result.data);
+    };
+
+    fetchData();
   }, []);
 
   return (
@@ -38,40 +37,59 @@ function Appointmentlist() {
       style={hidesidebar ? mainboardextend : mainboard}
     >
       <div className="Appointmentlist">
-        <div className="AppointmentTable">
-          <section className="tableHead">
-            <ul className="tableHeadlist">
-              <li id="tableNumber">#</li>
-              <li id="tablePaientName">Hasta Adı</li>
-              <li id="tablePhone">Telefon</li>
-              <li id="tableDoctor">Doktor</li>
-              <li id="tableComment">Hekim Yorumu</li>
-              <li id="tableDate">Tarih</li>
-              <li id="tableTime">Saat</li>
-              <li id="tableActions">Randevu İşlemleri</li>
-            </ul>
-          </section>
-          <section className="tableBody">
-            <ul className="tableBodylist">
-              <li id="tableNumber">#</li>
-              <li id="tablePaientName">Enes Yagiz Dogan</li>
-              <li id="tablePhone">+901231231212</li>
-              <li id="tableDoctor">Abdulkadir Yasar</li>
-              <li id="tableCommentItem">
-                Yapilacak islemeler burada bu sekilde olacak Yapilacak islemeler
-                burada bu sekilde olacak Yapilacak islemeler burada bu sekilde
-                olacak Yapilacak islemeler burada bu sekilde olacak
-              </li>
-              <li id="tableDate">2023-12-12</li>
-              <li id="tableTime">12:30 - 13:30</li>
-              <li id="tableActions">
-                {" "}
-                <button>h</button>
-                <button>h</button>
-                <button>h</button>{" "}
-              </li>
-            </ul>
-          </section>
+        <div className="AppointmentlistTable">
+          {preregisrtration && (
+            <div className="AppointmentTable">
+              <section className="tableHead">
+                <ul className="tableHeadlist">
+                  <li id="tableNumber">#</li>
+                  <li id="tablePaientID">Ön Kayıt ID</li>
+                  <li id="tablePaientName">Hasta Adı</li>
+                  <li id="tablePhone">Telefon</li>
+                  <li id="tableDoctor">Doktor</li>
+                  <li id="tableComment">Açıklama</li>
+                  <li id="tableDate">Tarih</li>
+                  <li id="tableTime">Saat</li>
+                  <li id="tableActions">Ön Kayıt İşlemleri</li>
+                </ul>
+              </section>
+              <section className="tableBody">
+                {preregisrtration.map((preregisrtration, index) => {
+                  return (
+                    <ul className="tableBodylist">
+                      <li id="tableNumber">{preregisrtration.on_kayit_id}</li>
+                      <li id="tablePaientID">
+                        {preregisrtration.onkayitlihasta_unique_id}
+                      </li>
+                      <li id="tablePaientName">
+                        {preregisrtration.on_kayit_adi_soyadi}
+                      </li>
+                      <li id="tablePhone">{preregisrtration.on_kayit_tel}</li>
+                      <li id="tableDoctor">
+                        {preregisrtration.on_kayit_doktor}
+                      </li>
+                      <li id="tableCommentItem">
+                        {preregisrtration.on_kayit_hekim_yorum}
+                      </li>
+                      <li id="tableDate">
+                        {preregisrtration.on_kayit_randevugun}
+                      </li>
+                      <li id="tableTime">
+                        {preregisrtration.on_kayit_baslangic} -{" "}
+                        {preregisrtration.on_kayit_bitis}
+                      </li>
+                      <li id="tableActions">
+                        {" "}
+                        <button>h</button>
+                        <button>h</button>
+                        <button>h</button>{" "}
+                      </li>
+                    </ul>
+                  );
+                })}
+              </section>
+            </div>
+          )}
         </div>
       </div>
     </div>

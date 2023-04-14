@@ -40,14 +40,17 @@ app.post("/addNewAppointment", (req, res) => {
 
 // Randevulari Al
 app.get("/GetAppointmentList", (req, res) => {
-  db.query("SELECT * FROM  clinic.randevular", (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
-      console.log(result);
+  db.query(
+    "SELECT *, DATE_FORMAT(randevu_guntarih, '%d-%m-%Y') AS randevu_gun, DATE_FORMAT(randevu_baslangic_saat, '%h:%i') AS randevu_baslangic, DATE_FORMAT(randevu_bitis_saat, '%h:%i') AS randevu_bitis FROM  clinic.randevular",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+        console.log(result);
+      }
     }
-  });
+  );
 });
 // On Kayit Ekle
 app.post("/addNewregistration", (req, res) => {
@@ -60,8 +63,36 @@ app.post("/addNewregistration", (req, res) => {
   const starttime = req.body.starttime;
   const endtime = req.body.endtime;
   const reference = req.body.reference;
+
+  function generateRandomID() {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let ID = "OK";
+    const charactersLength = characters.length;
+    for (let i = 0; i < 6; i++) {
+      ID += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    function checkID() {
+      db.query("SELECT * FROM  clinic.onkayitlar", (err, result) => {
+        result.map((onkayit, index) => {
+          if (onkayit.onkayitlihasta_unique_id != ID) {
+            return true;
+          } else
+            console.log(
+              "Gerçekten tebrikler 2.176.782.336 tane ID arasından nasıl olduysa eşleşen ID buldunuz"
+            );
+          return false;
+        });
+      });
+    }
+    checkID();
+    if (checkID) {
+      return ID;
+    } else generateRandomID();
+  }
+  let OKH_ID = generateRandomID();
+  console.log(OKH_ID);
   db.query(
-    `INSERT INTO clinic.onkayitlar (on_kayit_adi_soyadi,on_kayit_tel,on_kayit_email,on_kayit_doktor,on_kayit_hekim_yorum,on_kayit_baslangic_saati,on_kayit_bitis_saati,on_kayit_gun,on_kayit_referans) VALUES ("${name}","${phone}","${email}","${doctor}","${comment}","${starttime}","${endtime}","${date}","${reference}")`,
+    `INSERT INTO clinic.onkayitlar (on_kayit_adi_soyadi,onkayitlihasta_unique_id,on_kayit_tel,on_kayit_email,on_kayit_doktor,on_kayit_hekim_yorum,on_kayit_baslangic_saati,on_kayit_bitis_saati,on_kayit_gun,on_kayit_referans) VALUES ("${name}","${OKH_ID}","${phone}","${email}","${doctor}","${comment}","${starttime}","${endtime}","${date}","${reference}")`,
     (err, response) => {
       if (err) {
         console.log(err);
@@ -72,14 +103,17 @@ app.post("/addNewregistration", (req, res) => {
 
 // On kayitlari Al
 app.get("/GetPreregistrationsList", (req, res) => {
-  db.query("SELECT * FROM  clinic.onkayitlar", (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
-      console.log(result);
+  db.query(
+    "SELECT *, DATE_FORMAT(on_kayit_gun, '%d-%m-%Y') AS on_kayit_randevugun, DATE_FORMAT(on_kayit_baslangic_saati, '%h:%i') AS on_kayit_baslangic, DATE_FORMAT(on_kayit_bitis_saati, '%h:%i') AS on_kayit_bitis FROM  clinic.onkayitlar",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+        console.log(result);
+      }
     }
-  });
+  );
 });
 // Ajandayi Al
 app.get("/GetFullagenda", (req, res) => {

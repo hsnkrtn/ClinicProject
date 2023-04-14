@@ -11,24 +11,23 @@ function Appointmentlist() {
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
 
   const mainboardextend = {
-    backgroundColor: "#CCE2FF",
     marginLeft: 75,
     top: 50,
     flex: 1,
   };
   const mainboard = {
-    backgroundColor: "#CCE2FF",
     marginLeft: 250,
     top: 50,
     flex: 1,
   };
 
   useEffect(() => {
-    console.log(URL);
-    window.scrollTo(0, 0);
-    Axios.get(`${URL}/GetAppointmentList`).then((reponse) =>
-      setAppointmentList(reponse.data)
-    );
+    const fetchData = async () => {
+      const result = await Axios.get(`${URL}/GetAppointmentList`);
+      setAppointmentList(result.data);
+    };
+
+    fetchData();
     console.log(AppointmentList);
   }, []);
 
@@ -38,42 +37,53 @@ function Appointmentlist() {
       style={hidesidebar ? mainboardextend : mainboard}
     >
       <div className="Appointmentlist">
-        <div className="AppointmentTable">
-          <section className="tableHead">
-            <ul className="tableHeadlist">
-              <li id="tableNumber">#</li>
-              <li id="tablePaientID">Hasta ID</li>
-              <li id="tablePaientName">Hasta Adı</li>
-              <li id="tablePhone">Telefon</li>
-              <li id="tableDoctor">Doktor</li>
-              <li id="tableComment">Yapılacak İşlem</li>
-              <li id="tableDate">Tarih</li>
-              <li id="tableTime">Saat</li>
-              <li id="tableActions">Randevu İşlemleri</li>
-            </ul>
-          </section>
-          <section className="tableBody">
-            <ul className="tableBodylist">
-              <li id="tableNumber">#</li>
-              <li id="tablePaientID">123abc</li>
-              <li id="tablePaientName">Enes Yagiz Dogan</li>
-              <li id="tablePhone">+901231231212</li>
-              <li id="tableDoctor">Abdulkadir Yasar</li>
-              <li id="tableCommentItem">
-                Yapilacak islemeler burada bu sekilde olacak Yapilacak islemeler
-                burada bu sekilde olacak Yapilacak islemeler burada bu sekilde
-                olacak Yapilacak islemeler burada bu sekilde olacak
-              </li>
-              <li id="tableDate">2023-12-12</li>
-              <li id="tableTime">12:30 - 13:30</li>
-              <li id="tableActions">
-                {" "}
-                <button>h</button>
-                <button>h</button>
-                <button>h</button>{" "}
-              </li>
-            </ul>
-          </section>
+        <div className="AppointmentlistTable">
+          {AppointmentList && (
+            <div className="AppointmentTable">
+              <section className="tableHead">
+                <ul className="tableHeadlist">
+                  <li id="tableNumber">#</li>
+                  <li id="tablePaientID">Hasta ID</li>
+                  <li id="tablePaientName">Hasta Adı</li>
+                  <li id="tablePhone">Telefon</li>
+                  <li id="tableDoctor">Doktor</li>
+                  <li id="tableComment">Yapılacak İşlem</li>
+                  <li id="tableDate">Tarih</li>
+                  <li id="tableTime">Saat</li>
+                  <li id="tableActions">Randevu İşlemleri</li>
+                </ul>
+              </section>
+              <section className="tableBody">
+                {AppointmentList.map((Appointment, index) => {
+                  return (
+                    <ul className="tableBodylist">
+                      <li id="tableNumber">{Appointment.randevu_id}</li>
+                      <li id="tablePaientID">{Appointment.hasta_unique_id}</li>
+                      <li id="tablePaientName">
+                        {Appointment.randevu_adi_soyadi}
+                      </li>
+                      <li id="tablePhone">{Appointment.randevu_hasta_tel}</li>
+                      <li id="tableDoctor">{Appointment.randevu_doktor}</li>
+                      <li id="tableCommentItem">
+                        {Appointment.randevu_yapilacak_islem}
+                      </li>
+                      <li id="tableDate">{Appointment.randevu_gun}</li>
+                      <li id="tableTime">
+                        {Appointment.randevu_baslangic} -{" "}
+                        {Appointment.randevu_bitis}
+                      </li>
+                      <li id="tableActions">
+                        {" "}
+                        <button>h</button>
+                        <button>h</button>
+                        <button>h</button>{" "}
+                      </li>
+                    </ul>
+                  );
+                })}
+              </section>
+            </div>
+          )}
         </div>
       </div>
     </div>
