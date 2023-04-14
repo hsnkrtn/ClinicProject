@@ -7,6 +7,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Appointmentlist from "./Components/Appointmentlist";
 import AgendaPlan from "./Components/AgendaPlan";
 import Agenda from "./Components/Agenda";
+import Preregistration  from "./Components/Preregistration";
+import Preregistrationlist from "./Components/Preregistrationlist";
 
 export const Sidebarinfo = createContext();
 
@@ -23,13 +25,19 @@ function App() {
         >
           <Sidebar></Sidebar>
           <Routes>
-            <Route exact  path={`/`}  element={<Mainboard/>} />
+            <Route exact path={`/`} element={<Mainboard />} />
           </Routes>
           <Routes>
-            <Route exact  path={`/RandevuEkle`}  element={<Appointment />} />
+            <Route exact path={`/RandevuEkle`} element={<Appointment />} />
           </Routes>
           <Routes>
             <Route path={`/RandevuListesi`} element={<Appointmentlist />} />
+          </Routes>
+          <Routes>
+            <Route exact path={`/ÖnKayıtEkle`} element={<Preregistration/>} />
+          </Routes>
+          <Routes>
+            <Route exact path={`/ÖnKayıtListesi`} element={<Preregistrationlist/>} />
           </Routes>
           <Routes>
             <Route path={`/PlanEkle`} element={<AgendaPlan />} />

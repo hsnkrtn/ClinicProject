@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useContext } from "react";
 import { Sidebarinfo } from "../App";
+import { URL } from "../App";
+import Axios from "axios";
 
-function Appointment() {
+function Preregistration() {
   const mainboardextend = {
     backgroundColor: "#f1f3f6",
     marginLeft: 75,
@@ -16,28 +18,54 @@ function Appointment() {
   };
 
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
-  const [registeredpatient, setRegisteredpatient] = useState(false);
+  const { URL } = useContext(Sidebarinfo);
   const [name, setName] = useState("");
   const [doctor, setDoctor] = useState("");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
   const [starttime, setStarttime] = useState("");
   const [endtime, setEndtime] = useState("");
   const [comment, setComment] = useState("");
   const [reference, setReference] = useState("");
   const [sendSMS, setSendSMS] = useState(false);
+  const [sendemail, setSendemail] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(name);
     console.log(doctor);
     console.log(phone);
+    console.log(email);
     console.log(date);
     console.log(starttime);
     console.log(endtime);
     console.log(comment);
-    console.log(sendSMS);
+    console.log("sms", sendSMS);
+    console.log("mail", sendemail);
+    postData();
   };
+  async function postData() {
+    try {
+      await Axios.post(`${URL}/addNewregistration`, {
+        name: name,
+        phone: phone,
+        email: email,
+        doctor: doctor,
+        comment: comment,
+        reference: reference,
+        date: date,
+        starttime: starttime,
+        endtime: endtime,
+      }).then((res) => {
+        alert("Ön Kayıt Oluşturuldu");
+        console.log(res);
+        document.getElementById("addAppointmentForm").reset();
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <div
@@ -47,56 +75,14 @@ function Appointment() {
       <div className="Appointment">
         <div className="Appointment-header" style={themecolor}>
           {" "}
-          {registeredpatient ? (
-            <>
-              {" "}
-              <span>
-                <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
-              </span>
-              <h1>Randevu Ekle</h1>{" "}
-            </>
-          ) : (
-            <>
-              <span>
-                <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
-              </span>
-              <h1>Ön Kayıt Ekle</h1>
-            </>
-          )}
+          <span>
+            <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
+          </span>
+          <h1>Ön Kayıt Ekle</h1>{" "}
         </div>
         <div className="AppointmentForm">
-          <form onSubmit={handleSubmit}>
+          <form id="addAppointmentForm">
             {" "}
-            <section>
-              <label>
-                <h4>Kayıtlı Hasta</h4>
-              </label>
-              <div class="toggleWrapper">
-                <input
-                  type="checkbox"
-                  id="patientswitch"
-                  onChange={(e) => setRegisteredpatient(!registeredpatient)}
-                />
-                <label id="switchlabel" for="patientswitch"></label>
-              </div>
-            </section>
-            {registeredpatient ? (
-              <section>
-                {" "}
-                <label for="fname">
-                  <h4>Hasta Bul</h4>
-                </label>
-                <input
-                  type="text"
-                  id="appointmenttext"
-                  name="fname"
-                  placeholder="Hasta Bul"
-                  required
-                ></input>{" "}
-              </section>
-            ) : (
-              <></>
-            )}
             <section>
               {" "}
               <label for="fname">
@@ -124,19 +110,6 @@ function Appointment() {
               </select>
             </section>
             <section>
-              <label for="phone">
-                <h4> Telefon Numarası</h4>
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                placeholder="0555-555-5555"
-                required
-                onChange={(e) => setPhone(e.target.value)}
-              ></input>
-            </section>
-            <section>
               <label>
                 <h4>Tarih ve Saat *</h4>
               </label>
@@ -156,6 +129,7 @@ function Appointment() {
                 required
                 onChange={(e) => setStarttime(e.target.value)}
               ></input>
+
               <input
                 type="time"
                 id="meeting-time"
@@ -166,11 +140,7 @@ function Appointment() {
             <section>
               {" "}
               <label for="fname">
-                {registeredpatient ? (
-                  <h4> Yapılacak İşlem </h4>
-                ) : (
-                  <h4>Açıklama</h4>
-                )}
+                <h4>Açıklama</h4>
               </label>
               <textarea
                 type="textarea"
@@ -180,23 +150,20 @@ function Appointment() {
                 onChange={(e) => setComment(e.target.value)}
               ></textarea>{" "}
             </section>
-            {!registeredpatient ? (
-              <section>
-                {" "}
-                <label for="fname">
-                  <h4>Referans</h4>
-                </label>
-                <input
-                  type="text"
-                  id="appointmenttext"
-                  name="fname"
-                  placeholder="Referans"
-                  onChange={(e) => setReference(e.target.value)}
-                ></input>{" "}
-              </section>
-            ) : (
-              <></>
-            )}
+            <section>
+              {" "}
+              <label for="fname">
+                <h4>Referans </h4>
+              </label>
+              <input
+                type="text"
+                id="appointmenttext"
+                name="fname"
+                placeholder="Referans"
+                required
+                onChange={(e) => setReference(e.target.value)}
+              ></input>{" "}
+            </section>
             <section>
               <label>
                 <h4>SMS Gönder</h4>
@@ -204,21 +171,78 @@ function Appointment() {
               <div class="toggleWrapper">
                 <input
                   type="checkbox"
-                  id="switch"
+                  id="smsswitch"
                   onChange={(e) => setSendSMS(!sendSMS)}
                 />
-                <label id="switchlabel" for="switch"></label>
+                <label id="switchlabel" for="smsswitch"></label>
               </div>
             </section>
+            {sendSMS ? (
+              <section>
+                <label for="phone">
+                  <h4> Telefon Numarası</h4>
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  placeholder="0555-555-5555"
+                  required
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                ></input>
+              </section>
+            ) : (
+              <></>
+            )}
+            <section>
+              <label>
+                <h4>Email Gönder</h4>
+              </label>
+              <div class="toggleWrapper">
+                <input
+                  type="checkbox"
+                  id="mailswitch"
+                  onChange={(e) => setSendemail(!sendemail)}
+                />
+                <label id="switchlabel" for="mailswitch"></label>
+              </div>
+            </section>
+            {sendemail ? (
+              <section>
+                {" "}
+                <label for="fname">
+                  <h4>E-mail Adresi</h4>
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  id="appointmenttext"
+                  name="fname"
+                  placeholder="Email Adresi"
+                  required
+                  onChange={(e) => setEmail(e.target.value)}
+                ></input>{" "}
+              </section>
+            ) : (
+              <></>
+            )}
             <section className="SaveOrCancel">
               {" "}
               <label>
-                <h4> Randevuyu Kaydet</h4>
+                <h4> Kaydet</h4>
               </label>
               <div className="SaveOrCancelButtons">
                 {" "}
-                <button id="cancelbutton">Vazgeç</button>
-                <button id="savebutton" type="submit">
+                <button
+                  id="cancelbutton"
+                  onClick={() => {
+                    document.getElementById("addAppointmentForm").reset();
+                  }}
+                >
+                  Vazgeç
+                </button>
+                <button id="savebutton" onClick={handleSubmit}>
                   Kaydet
                 </button>
               </div>
@@ -230,4 +254,4 @@ function Appointment() {
   );
 }
 
-export default Appointment;
+export default Preregistration;

@@ -4,11 +4,10 @@
 }
 
 #root {
+
   font-size: 16px;
   font-family: Söhne, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, Helvetica Neue, Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 }
-
-
 
 /* Animations */
 @keyframes itemanimation {
@@ -588,6 +587,8 @@ input[type=text]:focus {
   justify-content: center;
   transition: all 0.5s linear;
   z-index: 4;
+  animation: pageanimation;
+  animation-duration: 1s;
 
 }
 
@@ -597,8 +598,7 @@ input[type=text]:focus {
   padding: 50px;
   width: 100%;
   flex-direction: column;
-  animation: pageanimation;
-  animation-duration: 1s;
+
   height: fit-content;
 }
 
@@ -710,9 +710,9 @@ input[id=appointmenttext]:focus {
   background: transparent;
 
 }
+
 #meeting-time::-webkit-calendar-picker-indicator {
   bottom: 0;
-  color: red;
   cursor: pointer;
   height: auto;
   left: 0;
@@ -841,4 +841,120 @@ input:checked+#switchlabel:after {
   display: inline-block;
   font-size: 16px;
   cursor: pointer;
+}
+
+/*  Appointment List Table */
+
+.Appointmentlist {
+  position: relative;
+  width: 100%;
+}
+
+.AppointmentTable {
+  position: relative;
+  width: 100%;
+}
+
+.tableHead {
+  position: relative;
+  display: flex;
+  height: 50px;
+
+}
+
+.tableHeadlist {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  background-color: darkgray
+}
+
+.tableHead li {
+  list-style: none;
+  width: 100px;
+  font-size: 1rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 5px;
+}
+
+.tableBody {
+  position: relative;
+  display: flex;
+  border-radius: 10px;
+}
+
+.tableBodylist {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  margin-top: 10px;
+  background-color: #0f238c;
+  border-radius: 10px;
+  color: white;
+}
+
+.tableBodylist li {
+  list-style: none;
+  width: 100px;
+  font-size: 0.9rem;
+  height: 50px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 5px;
+}
+
+/* table settings */
+
+#tableNumber {
+  width: 2%;
+  display: flex;
+  justify-content: center;
+}
+
+#tablePaientID {
+  width: 8%;
+}
+
+#tablePaientName {
+  width: 12%;
+}
+
+#tablePhone {
+
+  width: 10%;
+}
+
+#tableDoctor {
+  width: 13%;
+}
+
+#tableComment {
+  width: 20%;
+
+}
+
+#tableCommentItem {
+  width: 20%;
+  overflow: scroll;
+  display: flex;
+  align-items: flex-start;
+}
+
+#tableCommentItem::-webkit-scrollbar {
+  display: none;
+}
+
+#tableDate {
+  width: 8%;
+}
+
+#tableTime {
+  width: 8%;
+}
+
+#tableActions {
+  width: auto;
 }

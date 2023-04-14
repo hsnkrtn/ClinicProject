@@ -11,14 +11,12 @@ function Appointmentlist() {
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
 
   const mainboardextend = {
-    height: "35%",
     backgroundColor: "#CCE2FF",
     marginLeft: 75,
     top: 50,
     flex: 1,
   };
   const mainboard = {
-    height: "35%",
     backgroundColor: "#CCE2FF",
     marginLeft: 250,
     top: 50,
@@ -29,7 +27,7 @@ function Appointmentlist() {
     console.log(URL);
     window.scrollTo(0, 0);
     Axios.get(`${URL}/GetAppointmentList`).then((reponse) =>
-      setAppointmentList(reponse.data.reverse())
+      setAppointmentList(reponse.data)
     );
     console.log(AppointmentList);
   }, []);
@@ -39,7 +37,45 @@ function Appointmentlist() {
       className="mainboard"
       style={hidesidebar ? mainboardextend : mainboard}
     >
-      <div>Appointmentlist</div>;
+      <div className="Appointmentlist">
+        <div className="AppointmentTable">
+          <section className="tableHead">
+            <ul className="tableHeadlist">
+              <li id="tableNumber">#</li>
+              <li id="tablePaientID">Hasta ID</li>
+              <li id="tablePaientName">Hasta Adı</li>
+              <li id="tablePhone">Telefon</li>
+              <li id="tableDoctor">Doktor</li>
+              <li id="tableComment">Yapılacak İşlem</li>
+              <li id="tableDate">Tarih</li>
+              <li id="tableTime">Saat</li>
+              <li id="tableActions">Randevu İşlemleri</li>
+            </ul>
+          </section>
+          <section className="tableBody">
+            <ul className="tableBodylist">
+              <li id="tableNumber">#</li>
+              <li id="tablePaientID">123abc</li>
+              <li id="tablePaientName">Enes Yagiz Dogan</li>
+              <li id="tablePhone">+901231231212</li>
+              <li id="tableDoctor">Abdulkadir Yasar</li>
+              <li id="tableCommentItem">
+                Yapilacak islemeler burada bu sekilde olacak Yapilacak islemeler
+                burada bu sekilde olacak Yapilacak islemeler burada bu sekilde
+                olacak Yapilacak islemeler burada bu sekilde olacak
+              </li>
+              <li id="tableDate">2023-12-12</li>
+              <li id="tableTime">12:30 - 13:30</li>
+              <li id="tableActions">
+                {" "}
+                <button>h</button>
+                <button>h</button>
+                <button>h</button>{" "}
+              </li>
+            </ul>
+          </section>
+        </div>
+      </div>
     </div>
   );
 }
