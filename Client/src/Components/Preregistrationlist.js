@@ -9,6 +9,7 @@ function Appointmentlist() {
   const [preregisrtration, setpreregisrtration] = useState([]);
   const { URL } = useContext(Sidebarinfo);
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
+  const [preregisrtrationstatus, setpreregisrtrationstatus] = useState(0);
 
   const mainboardextend = {
     backgroundColor: "#CCE2FF",
@@ -24,12 +25,40 @@ function Appointmentlist() {
   };
   useEffect(() => {
     const fetchData = async () => {
-      const result = await Axios.get(`${URL}/GetPreregistrationsList`);
+      const result = await Axios.get(`${URL}/GetPreregistrationsList`, {
+        params: {
+          preregisrtrationstatus,
+        },
+      });
       setpreregisrtration(result.data);
     };
 
     fetchData();
-  }, []);
+  }, [preregisrtrationstatus]);
+
+  async function updatestatus(status, patient) {
+    try {
+      await Axios.post(`${URL}/updateregisterstatus`, {
+        patient: patient,
+        status: status,
+      }).then((res) => {
+        alert("Ön Kayıt Güncellendi");
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  async function DeletePreregister(patient) {
+    try {
+      await Axios.post(`${URL}/DeletePreregister`, {
+        patient: patient,
+      }).then((res) => {
+        alert("Ön Kayıt Silindi");
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <div
@@ -38,6 +67,36 @@ function Appointmentlist() {
     >
       <div className="Appointmentlist">
         <div className="AppointmentlistTable">
+          <div className="PreregistrationButtons">
+            <button
+              onClick={() => {
+                setpreregisrtrationstatus(0);
+              }}
+            >
+              <h4>Yeni Ön Kayıtlar</h4>
+            </button>
+            <button
+              onClick={() => {
+                setpreregisrtrationstatus(1);
+              }}
+            >
+              <h4>Onay Bekleyen Ön Kayıtlar</h4>
+            </button>
+            <button
+              onClick={() => {
+                setpreregisrtrationstatus(2);
+              }}
+            >
+              <h>Onaylanmış Ön Kayıtlar</h>
+            </button>
+            <button
+              onClick={() => {
+                setpreregisrtrationstatus(3);
+              }}
+            >
+              <h4>Onaylanmamış Ön Kayıtlar</h4>
+            </button>
+          </div>
           {preregisrtration && (
             <div className="AppointmentTable">
               <section className="tableHead">
@@ -46,11 +105,11 @@ function Appointmentlist() {
                   <li id="tablePaientID">Ön Kayıt ID</li>
                   <li id="tablePaientName">Hasta Adı</li>
                   <li id="tablePhone">Telefon</li>
-                  <li id="tableDoctor">Doktor</li>
-                  <li id="tableComment">Açıklama</li>
+                  <li id="tableDoctor">Hekim</li>
+                  <li id="tableComment">Hekim Yorumu</li>
                   <li id="tableDate">Tarih</li>
                   <li id="tableTime">Saat</li>
-                  <li id="tableActions">Ön Kayıt İşlemleri</li>
+                  <li id="tableActions">İşlemler</li>
                 </ul>
               </section>
               <section className="tableBody">
@@ -78,11 +137,66 @@ function Appointmentlist() {
                         {preregisrtration.on_kayit_baslangic} -{" "}
                         {preregisrtration.on_kayit_bitis}
                       </li>
-                      <li id="tableActions">
+                      <li id="tablebodyActions">
                         {" "}
-                        <button>h</button>
-                        <button>h</button>
-                        <button>h</button>{" "}
+                        <button
+                          style={{ backgroundColor: "green" }}
+                          onClick={() => {
+                            updatestatus(
+                              2,
+                              preregisrtration.onkayitlihasta_unique_id
+                            );
+                          }}
+                        >
+                          <span>
+                            <i class="fa-solid fa-check"></i>
+                          </span>
+                        </button>
+                        <button
+                          style={{ backgroundColor: "red" }}
+                          onClick={() => {
+                            updatestatus(
+                              3,
+                              preregisrtration.onkayitlihasta_unique_id
+                            );
+                          }}
+                        >
+                          {" "}
+                          <span>
+                            {" "}
+                            <i class="fa-solid fa-xmark"></i>
+                          </span>
+                        </button>{" "}
+                        <button
+                          style={{ backgroundColor: "gray" }}
+                          onClick={() => {
+                            updatestatus(
+                              1,
+                              preregisrtration.onkayitlihasta_unique_id
+                            );
+                          }}
+                        >
+                          <span>
+                            <i class="fa-regular fa-hourglass-half"></i>
+                          </span>
+                        </button>
+                        <button
+                          style={{ backgroundColor: "#505050	" }}
+                          onClick={() => {
+                            DeletePreregister(
+                              preregisrtration.onkayitlihasta_unique_id
+                            );
+                          }}
+                        >
+                          <span>
+                            <i class="fa-regular fa-trash-can"></i>
+                          </span>
+                        </button>{" "}
+                        <button style={{ backgroundColor: "#4B0082	" }}>
+                          <span>
+                            <i class="fa-solid fa-right-to-bracket"></i>{" "}
+                          </span>
+                        </button>
                       </li>
                     </ul>
                   );

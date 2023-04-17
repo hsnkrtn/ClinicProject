@@ -31,6 +31,7 @@ function Preregistration() {
   const [sendSMS, setSendSMS] = useState(false);
   const [sendemail, setSendemail] = useState(false);
 
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(name);

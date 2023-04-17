@@ -61,6 +61,8 @@ function Appointment() {
         alert("Randevu eklendi");
         console.log(res);
         document.getElementById("addAppointmentForm").reset();
+        setSendSMS(false);
+        sendemail(false);
       });
     } catch (error) {
       console.error(error);

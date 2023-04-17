@@ -63,7 +63,7 @@ app.post("/addNewregistration", (req, res) => {
   const starttime = req.body.starttime;
   const endtime = req.body.endtime;
   const reference = req.body.reference;
-
+  const status = 0;
   function generateRandomID() {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let ID = "OK";
@@ -92,7 +92,7 @@ app.post("/addNewregistration", (req, res) => {
   let OKH_ID = generateRandomID();
   console.log(OKH_ID);
   db.query(
-    `INSERT INTO clinic.onkayitlar (on_kayit_adi_soyadi,onkayitlihasta_unique_id,on_kayit_tel,on_kayit_email,on_kayit_doktor,on_kayit_hekim_yorum,on_kayit_baslangic_saati,on_kayit_bitis_saati,on_kayit_gun,on_kayit_referans) VALUES ("${name}","${OKH_ID}","${phone}","${email}","${doctor}","${comment}","${starttime}","${endtime}","${date}","${reference}")`,
+    `INSERT INTO clinic.onkayitlar (on_kayit_adi_soyadi,onkayitlihasta_unique_id,on_kayit_tel,on_kayit_email,on_kayit_doktor,on_kayit_hekim_yorum,on_kayit_baslangic_saati,on_kayit_bitis_saati,on_kayit_gun,on_kayit_referans,on_kayit_durum) VALUES ("${name}","${OKH_ID}","${phone}","${email}","${doctor}","${comment}","${starttime}","${endtime}","${date}","${reference}","${status}")`,
     (err, response) => {
       if (err) {
         console.log(err);
@@ -103,18 +103,48 @@ app.post("/addNewregistration", (req, res) => {
 
 // On kayitlari Al
 app.get("/GetPreregistrationsList", (req, res) => {
+  const preregisrtrationstatus = req.query.preregisrtrationstatus;
+
   db.query(
-    "SELECT *, DATE_FORMAT(on_kayit_gun, '%d-%m-%Y') AS on_kayit_randevugun, DATE_FORMAT(on_kayit_baslangic_saati, '%h:%i') AS on_kayit_baslangic, DATE_FORMAT(on_kayit_bitis_saati, '%h:%i') AS on_kayit_bitis FROM  clinic.onkayitlar",
+    `SELECT *, DATE_FORMAT(on_kayit_gun, '%d-%m-%Y') AS on_kayit_randevugun, DATE_FORMAT(on_kayit_baslangic_saati, '%h:%i') AS on_kayit_baslangic, DATE_FORMAT(on_kayit_bitis_saati, '%h:%i') AS on_kayit_bitis FROM clinic.onkayitlar WHERE on_kayit_durum = ${preregisrtrationstatus}`,
     (err, result) => {
       if (err) {
         console.log(err);
       } else {
         res.send(result);
-        console.log(result);
       }
     }
   );
 });
+
+// Ön kayıt durumunu güncelle
+
+app.post("/updateregisterstatus", (req, res) => {
+  const status = req.body.status;
+  const patient = req.body.patient;
+  console.log(status, patient);
+  db.query(
+    `UPDATE clinic.onkayitlar SET on_kayit_durum = "${status}" WHERE onkayitlihasta_unique_id = "${patient}"`,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else res.send(result);
+    }
+  );
+});
+//Ön Kayıt sil
+app.post("/DeletePreregister", (req, res) => {
+  const patient = req.body.patient;
+  db.query(
+    `DELETE FROM clinic.onkayitlar WHERE onkayitlihasta_unique_id = "${patient}"`,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else res.send(result);
+    }
+  );
+});
+
 // Ajandayi Al
 app.get("/GetFullagenda", (req, res) => {
   db.query("SELECT * FROM  clinic.ajanda", (err, result) => {
@@ -122,7 +152,6 @@ app.get("/GetFullagenda", (req, res) => {
       console.log(err);
     } else {
       res.send(result);
-      console.log(result);
     }
   });
 });
