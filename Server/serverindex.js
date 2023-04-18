@@ -104,9 +104,11 @@ app.post("/addNewregistration", (req, res) => {
 // On kayitlari Al
 app.get("/GetPreregistrationsList", (req, res) => {
   const preregisrtrationstatus = req.query.preregisrtrationstatus;
+  const registerendtime = req.query.registerendtime;
+  const registerstarttime = req.query.registerstarttime;
 
   db.query(
-    `SELECT *, DATE_FORMAT(on_kayit_gun, '%d-%m-%Y') AS on_kayit_randevugun, DATE_FORMAT(on_kayit_baslangic_saati, '%h:%i') AS on_kayit_baslangic, DATE_FORMAT(on_kayit_bitis_saati, '%h:%i') AS on_kayit_bitis FROM clinic.onkayitlar WHERE on_kayit_durum = ${preregisrtrationstatus}`,
+    `SELECT *, DATE_FORMAT(on_kayit_gun, '%d-%m-%Y') AS on_kayit_randevugun, DATE_FORMAT(on_kayit_baslangic_saati, '%h:%i') AS on_kayit_baslangic, DATE_FORMAT(on_kayit_bitis_saati, '%h:%i') AS on_kayit_bitis FROM clinic.onkayitlar WHERE on_kayit_gun BETWEEN "${registerstarttime}" AND "${registerendtime}" AND on_kayit_durum ="${preregisrtrationstatus}"`,
     (err, result) => {
       if (err) {
         console.log(err);

@@ -16,12 +16,15 @@ function App() {
   const [hidesidebar, setHidesidebar] = useState(false);
   const [URL, setURL] = useState("http://localhost:3001");
   const [isDark, setisDark] = useState(false);
+  var today = new Date();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
 
   return (
     <Router>
       <div className="App">
         <Sidebarinfo.Provider
-          value={{ hidesidebar, setHidesidebar, URL, setisDark, isDark }}
+          value={{ hidesidebar, setHidesidebar, URL, date}}
         >
           <Sidebar></Sidebar>
           <Routes>

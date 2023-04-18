@@ -654,6 +654,29 @@ input[id=appointmenttext]:focus {
 
 }
 
+#registrationTimePicker {
+
+  height: 30px;
+  border: 1px solid #e4e5e7;
+  position: relative;
+  border-radius: 3px;
+
+}
+
+#registrationTimePicker::-webkit-calendar-picker-indicator {
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+  background: transparent;
+
+}
+
 #meeting-time {
   margin-left: 5%;
   width: 10%;
@@ -844,7 +867,7 @@ input:checked+#switchlabel:after {
   display: flex;
   width: 100%;
   flex-direction: row;
-  margin-bottom: 50px;
+  margin-bottom: 25px;
   justify-content: space-between;
 }
 
@@ -1018,3 +1041,13 @@ input:checked+#switchlabel:after {
   gap: 5%;
   overflow: hidden;
 }
+
+.registrationTimepicker{
+display: flex;
+align-items: center;
+width: 200px;
+justify-content: space-between;
+margin-bottom: 25px;
+}
+
+

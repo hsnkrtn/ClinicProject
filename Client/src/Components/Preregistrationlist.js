@@ -8,8 +8,11 @@ import { Sidebarinfo } from "../App";
 function Appointmentlist() {
   const [preregisrtration, setpreregisrtration] = useState([]);
   const { URL } = useContext(Sidebarinfo);
+  const { date } = useContext(Sidebarinfo);
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
   const [preregisrtrationstatus, setpreregisrtrationstatus] = useState(0);
+  const [registerstarttime, setregisterstarttime] = useState(date);
+  const [registerendtime, setregisterendtime] = useState("2100-04-03");
 
   const mainboardextend = {
     backgroundColor: "#CCE2FF",
@@ -24,17 +27,20 @@ function Appointmentlist() {
     flex: 1,
   };
   useEffect(() => {
+    console.log("bugunun tarihi", registerstarttime);
     const fetchData = async () => {
       const result = await Axios.get(`${URL}/GetPreregistrationsList`, {
         params: {
           preregisrtrationstatus,
+          registerendtime,
+          registerstarttime,
         },
       });
       setpreregisrtration(result.data);
     };
 
     fetchData();
-  }, [preregisrtrationstatus]);
+  }, [preregisrtrationstatus, registerendtime]);
 
   async function updatestatus(status, patient) {
     try {
@@ -97,6 +103,28 @@ function Appointmentlist() {
               <h4>Onaylanmamış Ön Kayıtlar</h4>
             </button>
           </div>
+          <section className="registrationTimepicker">
+            {registerstarttime && (
+              <input
+                type="date"
+                id="registrationTimePicker"
+                min="2018-01-01"
+                max="2099-12-31"
+                value={registerstarttime}
+                required
+                onChange={(e) => setregisterstarttime(e.target.value)}
+              ></input>
+            )}
+            -{" "}
+            <input
+              type="date"
+              id="registrationTimePicker"
+              min="2018-01-01"
+              max="2099-12-31"
+              required
+              onChange={(e) => setregisterendtime(e.target.value)}
+            ></input>
+          </section>
           {preregisrtration && (
             <div className="AppointmentTable">
               <section className="tableHead">
@@ -112,6 +140,7 @@ function Appointmentlist() {
                   <li id="tableActions">İşlemler</li>
                 </ul>
               </section>
+
               <section className="tableBody">
                 {preregisrtration.map((preregisrtration, index) => {
                   return (
