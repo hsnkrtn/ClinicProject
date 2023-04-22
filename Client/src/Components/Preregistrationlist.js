@@ -3,16 +3,20 @@ import { useState } from "react";
 import Axios from "axios";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import { Sidebarinfo } from "../App";
+import { Sidebarinfo } from "../App"; 
 
 function Appointmentlist() {
-  const [preregisrtration, setpreregisrtration] = useState([]);
+  const [preregistration, setpreregistration] = useState([]);
   const { URL } = useContext(Sidebarinfo);
   const { date } = useContext(Sidebarinfo);
+  const { tommorrow } = useContext(Sidebarinfo);
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
-  const [preregisrtrationstatus, setpreregisrtrationstatus] = useState(0);
+  const [preregistrationstatus, setpreregistrationstatus] = useState(0);
   const [registerstarttime, setregisterstarttime] = useState(date);
-  const [registerendtime, setregisterendtime] = useState("2100-04-03");
+  const [registerendtime, setregisterendtime] = useState(tommorrow);
+  const [showConfirmationbox, setShowConfirmationbox] = useState(false);
+  const [registrationlaststatus, setRegistrationlaststatus] = useState("");
+  const [confirmationstatus, setConfirmationstatus] = useState(false);
 
   const mainboardextend = {
     backgroundColor: "#CCE2FF",
@@ -27,39 +31,44 @@ function Appointmentlist() {
     flex: 1,
   };
   useEffect(() => {
-    console.log("bugunun tarihi", registerstarttime);
     const fetchData = async () => {
       const result = await Axios.get(`${URL}/GetPreregistrationsList`, {
         params: {
-          preregisrtrationstatus,
+          preregistrationstatus,
           registerendtime,
           registerstarttime,
         },
       });
-      setpreregisrtration(result.data);
+
+      setpreregistration(result.data);
     };
-
+    const cleanup = () => {
+      setRegistrationlaststatus("");
+    };
     fetchData();
-  }, [preregisrtrationstatus, registerendtime]);
+  }, [preregistrationstatus, registerendtime, registrationlaststatus]);
 
-  async function updatestatus(status, patient) {
-    try {
-      await Axios.post(`${URL}/updateregisterstatus`, {
-        patient: patient,
-        status: status,
-      }).then((res) => {
-        alert("Ön Kayıt Güncellendi");
-      });
-    } catch (error) {
-      console.error(error);
-    }
+  // status 2 onaylanlanmış, 3 onaylanmamış ,1 onay bekliyor , 0 yeni kayıt
+
+  function updatestatus(status, patient) {
+    console.log(status, patient);
+
+    Axios.post(`${URL}/updateregisterstatus`, {
+      patient: patient,
+      status: status,
+    }).then((res) => {
+      alert("Ön Kayıt Durumu Güncellendi");
+      setRegistrationlaststatus(patient, status);
+    });
   }
+
   async function DeletePreregister(patient) {
     try {
       await Axios.post(`${URL}/DeletePreregister`, {
         patient: patient,
       }).then((res) => {
         alert("Ön Kayıt Silindi");
+        setRegistrationlaststatus(patient);
       });
     } catch (error) {
       console.error(error);
@@ -71,33 +80,53 @@ function Appointmentlist() {
       className="mainboard"
       style={hidesidebar ? mainboardextend : mainboard}
     >
+      {showConfirmationbox && (
+        <div className="confirmationbox">
+          <button
+            onClick={() => {
+              setConfirmationstatus(true);
+              setShowConfirmationbox(false);
+            }}
+          >
+            Onayla
+          </button>
+          <button
+            onClick={() => {
+              setConfirmationstatus(false);
+              setShowConfirmationbox(false);
+            }}
+          >
+            Vazgeç
+          </button>
+        </div>
+      )}
       <div className="Appointmentlist">
         <div className="AppointmentlistTable">
           <div className="PreregistrationButtons">
             <button
               onClick={() => {
-                setpreregisrtrationstatus(0);
+                setpreregistrationstatus(0);
               }}
             >
               <h4>Yeni Ön Kayıtlar</h4>
             </button>
             <button
               onClick={() => {
-                setpreregisrtrationstatus(1);
+                setpreregistrationstatus(1);
               }}
             >
               <h4>Onay Bekleyen Ön Kayıtlar</h4>
             </button>
             <button
               onClick={() => {
-                setpreregisrtrationstatus(2);
+                setpreregistrationstatus(2);
               }}
             >
               <h>Onaylanmış Ön Kayıtlar</h>
             </button>
             <button
               onClick={() => {
-                setpreregisrtrationstatus(3);
+                setpreregistrationstatus(3);
               }}
             >
               <h4>Onaylanmamış Ön Kayıtlar</h4>
@@ -121,11 +150,12 @@ function Appointmentlist() {
               id="registrationTimePicker"
               min="2018-01-01"
               max="2099-12-31"
+              value={registerendtime}
               required
               onChange={(e) => setregisterendtime(e.target.value)}
             ></input>
           </section>
-          {preregisrtration && (
+          {preregistration && (
             <div className="AppointmentTable">
               <section className="tableHead">
                 <ul className="tableHeadlist">
@@ -142,90 +172,107 @@ function Appointmentlist() {
               </section>
 
               <section className="tableBody">
-                {preregisrtration.map((preregisrtration, index) => {
+                {preregistration.map((registration, index) => {
                   return (
-                    <ul className="tableBodylist">
-                      <li id="tableNumber">{preregisrtration.on_kayit_id}</li>
+                    <ul className="tableBodylist" key={index}>
+                      <li id="tableNumber">{registration.on_kayit_id}</li>
                       <li id="tablePaientID">
-                        {preregisrtration.onkayitlihasta_unique_id}
+                        {registration.onkayitlihasta_unique_id}
                       </li>
                       <li id="tablePaientName">
-                        {preregisrtration.on_kayit_adi_soyadi}
+                        {registration.on_kayit_adi_soyadi}
                       </li>
-                      <li id="tablePhone">{preregisrtration.on_kayit_tel}</li>
-                      <li id="tableDoctor">
-                        {preregisrtration.on_kayit_doktor}
-                      </li>
+                      <li id="tablePhone">{registration.on_kayit_tel}</li>
+                      <li id="tableDoctor">{registration.on_kayit_doktor}</li>
                       <li id="tableCommentItem">
-                        {preregisrtration.on_kayit_hekim_yorum}
+                        {registration.on_kayit_hekim_yorum}
                       </li>
-                      <li id="tableDate">
-                        {preregisrtration.on_kayit_randevugun}
-                      </li>
+                      <li id="tableDate">{registration.on_kayit_randevugun}</li>
                       <li id="tableTime">
-                        {preregisrtration.on_kayit_baslangic} -{" "}
-                        {preregisrtration.on_kayit_bitis}
+                        {registration.on_kayit_baslangic} -{" "}
+                        {registration.on_kayit_bitis}
                       </li>
                       <li id="tablebodyActions">
                         {" "}
-                        <button
-                          style={{ backgroundColor: "green" }}
-                          onClick={() => {
-                            updatestatus(
-                              2,
-                              preregisrtration.onkayitlihasta_unique_id
-                            );
-                          }}
-                        >
-                          <span>
-                            <i class="fa-solid fa-check"></i>
-                          </span>
-                        </button>
-                        <button
-                          style={{ backgroundColor: "red" }}
-                          onClick={() => {
-                            updatestatus(
-                              3,
-                              preregisrtration.onkayitlihasta_unique_id
-                            );
-                          }}
-                        >
-                          {" "}
-                          <span>
+                        {preregistrationstatus !== 2 ? (
+                          <button
+                            style={{ backgroundColor: "green" }}
+                            onClick={() => {
+                              updatestatus(
+                                2,
+                                registration.onkayitlihasta_unique_id
+                              );
+                            }}
+                          >
+                            <span>
+                              <i class="fa fa-check" aria-hidden="true"></i>
+                            </span>
+                          </button>
+                        ) : (
+                          <></>
+                        )}
+                        {preregistrationstatus !== 3 ? (
+                          <button
+                            style={{ backgroundColor: "red" }}
+                            onClick={() => {
+                              updatestatus(
+                                3,
+                                registration.onkayitlihasta_unique_id
+                              );
+                            }}
+                          >
                             {" "}
-                            <i class="fa-solid fa-xmark"></i>
-                          </span>
-                        </button>{" "}
-                        <button
-                          style={{ backgroundColor: "gray" }}
-                          onClick={() => {
-                            updatestatus(
-                              1,
-                              preregisrtration.onkayitlihasta_unique_id
-                            );
-                          }}
-                        >
-                          <span>
-                            <i class="fa-regular fa-hourglass-half"></i>
-                          </span>
-                        </button>
+                            <span>
+                              {" "}
+                              <i class="fa fa-times" aria-hidden="true"></i>
+                            </span>
+                          </button>
+                        ) : (
+                          <></>
+                        )}{" "}
+                        {preregistrationstatus !== 1 ? (
+                          <button
+                            style={{ backgroundColor: "gray" }}
+                            onClick={() => {
+                              updatestatus(
+                                1,
+                                registration.onkayitlihasta_unique_id
+                              );
+                            }}
+                          >
+                            <span>
+                              <i
+                                class="fa fa-hourglass-half"
+                                aria-hidden="true"
+                              ></i>
+                            </span>
+                          </button>
+                        ) : (
+                          <></>
+                        )}
                         <button
                           style={{ backgroundColor: "#505050	" }}
                           onClick={() => {
                             DeletePreregister(
-                              preregisrtration.onkayitlihasta_unique_id
+                              registration.onkayitlihasta_unique_id
                             );
                           }}
                         >
                           <span>
-                            <i class="fa-regular fa-trash-can"></i>
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
                           </span>
                         </button>{" "}
-                        <button style={{ backgroundColor: "#4B0082	" }}>
-                          <span>
-                            <i class="fa-solid fa-right-to-bracket"></i>{" "}
-                          </span>
-                        </button>
+                        <Link
+                          key={registration.index}
+                          to={`/ÖnKayıtlihasta/${registration.onkayitlihasta_unique_id}`}
+                          state={registration}
+                        >
+                          <button style={{ backgroundColor: "#4B0082" }}>
+                            <span>
+                              <i class="fa fa-sign-out" aria-hidden="true"></i>
+                            </span>
+                          </button>{" "}
+                        </Link>
                       </li>
                     </ul>
                   );

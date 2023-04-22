@@ -7,8 +7,9 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Appointmentlist from "./Components/Appointmentlist";
 import AgendaPlan from "./Components/AgendaPlan";
 import Agenda from "./Components/Agenda";
-import Preregistration  from "./Components/Preregistration";
+import Preregistration from "./Components/Preregistration";
 import Preregistrationlist from "./Components/Preregistrationlist";
+import Preregistratedpatient from "./Components/Preregistratedpatient";
 
 export const Sidebarinfo = createContext();
 
@@ -16,36 +17,38 @@ function App() {
   const [hidesidebar, setHidesidebar] = useState(false);
   const [URL, setURL] = useState("http://localhost:3001");
   const [isDark, setisDark] = useState(false);
-  var today = new Date();
-  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  const daytommorrow = String(today.getDate() + 1).padStart(2, "0");
+  const date = `${year}-${month}-${day}`;
+  const tommorrow = `${year}-${month}-${daytommorrow}`;
 
   return (
     <Router>
       <div className="App">
         <Sidebarinfo.Provider
-          value={{ hidesidebar, setHidesidebar, URL, date}}
+          value={{ hidesidebar, setHidesidebar, URL, date, tommorrow }}
         >
           <Sidebar></Sidebar>
           <Routes>
             <Route exact path={`/`} element={<Mainboard />} />
-          </Routes>
-          <Routes>
             <Route exact path={`/RandevuEkle`} element={<Appointment />} />
-          </Routes>
-          <Routes>
             <Route path={`/RandevuListesi`} element={<Appointmentlist />} />
-          </Routes>
-          <Routes>
-            <Route exact path={`/ÖnKayıtEkle`} element={<Preregistration/>} />
-          </Routes>
-          <Routes>
-            <Route exact path={`/ÖnKayıtListesi`} element={<Preregistrationlist/>} />
-          </Routes>
-          <Routes>
+            <Route path={`/RandevuListesi`} element={<Appointmentlist />} />
+            <Route exact path={`/ÖnKayıtEkle`} element={<Preregistration />} />
+            <Route
+              exact
+              path={`/ÖnKayıtListesi`}
+              element={<Preregistrationlist />}
+            />
+            <Route
+              exact
+              path={`/ÖnKayıtlihasta/:id`}
+              element={<Preregistratedpatient />}
+            />
             <Route path={`/PlanEkle`} element={<AgendaPlan />} />
-          </Routes>
-          <Routes>
             <Route path={`/Ajanda`} element={<Agenda />} />
           </Routes>
         </Sidebarinfo.Provider>

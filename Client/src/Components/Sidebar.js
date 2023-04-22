@@ -215,11 +215,7 @@ function Sidebar() {
                   {item.menu.map((menuitem, index) => {
                     return (
                       <li key={index}>
-                        <Link
-                          to={{
-                            pathname: `/${menuitem.replace(/\s/g, "")}`,
-                          }}
-                        >
+                        <Link to={`/${menuitem.replace(/\s/g, "")}`}>
                           {" "}
                           <h4>{menuitem}</h4>{" "}
                         </Link>{" "}

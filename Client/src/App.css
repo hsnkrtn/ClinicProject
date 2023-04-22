@@ -948,6 +948,10 @@ input:checked+#switchlabel:after {
   padding-left: 5px;
 }
 
+.tableBody a {
+  text-decoration: none;
+}
+
 /* table settings */
 
 #tableNumber {
@@ -1022,6 +1026,10 @@ input:checked+#switchlabel:after {
   padding: 0%;
   position: relative;
 }
+#tablebodyActions button:hover{
+cursor: pointer;
+
+}
 
 #tablebodyActions button span {
   display: flex;
@@ -1042,12 +1050,22 @@ input:checked+#switchlabel:after {
   overflow: hidden;
 }
 
-.registrationTimepicker{
+.registrationTimepicker {
+  display: flex;
+  align-items: center;
+  width: 200px;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.confirmationbox{
+position: absolute;
 display: flex;
-align-items: center;
 width: 200px;
-justify-content: space-between;
-margin-bottom: 25px;
+height: 200px;
+top: 100px;
+left: 100px;
+z-index: 10;
 }
 
 

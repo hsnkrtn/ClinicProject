@@ -103,17 +103,21 @@ app.post("/addNewregistration", (req, res) => {
 
 // On kayitlari Al
 app.get("/GetPreregistrationsList", (req, res) => {
-  const preregisrtrationstatus = req.query.preregisrtrationstatus;
+  const preregistrationstatus = req.query.preregistrationstatus;
   const registerendtime = req.query.registerendtime;
   const registerstarttime = req.query.registerstarttime;
+  console.log(preregistrationstatus);
+  console.log(registerendtime);
+  console.log(registerendtime);
 
   db.query(
-    `SELECT *, DATE_FORMAT(on_kayit_gun, '%d-%m-%Y') AS on_kayit_randevugun, DATE_FORMAT(on_kayit_baslangic_saati, '%h:%i') AS on_kayit_baslangic, DATE_FORMAT(on_kayit_bitis_saati, '%h:%i') AS on_kayit_bitis FROM clinic.onkayitlar WHERE on_kayit_gun BETWEEN "${registerstarttime}" AND "${registerendtime}" AND on_kayit_durum ="${preregisrtrationstatus}"`,
+    `SELECT *, DATE_FORMAT(on_kayit_gun, '%d-%m-%Y') AS on_kayit_randevugun, DATE_FORMAT(on_kayit_baslangic_saati, '%h:%i') AS on_kayit_baslangic, DATE_FORMAT(on_kayit_bitis_saati, '%h:%i') AS on_kayit_bitis FROM clinic.onkayitlar WHERE on_kayit_gun BETWEEN "${registerstarttime}" AND "${registerendtime}" AND on_kayit_durum ="${preregistrationstatus}"`,
     (err, result) => {
       if (err) {
         console.log(err);
       } else {
         res.send(result);
+        // console.log(result)
       }
     }
   );
@@ -143,6 +147,23 @@ app.post("/DeletePreregister", (req, res) => {
       if (err) {
         console.log(err);
       } else res.send(result);
+    }
+  );
+});
+
+// Ön kayıtlı hastanın tedavilerini al
+app.get("/getPatientTreatment", (req, res) => {
+  const patient = req.query.patientinformation;
+  console.log(patient)
+  db.query(
+    `SELECT * FROM  clinic.onkayittedaviplanlari WHERE onkayit_tedaviplanlari_hastaunique_id = "${patient}"`,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+        console.log(result);
+      }
     }
   );
 });
