@@ -1025,9 +1025,11 @@ input:checked+#switchlabel:after {
   margin: 0%;
   padding: 0%;
   position: relative;
+
 }
-#tablebodyActions button:hover{
-cursor: pointer;
+
+#tablebodyActions button:hover {
+  cursor: pointer;
 
 }
 
@@ -1058,14 +1060,53 @@ cursor: pointer;
   margin-bottom: 25px;
 }
 
-.confirmationbox{
-position: absolute;
-display: flex;
-width: 200px;
-height: 200px;
-top: 100px;
-left: 100px;
-z-index: 10;
+.confirmationbox {
+  position: absolute;
+  display: flex;
+  width: 200px;
+  height: 200px;
+  top: 100px;
+  left: 100px;
+  z-index: 10;
 }
 
+.tedaviplanlari {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 
+}
+
+.tedaviplani {
+  display: flex;
+  gap: 5px;
+  height: 40px;
+  flex-direction: column;
+}
+
+.tedaviplani li {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #404040;
+  color: white;
+
+}
+
+.tedaviplani li section {
+
+  display: flex;
+  flex: row;
+}
+
+.treatmentoperation {
+
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+
+}

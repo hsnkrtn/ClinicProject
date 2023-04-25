@@ -154,7 +154,7 @@ app.post("/DeletePreregister", (req, res) => {
 // Ön kayıtlı hastanın tedavilerini al
 app.get("/getPatientTreatment", (req, res) => {
   const patient = req.query.patientinformation;
-  console.log(patient)
+  console.log(patient);
   db.query(
     `SELECT * FROM  clinic.onkayittedaviplanlari WHERE onkayit_tedaviplanlari_hastaunique_id = "${patient}"`,
     (err, result) => {
@@ -163,6 +163,23 @@ app.get("/getPatientTreatment", (req, res) => {
       } else {
         res.send(result);
         console.log(result);
+      }
+    }
+  );
+});
+// Ön kayıtlı hastaların tedavi işlemleri
+
+app.get("/getPatientTreatmentOperations", (req, res) => {
+  const patient = req.query.patientinformation;
+  console.log(patient);
+  db.query(
+    `SELECT * FROM clinic.tedaviplanislemler WHERE tedaviplanislem_hasta_unique_id = "${patient}"`,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+        console.log("getPatientTreatmentOperations",result);
       }
     }
   );

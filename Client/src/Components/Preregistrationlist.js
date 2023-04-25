@@ -3,7 +3,7 @@ import { useState } from "react";
 import Axios from "axios";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import { Sidebarinfo } from "../App"; 
+import { Sidebarinfo } from "../App";
 
 function Appointmentlist() {
   const [preregistration, setpreregistration] = useState([]);
@@ -14,9 +14,6 @@ function Appointmentlist() {
   const [preregistrationstatus, setpreregistrationstatus] = useState(0);
   const [registerstarttime, setregisterstarttime] = useState(date);
   const [registerendtime, setregisterendtime] = useState(tommorrow);
-  const [showConfirmationbox, setShowConfirmationbox] = useState(false);
-  const [registrationlaststatus, setRegistrationlaststatus] = useState("");
-  const [confirmationstatus, setConfirmationstatus] = useState(false);
 
   const mainboardextend = {
     backgroundColor: "#CCE2FF",
@@ -42,25 +39,10 @@ function Appointmentlist() {
 
       setpreregistration(result.data);
     };
-    const cleanup = () => {
-      setRegistrationlaststatus("");
-    };
+
     fetchData();
-  }, [preregistrationstatus, registerendtime, registrationlaststatus]);
+  }, [preregistrationstatus, registerendtime]);
 
-  // status 2 onaylanlanmış, 3 onaylanmamış ,1 onay bekliyor , 0 yeni kayıt
-
-  function updatestatus(status, patient) {
-    console.log(status, patient);
-
-    Axios.post(`${URL}/updateregisterstatus`, {
-      patient: patient,
-      status: status,
-    }).then((res) => {
-      alert("Ön Kayıt Durumu Güncellendi");
-      setRegistrationlaststatus(patient, status);
-    });
-  }
 
   async function DeletePreregister(patient) {
     try {
@@ -68,7 +50,6 @@ function Appointmentlist() {
         patient: patient,
       }).then((res) => {
         alert("Ön Kayıt Silindi");
-        setRegistrationlaststatus(patient);
       });
     } catch (error) {
       console.error(error);
@@ -80,26 +61,6 @@ function Appointmentlist() {
       className="mainboard"
       style={hidesidebar ? mainboardextend : mainboard}
     >
-      {showConfirmationbox && (
-        <div className="confirmationbox">
-          <button
-            onClick={() => {
-              setConfirmationstatus(true);
-              setShowConfirmationbox(false);
-            }}
-          >
-            Onayla
-          </button>
-          <button
-            onClick={() => {
-              setConfirmationstatus(false);
-              setShowConfirmationbox(false);
-            }}
-          >
-            Vazgeç
-          </button>
-        </div>
-      )}
       <div className="Appointmentlist">
         <div className="AppointmentlistTable">
           <div className="PreregistrationButtons">
@@ -193,63 +154,6 @@ function Appointmentlist() {
                         {registration.on_kayit_bitis}
                       </li>
                       <li id="tablebodyActions">
-                        {" "}
-                        {preregistrationstatus !== 2 ? (
-                          <button
-                            style={{ backgroundColor: "green" }}
-                            onClick={() => {
-                              updatestatus(
-                                2,
-                                registration.onkayitlihasta_unique_id
-                              );
-                            }}
-                          >
-                            <span>
-                              <i class="fa fa-check" aria-hidden="true"></i>
-                            </span>
-                          </button>
-                        ) : (
-                          <></>
-                        )}
-                        {preregistrationstatus !== 3 ? (
-                          <button
-                            style={{ backgroundColor: "red" }}
-                            onClick={() => {
-                              updatestatus(
-                                3,
-                                registration.onkayitlihasta_unique_id
-                              );
-                            }}
-                          >
-                            {" "}
-                            <span>
-                              {" "}
-                              <i class="fa fa-times" aria-hidden="true"></i>
-                            </span>
-                          </button>
-                        ) : (
-                          <></>
-                        )}{" "}
-                        {preregistrationstatus !== 1 ? (
-                          <button
-                            style={{ backgroundColor: "gray" }}
-                            onClick={() => {
-                              updatestatus(
-                                1,
-                                registration.onkayitlihasta_unique_id
-                              );
-                            }}
-                          >
-                            <span>
-                              <i
-                                class="fa fa-hourglass-half"
-                                aria-hidden="true"
-                              ></i>
-                            </span>
-                          </button>
-                        ) : (
-                          <></>
-                        )}
                         <button
                           style={{ backgroundColor: "#505050	" }}
                           onClick={() => {
