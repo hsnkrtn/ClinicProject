@@ -7,18 +7,14 @@ import { Sidebarinfo } from "../App";
 
 function Preregistratedpatient() {
   const mainboardextend = {
-    height: "35%",
     backgroundColor: "#CCE2FF",
-    marginLeft: 50,
+    marginLeft: 75,
     top: 50,
-    flex: 1,
   };
   const mainboard = {
-    height: "35%",
     backgroundColor: "#CCE2FF",
     marginLeft: 250,
     top: 50,
-    flex: 1,
   };
 
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
@@ -32,17 +28,18 @@ function Preregistratedpatient() {
   );
   const [showConfirmationbox, setShowConfirmationbox] = useState(false);
   const [registrationlaststatus, setRegistrationlaststatus] = useState("");
+  const [treatmentstatus, setTreatmentstatus] = useState(0);
   const [confirmationstatus, setConfirmationstatus] = useState(false);
 
   useEffect(() => {
-    console.log(patientinformation);
+    console.log("L", localation.state);
 
     getTreatment();
     getTreatmentoperations();
     console.log("tedaviplani2", patienttreatment);
 
     console.log("tedaviplaniislem2", patienttreatmentoperations);
-  }, [registrationlaststatus]);
+  }, [registrationlaststatus, treatmentstatus]);
 
   // Hasta tedavi ID si al
 
@@ -50,13 +47,14 @@ function Preregistratedpatient() {
     const result = await Axios.get(`${URL}/getPatientTreatment`, {
       params: {
         patientinformation,
+        treatmentstatus,
       },
     });
     setPatienttreatment(result.data);
     console.log("tedaviplani", patienttreatment);
   };
 
-  // Hasta tedavi islemlerini al
+  // Hasta tedavi islemlerini al. Her tedavi için ayrı ayrı filtrele
 
   const getTreatmentoperations = async () => {
     console.log("pi", patientinformation);
@@ -69,14 +67,25 @@ function Preregistratedpatient() {
   };
   // status 2 onaylanlanmış, 3 onaylanmamış ,1 onay bekliyor , 0 yeni kayıt
 
-  function updatestatus(status, patient) {
-    console.log(status, patient);
+  function updatesTreatmenttatus(status, treatment) {
+    console.log(status, treatment);
 
-    Axios.post(`${URL}/updateregisterstatus`, {
-      patient: patient,
+    Axios.post(`${URL}/updatetreatmentstatus`, {
+      treatment: treatment,
       status: status,
     }).then((res) => {
-      alert("Ön Kayıt Durumu Güncellendi");
+      alert("Tedavi Planı Durumu Güncellendi");
+    });
+  }
+  // Tedavi planını sil
+  function deleteTreatment(status, treatment) {
+    console.log(status, treatment);
+
+    Axios.post(`${URL}/deleteTreatment`, {
+      treatment: treatment,
+      status: status,
+    }).then((res) => {
+      alert("Tedavi Planı Durumu Güncellendi");
     });
   }
 
@@ -87,55 +96,100 @@ function Preregistratedpatient() {
     >
       {patienttreatment && (
         <div className="tedaviplanlari">
-          <button>Tedavi Plani ekle</button>
+          <div className="PreregistrationButtons">
+            <button className="addTreatment">Tedavi Plani ekle</button>
+
+            <button
+              onClick={() => {
+                setTreatmentstatus(1);
+              }}
+            >
+              <h4>Onay Bekleyen Tedaviler</h4>
+            </button>
+            <button
+              onClick={() => {
+                setTreatmentstatus(2);
+              }}
+            >
+              <h>Onaylanmış Tedaviler</h>
+            </button>
+            <button
+              onClick={() => {
+                setTreatmentstatus(3);
+              }}
+            >
+              <h4>Onaylanmamış Tedaviler</h4>
+            </button>
+          </div>
           <ul className="tedaviplani">
             {patienttreatment.map((patient, index) => {
               return (
                 <li>
-                  <section>
-                    {" "}
-                    <h5>
-                      Ön kayıtlı hasta ID:
-                      {patient.onkayit_tedaviplanlari_hastaunique_id}
-                    </h5>
-                    <h5>
-                      Tedavi ID:
-                      {patient.onkayit_tedaviplanlari_tedaviplaniunique_id}
-                    </h5>{" "}
-                    <button
-                      style={{ backgroundColor: "green" }}
-                      onClick={() => {
-                        updatestatus(2, patientinformation);
-                      }}
-                    >
-                      <span>
-                        <i class="fa fa-check" aria-hidden="true"></i>
-                      </span>
-                    </button>
-                    <button
-                      style={{ backgroundColor: "red" }}
-                      onClick={() => {
-                        updatestatus(3, patientinformation);
-                      }}
-                    >
-                      <span>
-                        <i class="fa fa-times" aria-hidden="true"></i>
-                      </span>
-                    </button>
-                    <button
-                      style={{ backgroundColor: "gray" }}
-                      onClick={() => {
-                        updatestatus(1, localation.onkayitlihasta_unique_id);
-                      }}
-                    >
-                      <span>
-                        <i class="fa fa-hourglass-half" aria-hidden="true"></i>
-                      </span>
-                    </button>
-                  </section>
+                  <div className="treatmentitems">
+                    <section>
+                      {" "}
+                      <h5>
+                        Tedavi ID:
+                        {patient.onkayit_tedaviplanlari_tedaviplaniunique_id}
+                      </h5>{" "}
+                      <h5>
+                        Ön kayıtlı hasta ID:
+                        {patient.onkayit_tedaviplanlari_hastaunique_id}
+                      </h5>
+                      <h5>
+                        Tedavi plani aciklama:
+                        {patient.on_kayit_tedaviplanlari_tedaviplani_aciklama}
+                      </h5>{" "}
+                    </section>
+                    <section>
+                      {" "}
+                      <button
+                        style={{ backgroundColor: "green" }}
+                        onClick={() => {
+                          updatesTreatmenttatus(
+                            2,
+                            patient.onkayit_tedaviplanlari_tedaviplaniunique_id
+                          );
+                        }}
+                      >
+                        <span>
+                          <i class="fa fa-check" aria-hidden="true"></i>
+                        </span>
+                      </button>
+                      <button
+                        style={{ backgroundColor: "gray" }}
+                        onClick={() => {
+                          updatesTreatmenttatus(
+                            1,
+                            patient.onkayit_tedaviplanlari_tedaviplaniunique_id
+                          );
+                        }}
+                      >
+                        <span>
+                          <i
+                            class="fa fa-hourglass-half"
+                            aria-hidden="true"
+                          ></i>
+                        </span>
+                      </button>{" "}
+                      <button
+                        style={{ backgroundColor: "red" }}
+                        onClick={() => {
+                          updatesTreatmenttatus(
+                            3,
+                            patient.onkayit_tedaviplanlari_tedaviplaniunique_id
+                          );
+                        }}
+                      >
+                        <span>
+                          <i class="fa fa-times" aria-hidden="true"></i>
+                        </span>
+                      </button>
+                    </section>
+                  </div>
 
                   {patienttreatmentoperations && (
-                    <ul>
+                    <ul className="operationslist">
                       {patienttreatmentoperations
                         .filter(
                           (operation) =>
@@ -166,7 +220,17 @@ function Preregistratedpatient() {
                                 {
                                   patienttreatmentoperation.tedaviplanislem_fiyat
                                 }{" "}
-                              </h5>
+                              </h5>{" "}
+                              <button
+                                style={{ backgroundColor: "red" }}
+                                onClick={() => {
+                                  updatesTreatmenttatus(3, patientinformation);
+                                }}
+                              >
+                                <span>
+                                  <i class="fa fa-times" aria-hidden="true"></i>
+                                </span>
+                              </button>
                             </li>
                           );
                         })}

@@ -123,14 +123,35 @@ app.get("/GetPreregistrationsList", (req, res) => {
   );
 });
 
-// Ön kayıt durumunu güncelle
 
-app.post("/updateregisterstatus", (req, res) => {
-  const status = req.body.status;
-  const patient = req.body.patient;
-  console.log(status, patient);
+
+
+// Ön kayıtlı hastanın tedavilerini al
+app.get("/getPatientTreatment", (req, res) => {
+  const patient = req.query.patientinformation;
+  const treatmentstatus = req.query.treatmentstatus;
+  // console.log(patient);
   db.query(
-    `UPDATE clinic.onkayitlar SET on_kayit_durum = "${status}" WHERE onkayitlihasta_unique_id = "${patient}"`,
+    `SELECT * FROM  clinic.onkayittedaviplanlari WHERE onkayit_tedaviplanlari_hastaunique_id ="${patient}" AND onkayit_tedaviplanlari_tedavi_onay ="${treatmentstatus}"`,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+        // console.log(result);
+      }
+    }
+  );
+});
+
+// Tedavi durumunu güncelle
+
+app.post("/updatetreatmentstatus", (req, res) => {
+  const treatmentstatus = req.body.status;
+  const treatment = req.body.treatment;
+  console.log(treatmentstatus, treatment);
+  db.query(
+    `UPDATE clinic.onkayittedaviplanlari SET onkayit_tedaviplanlari_onay = "${treatmentstatus}" WHERE onkayit_tedaviplanlari_tedaviplaniunique_id = "${treatment}"`,
     (err, result) => {
       if (err) {
         console.log(err);
@@ -138,8 +159,8 @@ app.post("/updateregisterstatus", (req, res) => {
     }
   );
 });
-//Ön Kayıt sil
-app.post("/DeletePreregister", (req, res) => {
+// Tedavi  sil
+app.post("/deleteTreatment", (req, res) => {
   const patient = req.body.patient;
   db.query(
     `DELETE FROM clinic.onkayitlar WHERE onkayitlihasta_unique_id = "${patient}"`,
@@ -147,23 +168,6 @@ app.post("/DeletePreregister", (req, res) => {
       if (err) {
         console.log(err);
       } else res.send(result);
-    }
-  );
-});
-
-// Ön kayıtlı hastanın tedavilerini al
-app.get("/getPatientTreatment", (req, res) => {
-  const patient = req.query.patientinformation;
-  console.log(patient);
-  db.query(
-    `SELECT * FROM  clinic.onkayittedaviplanlari WHERE onkayit_tedaviplanlari_hastaunique_id = "${patient}"`,
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-        console.log(result);
-      }
     }
   );
 });
@@ -179,7 +183,7 @@ app.get("/getPatientTreatmentOperations", (req, res) => {
         console.log(err);
       } else {
         res.send(result);
-        console.log("getPatientTreatmentOperations",result);
+        console.log("getPatientTreatmentOperations", result);
       }
     }
   );

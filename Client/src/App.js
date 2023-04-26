@@ -10,6 +10,7 @@ import Agenda from "./Components/Agenda";
 import Preregistration from "./Components/Preregistration";
 import Preregistrationlist from "./Components/Preregistrationlist";
 import Preregistratedpatient from "./Components/Preregistratedpatient";
+import Addpatient from "./Components/Addpatient";
 
 export const Sidebarinfo = createContext();
 
@@ -49,6 +50,7 @@ function App() {
               element={<Preregistratedpatient />}
             />
             <Route path={`/PlanEkle`} element={<AgendaPlan />} />
+            <Route path={`/HastaEkle`} element={<Addpatient />} />
             <Route path={`/Ajanda`} element={<Agenda />} />
           </Routes>
         </Sidebarinfo.Provider>

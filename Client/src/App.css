@@ -571,7 +571,7 @@ input[type=text]:focus {
   z-index: 4;
   animation: pageanimation;
   animation-duration: 500ms;
-
+  height: 100%;
 }
 
 .Appointment {
@@ -607,7 +607,7 @@ input[id=appointmenttext]:focus {
 
 .Appointment form {
   display: flex;
-  width: 720px;
+  width: 800px;
   justify-content: flex-start;
   flex-direction: column;
   gap: 30px;
@@ -1074,13 +1074,15 @@ input:checked+#switchlabel:after {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  width: 70%;
+  position: relative;
+
 
 }
 
 .tedaviplani {
   display: flex;
-  gap: 5px;
-  height: 40px;
+  height: fit-content;
   flex-direction: column;
 }
 
@@ -1090,23 +1092,48 @@ input:checked+#switchlabel:after {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: #404040;
   color: white;
 
 }
 
-.tedaviplani li section {
+.tedaviplani li div {
 
   display: flex;
-  flex: row;
+  width: 100%;
+  height: 50px;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #404040;
+  margin-bottom: 5 px;
 }
 
-.treatmentoperation {
+.treatmentitems {
+  display: flex;
+justify-content: space-around;
+}
 
-  position: relative;
+.treatmentitems section {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: row;
 
+}
+
+.operationslist {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.operationslist li {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+  height: 40px;
+  background-color: #9bd3c4;
+  
+  margin-top: 10px;
 }

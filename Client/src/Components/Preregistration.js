@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useContext } from "react";
 import { Sidebarinfo } from "../App";
-import { URL } from "../App";
 import Axios from "axios";
 
 function Preregistration() {
