@@ -149,48 +149,60 @@ function Preregistratedpatient() {
                     </section>
                     <section>
                       {" "}
-                      <button
-                        style={{ backgroundColor: "green" }}
-                        onClick={() => {
-                          updatesTreatmenttatus(
-                            1,
-                            patient.onkayit_tedaviplanlari_tedaviplaniunique_id
-                          );
-                        }}
-                      >
-                        <span>
-                          <i class="fa fa-check" aria-hidden="true"></i>
-                        </span>
-                      </button>
-                      <button
-                        style={{ backgroundColor: "gray" }}
-                        onClick={() => {
-                          updatesTreatmenttatus(
-                            0,
-                            patient.onkayit_tedaviplanlari_tedaviplaniunique_id
-                          );
-                        }}
-                      >
-                        <span>
-                          <i
-                            class="fa fa-hourglass-half"
-                            aria-hidden="true"
-                          ></i>
-                        </span>
-                      </button>{" "}
-                      <button
-                        style={{ backgroundColor: "red" }}
-                        onClick={() => {
-                          updatesTreatmenttatus(
-                            2,
-                            patient.onkayit_tedaviplanlari_tedaviplaniunique_id
-                          );
-                        }}
-                      >
-                        <span>
-                          <i class="fa fa-times" aria-hidden="true"></i>
-                        </span>
-                      </button>
+                      {treatmentstatus !== 1 ? (
+                        <button
+                          style={{ backgroundColor: "green" }}
+                          onClick={() => {
+                            updatesTreatmenttatus(
+                              1,
+                              patient.onkayit_tedaviplanlari_tedaviplaniunique_id
+                            );
+                          }}
+                        >
+                          <span>
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                          </span>
+                        </button>
+                      ) : (
+                        <></>
+                      )}
+                      {treatmentstatus !== 0 ? (
+                        <button
+                          style={{ backgroundColor: "gray" }}
+                          onClick={() => {
+                            updatesTreatmenttatus(
+                              0,
+                              patient.onkayit_tedaviplanlari_tedaviplaniunique_id
+                            );
+                          }}
+                        >
+                          <span>
+                            <i
+                              class="fa fa-hourglass-half"
+                              aria-hidden="true"
+                            ></i>
+                          </span>
+                        </button>
+                      ) : (
+                        <></>
+                      )}
+                      {treatmentstatus !== 2 ? (
+                        <button
+                          style={{ backgroundColor: "red" }}
+                          onClick={() => {
+                            updatesTreatmenttatus(
+                              2,
+                              patient.onkayit_tedaviplanlari_tedaviplaniunique_id
+                            );
+                          }}
+                        >
+                          <span>
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                          </span>
+                        </button>
+                      ) : (
+                        <></>
+                      )}
                       <button
                         style={{ backgroundColor: "gray" }}
                         onClick={() => {
@@ -202,6 +214,11 @@ function Preregistratedpatient() {
                         <span>
                           <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </span>
+                      </button>
+                      <button
+                        style={{ backgroundColor: "green", width: "200" }}
+                      >
+                        İşlem Ekle
                       </button>
                     </section>
                   </div>
@@ -219,7 +236,6 @@ function Preregistratedpatient() {
                             <li key={operationindex}>
                               <h5>
                                 {" "}
-                                hasan
                                 {
                                   patienttreatmentoperation.tedaviplanislem_hasta_unique_id
                                 }{" "}

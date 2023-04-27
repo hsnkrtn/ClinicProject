@@ -51,7 +51,6 @@ function Appointmentlist() {
         alert("Ön Kayıt Silindi");
       });
     } catch (error) {
-      console.error(error);
     }
   }
 

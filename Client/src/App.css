@@ -421,7 +421,7 @@ input[type=text]:focus {
 
 .itemtree {
   max-height: 1000px;
-  transition: all 3s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition: all 3s cubic-bezier(0, 0.73, 0.36, 1);
   opacity: 1;
 
 }
@@ -1109,7 +1109,7 @@ input:checked+#switchlabel:after {
 
 .treatmentitems {
   display: flex;
-justify-content: space-around;
+  justify-content: space-around;
 }
 
 .treatmentitems section {
@@ -1134,6 +1134,6 @@ justify-content: space-around;
   justify-content: space-around;
   height: 40px;
   background-color: rgb(111, 188, 178);
-  
+
   margin-top: 10px;
 }
