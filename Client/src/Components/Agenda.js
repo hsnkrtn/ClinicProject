@@ -14,7 +14,7 @@ function Agenda() {
     Axios.get(`${URL}/GetFullagenda`).then((reponse) =>
       setAgenda(reponse.data.reverse())
     );
-    console.log(agenda);
+    console.log("ajanda",agenda);
   }, []);
 
   const mainboardextend = {
