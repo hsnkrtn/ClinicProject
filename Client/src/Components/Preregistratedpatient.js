@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import Axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useContext } from "react";
 import { Sidebarinfo } from "../App";
 
@@ -27,19 +27,14 @@ function Preregistratedpatient() {
     []
   );
   const [showConfirmationbox, setShowConfirmationbox] = useState(false);
-  const [registrationlaststatus, setRegistrationlaststatus] = useState("");
   const [treatmentstatus, setTreatmentstatus] = useState(0);
   const [confirmationstatus, setConfirmationstatus] = useState(false);
+  const [pageupdated, setPageupdated] = useState(false);
 
   useEffect(() => {
-    console.log("L", localation.state);
-
     getTreatment();
     getTreatmentoperations();
-    console.log("tedaviplani2", patienttreatment);
-
-    console.log("tedaviplaniislem2", patienttreatmentoperations);
-  }, [registrationlaststatus, treatmentstatus]);
+  }, [pageupdated, treatmentstatus]);
 
   // Hasta tedavi ID si al
 
@@ -51,13 +46,11 @@ function Preregistratedpatient() {
       },
     });
     setPatienttreatment(result.data);
-    console.log("tedaviplani", patienttreatment);
   };
 
   // Hasta tedavi islemlerini al. Her tedavi için ayrı ayrı filtrele
 
   const getTreatmentoperations = async () => {
-    console.log("pi", patientinformation);
     const result = await Axios.get(`${URL}/getPatientTreatmentOperations`, {
       params: {
         patientinformation,
@@ -68,24 +61,30 @@ function Preregistratedpatient() {
   // status 2 onaylanlanmış, 3 onaylanmamış ,1 onay bekliyor , 0 yeni kayıt
 
   function updatesTreatmenttatus(status, treatment) {
-    console.log(status, treatment);
-
     Axios.post(`${URL}/updatetreatmentstatus`, {
       treatment: treatment,
       status: status,
     }).then((res) => {
       alert("Tedavi Planı Durumu Güncellendi");
+      setPageupdated(!pageupdated);
     });
   }
-  // Tedavi planını sil
-  function deleteTreatment(status, treatment) {
-    console.log(status, treatment);
-
+  // Tedavı planı islemini sil
+  function deteleTreatmentOperation(treatment, operation) {
+    Axios.post(`${URL}/deleteTreatmentoperation`, {
+      treatment: treatment,
+      operation: operation,
+    }).then((res) => {
+      alert("Tedavi İşlemi Silindi");
+      setPageupdated(!pageupdated);
+    });
+  }
+  function deteleTreatment(treatment) {
     Axios.post(`${URL}/deleteTreatment`, {
       treatment: treatment,
-      status: status,
     }).then((res) => {
-      alert("Tedavi Planı Durumu Güncellendi");
+      alert("Tedavi Silindi");
+      setPageupdated(!pageupdated);
     });
   }
 
@@ -96,29 +95,36 @@ function Preregistratedpatient() {
     >
       {patienttreatment && (
         <div className="tedaviplanlari">
+          <Link to={"/HastaEkle"} state={patientinformation}>
+            {" "}
+            <button className="addPatientbutton" style={{ width: "200px" }}>
+              Hasta Olarak Ekle
+            </button>{" "}
+          </Link>
+
           <div className="PreregistrationButtons">
             <button className="addTreatment">Tedavi Plani ekle</button>
 
             <button
               onClick={() => {
-                setTreatmentstatus(1);
+                setTreatmentstatus(0);
               }}
             >
-              <h4>Onay Bekleyen Tedaviler</h4>
+              <h>Onay Bekleyen Tedaviler</h>
             </button>
             <button
               onClick={() => {
-                setTreatmentstatus(2);
+                setTreatmentstatus(1);
               }}
             >
               <h>Onaylanmış Tedaviler</h>
             </button>
             <button
               onClick={() => {
-                setTreatmentstatus(3);
+                setTreatmentstatus(2);
               }}
             >
-              <h4>Onaylanmamış Tedaviler</h4>
+              <h>Onaylanmamış Tedaviler</h>
             </button>
           </div>
           <ul className="tedaviplani">
@@ -147,7 +153,7 @@ function Preregistratedpatient() {
                         style={{ backgroundColor: "green" }}
                         onClick={() => {
                           updatesTreatmenttatus(
-                            2,
+                            1,
                             patient.onkayit_tedaviplanlari_tedaviplaniunique_id
                           );
                         }}
@@ -160,7 +166,7 @@ function Preregistratedpatient() {
                         style={{ backgroundColor: "gray" }}
                         onClick={() => {
                           updatesTreatmenttatus(
-                            1,
+                            0,
                             patient.onkayit_tedaviplanlari_tedaviplaniunique_id
                           );
                         }}
@@ -176,13 +182,25 @@ function Preregistratedpatient() {
                         style={{ backgroundColor: "red" }}
                         onClick={() => {
                           updatesTreatmenttatus(
-                            3,
+                            2,
                             patient.onkayit_tedaviplanlari_tedaviplaniunique_id
                           );
                         }}
                       >
                         <span>
                           <i class="fa fa-times" aria-hidden="true"></i>
+                        </span>
+                      </button>
+                      <button
+                        style={{ backgroundColor: "gray" }}
+                        onClick={() => {
+                          deteleTreatment(
+                            patient.onkayit_tedaviplanlari_tedaviplaniunique_id
+                          );
+                        }}
+                      >
+                        <span>
+                          <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </span>
                       </button>
                     </section>
@@ -221,10 +239,18 @@ function Preregistratedpatient() {
                                   patienttreatmentoperation.tedaviplanislem_fiyat
                                 }{" "}
                               </h5>{" "}
+                              <h5>
+                                {
+                                  patienttreatmentoperation.tedaviplanislem_unique_id
+                                }{" "}
+                              </h5>{" "}
                               <button
                                 style={{ backgroundColor: "red" }}
                                 onClick={() => {
-                                  updatesTreatmenttatus(3, patientinformation);
+                                  deteleTreatmentOperation(
+                                    patienttreatmentoperation.tedaviplanislem_tedavi_plani,
+                                    patienttreatmentoperation.tedaviplanislem_unique_id
+                                  );
                                 }}
                               >
                                 <span>

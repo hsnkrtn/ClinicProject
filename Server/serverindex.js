@@ -29,7 +29,7 @@ app.post("/addNewAppointment", (req, res) => {
   const starttime = req.body.starttime;
   const endtime = req.body.endtime;
   db.query(
-    `INSERT INTO clinic.randevular (hasta_unique_id,randevu_adi_soyadi,randevu_hasta_tel,randevu_hasta_mail,randevu_doktor,randevu_yapilacak_islem,randevu_gun,randevu_baslangic_saat,randevu_bitis_saat) VALUES ("${patientID}","${name}","${phone}","${email}","${doctor}","${comment}","${date}","${starttime}","${endtime}")`,
+    `INSERT INTO clinic.randevular (hasta_unique_id,randevu_adi_soyadi,randevu_hasta_tel,randevu_hasta_mail,randevu_doktor,randevu_yapilacak_islem,randevu_guntarih,randevu_baslangic_saat,randevu_bitis_saat) VALUES ("${patientID}","${name}","${phone}","${email}","${doctor}","${comment}","${date}","${starttime}","${endtime}")`,
     (err, response) => {
       if (err) {
         console.log(err);
@@ -78,7 +78,7 @@ app.post("/addNewregistration", (req, res) => {
             return true;
           } else
             console.log(
-              "Gerçekten tebrikler 2.176.782.336 tane ID arasından nasıl olduysa eşleşen ID buldunuz"
+              "Gerçekten tebrikler 2.176.782.336 tane ID arasından nasıl olduysa eşleşen ID buldunuz(Onkayitlihasta)"
             );
           return false;
         });
@@ -106,9 +106,6 @@ app.get("/GetPreregistrationsList", (req, res) => {
   const preregistrationstatus = req.query.preregistrationstatus;
   const registerendtime = req.query.registerendtime;
   const registerstarttime = req.query.registerstarttime;
-  console.log(preregistrationstatus);
-  console.log(registerendtime);
-  console.log(registerendtime);
 
   db.query(
     `SELECT *, DATE_FORMAT(on_kayit_gun, '%d-%m-%Y') AS on_kayit_randevugun, DATE_FORMAT(on_kayit_baslangic_saati, '%h:%i') AS on_kayit_baslangic, DATE_FORMAT(on_kayit_bitis_saati, '%h:%i') AS on_kayit_bitis FROM clinic.onkayitlar WHERE on_kayit_gun BETWEEN "${registerstarttime}" AND "${registerendtime}" AND on_kayit_durum ="${preregistrationstatus}"`,
@@ -122,9 +119,6 @@ app.get("/GetPreregistrationsList", (req, res) => {
     }
   );
 });
-
-
-
 
 // Ön kayıtlı hastanın tedavilerini al
 app.get("/getPatientTreatment", (req, res) => {
@@ -151,7 +145,7 @@ app.post("/updatetreatmentstatus", (req, res) => {
   const treatment = req.body.treatment;
   console.log(treatmentstatus, treatment);
   db.query(
-    `UPDATE clinic.onkayittedaviplanlari SET onkayit_tedaviplanlari_onay = "${treatmentstatus}" WHERE onkayit_tedaviplanlari_tedaviplaniunique_id = "${treatment}"`,
+    `UPDATE clinic.onkayittedaviplanlari SET onkayit_tedaviplanlari_tedavi_onay = "${treatmentstatus}" WHERE onkayit_tedaviplanlari_tedaviplaniunique_id = "${treatment}"`,
     (err, result) => {
       if (err) {
         console.log(err);
@@ -159,11 +153,11 @@ app.post("/updatetreatmentstatus", (req, res) => {
     }
   );
 });
-// Tedavi  sil
+//  On kayıtlı hasta  Tedavi  sil
 app.post("/deleteTreatment", (req, res) => {
-  const patient = req.body.patient;
+  const treatment = req.body.treatment;
   db.query(
-    `DELETE FROM clinic.onkayitlar WHERE onkayitlihasta_unique_id = "${patient}"`,
+    `DELETE FROM clinic.onkayittedaviplanlari WHERE onkayit_tedaviplanlari_tedaviplaniunique_id = "${treatment}"`,
     (err, result) => {
       if (err) {
         console.log(err);
@@ -185,6 +179,116 @@ app.get("/getPatientTreatmentOperations", (req, res) => {
         res.send(result);
         console.log("getPatientTreatmentOperations", result);
       }
+    }
+  );
+});
+
+// Tadavi islemini sil
+app.post("/deleteTreatmentoperation", (req, res) => {
+  const treatment = req.body.treatment;
+  const operation = req.body.operation;
+  db.query(
+    `DELETE FROM clinic.tedaviplanislemler WHERE tedaviplanislem_tedavi_plani = "${treatment}" AND tedaviplanislem_unique_id= "${operation}" `,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else res.send(result);
+
+      console.log("Tedavi Plani islemi silindi", treatment, operation);
+    }
+  );
+});
+
+// Yeni hasta ekle
+
+app.post("/addNewPatient", (req, res) => {
+  const name = req.body.name;
+  const tcID = req.body.tcID;
+  const phone = req.body.phone;
+  const email = req.body.email;
+  const gender = req.body.gender;
+  const birthdate = req.body.birthdate;
+  const adress = req.body.adress;
+  const nationality = req.body.nationality;
+  const emergencycontact = req.body.emergencycontact;
+  const patientnote = req.body.patientnote;
+  const reference = req.body.reference;
+  const preregisteredpatientID = req.body.preregisteredpatientID;
+
+  console.log("pid", preregisteredpatientID);
+
+  let KH_ID = generateRandomID();
+  function generateRandomID() {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let ID = "KH";
+    const charactersLength = characters.length;
+    for (let i = 0; i < 6; i++) {
+      ID += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    function checkID() {
+      db.query("SELECT * FROM  clinic.hastalar", (err, result) => {
+        result.map((hasta, index) => {
+          if (hasta.hasta_unique_id != ID) {
+            return true;
+          } else
+            console.log(
+              "Gerçekten tebrikler 2.176.782.336 tane ID arasından nasıl olduysa eşleşen ID buldunuz(hasta)"
+            );
+          return false;
+        });
+      });
+    }
+
+    function changePreregisteredIdtoPatientId() {
+      // On kayit durumunu onayla
+      db.query(
+        `UPDATE clinic.onkayitlar SET on_kayit_durum = "1" WHERE onkayitlihasta_unique_id = "${preregisteredpatientID}"`,
+        (err, result) => {
+          if (err) {
+            console.log(err);
+          } else console.log("Ön kayıt Durumu Onaylanmış olarak güncellendi");
+        }
+      );
+      //On kayitli olan hastanin tedaviplanislem_hasta_unique_id sini Kayitli hasta Id si olarak guncelle
+      db.query(
+        `UPDATE clinic.tedaviplanislemler SET tedaviplanislem_hasta_unique_id = REPLACE(tedaviplanislem_hasta_unique_id, "${preregisteredpatientID}", "${ID}")`,
+        (err, result) => {
+          if (err) {
+            console.log(
+              "On kayitli hastanin IDsini Kayitli hastaya cevirirken hata  olustu",
+              err
+            );
+          } else console.log("tedaviplanislemler ID degistirildi");
+        }
+      );
+
+      //On kayitli olan hastanin onkayit_tedaviplanlari_hastaunique_id sini Kayitli hasta Id si olarak guncelle
+
+      db.query(
+        `UPDATE clinic.onkayittedaviplanlari SET onkayit_tedaviplanlari_hastaunique_id = REPLACE(onkayit_tedaviplanlari_hastaunique_id, "${preregisteredpatientID}", "${ID}")`,
+        (err, result) => {
+          if (err) {
+            console.log(
+              "On kayitli hastanin IDsini Kayitli hastaya cevirirken hata  olustu",
+              err
+            );
+          } else console.log("onkayittedaviplanlari ID degistirildi");
+        }
+      );
+    }
+    checkID();
+    if (checkID) {
+      changePreregisteredIdtoPatientId();
+      return ID;
+    } else generateRandomID();
+  }
+  console.log(KH_ID);
+  db.query(
+    `INSERT INTO clinic.hastalar (hasta_unique_id,hasta_ad_soyad,hasta_kimlik_no,hasta_telefon,hasta_dogum_tarihi,hasta_cinsiyet,hasta_email,hasta_adres,hasta_uyruk,hasta_acil_durum,hasta_not,hasta_referans) VALUES ("${KH_ID}","${name}","${tcID}","${phone}","${birthdate}","${gender}","${email}","${adress}","${nationality}","${emergencycontact}","${patientnote}","${reference}")`,
+    (err, response) => {
+      if (err) {
+        console.log("Yenı Hasta kaydederken hata olustu", err);
+      } else res.send("Hasta veritabanına kaydedildi");
     }
   );
 });

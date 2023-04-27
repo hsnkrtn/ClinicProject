@@ -81,7 +81,7 @@ function Preregistration() {
           <h1>Ön Kayıt Ekle</h1>{" "}
         </div>
         <div className="AppointmentForm">
-          <form id="addAppointmentForm">
+          <form id="addAppointmentForm" onSubmit={handleSubmit}>
             {" "}
             <section>
               {" "}
@@ -102,7 +102,8 @@ function Preregistration() {
               <label for="fname">
                 <h4>Doktor *</h4>
               </label>
-              <select id="doctors" onChange={(e) => setDoctor(e.target.value)}>
+              <select id="selectionlist" onChange={(e) => setDoctor(e.target.value)}>
+                <option value="-">-</option>
                 <option value="Kadir">Kadir</option>
                 <option value="Hasan">Hasan</option>
                 <option value="Enes">Enes</option>
@@ -242,7 +243,7 @@ function Preregistration() {
                 >
                   Vazgeç
                 </button>
-                <button id="savebutton" onClick={handleSubmit}>
+                <button id="savebutton" type="submit">
                   Kaydet
                 </button>
               </div>

@@ -39,18 +39,12 @@ function Appointmentlist() {
       <div className="Appointmentlist">
         <div className="AppointmentlistTable">
           <div className="PreregistrationButtons">
-            <button>
-              <h4>Yeni Ön Kayıtlar</h4>
-            </button>
-            <button>
-              <h4>Onay Bekleyen Ön Kayıtlar</h4>
-            </button>
-            <button>
-              <h4>Onaylanmış Ön Kayıtlar</h4>
-            </button>
-            <button>
-              <h4>Onaylanmamış Ön Kayıtlar</h4>
-            </button>
+            <Link to={`/RandevuEkle`}>
+              {" "}
+              <button>
+                <h4>Randevu Ekle</h4>
+              </button>
+            </Link>
           </div>
           {AppointmentList && (
             <div className="AppointmentTable">

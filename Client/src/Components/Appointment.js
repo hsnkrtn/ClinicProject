@@ -83,7 +83,7 @@ function Appointment() {
           <h1>Randevu Ekle</h1>{" "}
         </div>
         <div className="AppointmentForm">
-          <form id="addAppointmentForm">
+          <form id="addAppointmentForm" onSubmit={handleSubmit}>
             {" "}
             <section>
               {" "}
@@ -256,7 +256,7 @@ function Appointment() {
                 >
                   Vazgeç
                 </button>
-                <button id="savebutton" onClick={handleSubmit}>
+                <button id="savebutton" type="submit">
                   Kaydet
                 </button>
               </div>

@@ -1,25 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useContext } from "react";
 import { Sidebarinfo } from "../App";
 import { useState } from "react";
+import Axios from "axios";
+import { useLocation } from "react-router-dom";
 
 function Addpatient() {
   const mainboardextend = {
     backgroundColor: "#CCE2FF",
     marginLeft: 75,
-    top: 50,
     flex: 1,
   };
   const mainboard = {
     backgroundColor: "#CCE2FF",
     marginLeft: 250,
-    top: 50,
     flex: 1,
   };
 
   const themecolor = {
     color: "#0f238c",
   };
+  const localation = useLocation();
 
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
   const { URL } = useContext(Sidebarinfo);
@@ -34,8 +35,39 @@ function Addpatient() {
   const [emergencycontact, setEmergencycontact] = useState("");
   const [patientnote, setPatientnote] = useState("");
   const [reference, setReference] = useState("");
+  const [preregisteredpatientID, setPreregisteredpatientID] = useState("");
+
+  useEffect(() => {
+    setPreregisteredpatientID(localation.state ? localation.state : "");
+    console.log("OKH", localation.state);
+  }, []);
+
+  async function postData() {
+    try {
+      await Axios.post(`${URL}/addNewPatient`, {
+        name: name,
+        tcID: tcID,
+        phone: phone,
+        email: email,
+        birthdate: birthdate,
+        gender: gender,
+        adress: adress,
+        nationality: nationality,
+        emergencycontact: emergencycontact,
+        patientnote: patientnote,
+        reference: reference,
+        preregisteredpatientID: preregisteredpatientID,
+      }).then((res) => {
+        alert("Hasta eklendi");
+        console.log(res);
+        document.getElementById("addAppointmentForm").reset();
+      });
+    } catch (error) {}
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    postData();
   };
   return (
     <div
@@ -52,7 +84,7 @@ function Addpatient() {
           <h1>Hasta Ekle</h1>{" "}
         </div>{" "}
         <div className="AppointmentForm">
-          <form id="addAppointmentForm">
+          <form id="addAppointmentForm" onSubmit={handleSubmit}>
             <section>
               {" "}
               <label for="fname">
@@ -63,8 +95,8 @@ function Addpatient() {
                 id="appointmenttext"
                 name="fname"
                 placeholder="İsim Soyisim"
-                required
                 onChange={(e) => setName(e.target.value)}
+                required
               ></input>{" "}
             </section>
             <section>
@@ -128,7 +160,7 @@ function Addpatient() {
                 <h4>Adres * :</h4>
               </label>
               <input
-                type="email"
+                type="text"
                 id="appointmenttext"
                 name="fname"
                 placeholder="Adres"
@@ -141,9 +173,9 @@ function Addpatient() {
                 <h4>Cinsiyet : </h4>
               </label>
               <select id="doctors" onChange={(e) => setGender(e.target.value)}>
-                <option value="Enes"> - </option>
-                <option value="Kadir">Erkek</option>
-                <option value="Hasan">Kadın</option>
+                <option value="-"> - </option>
+                <option value="Erkek">Erkek</option>
+                <option value="Kadın">Kadın</option>
               </select>
             </section>
             <section>
@@ -152,7 +184,7 @@ function Addpatient() {
                 <h4>Uyruk : </h4>
               </label>
               <input
-                type="email"
+                type="text"
                 id="appointmenttext"
                 name="fname"
                 placeholder="Uyruk"
@@ -169,7 +201,7 @@ function Addpatient() {
                 name="phone"
                 placeholder="0555-555-5555"
                 required
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => setEmergencycontact(e.target.value)}
               ></input>
             </section>
             <section>
@@ -178,7 +210,7 @@ function Addpatient() {
                 <h4>Hasta Notu</h4>
               </label>
               <input
-                type="email"
+                type="text"
                 id="appointmenttext"
                 name="fname"
                 placeholder="Hasta Notu"
@@ -191,7 +223,7 @@ function Addpatient() {
                 <h4>Referans :</h4>
               </label>
               <input
-                type="email"
+                type="text"
                 id="appointmenttext"
                 name="fname"
                 placeholder="Referans"
@@ -213,7 +245,7 @@ function Addpatient() {
                 >
                   Vazgeç
                 </button>
-                <button id="savebutton" onClick={handleSubmit}>
+                <button id="savebutton" type="submit">
                   Kaydet
                 </button>
               </div>

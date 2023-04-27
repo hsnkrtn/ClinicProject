@@ -43,7 +43,6 @@ function Appointmentlist() {
     fetchData();
   }, [preregistrationstatus, registerendtime]);
 
-
   async function DeletePreregister(patient) {
     try {
       await Axios.post(`${URL}/DeletePreregister`, {
@@ -64,30 +63,30 @@ function Appointmentlist() {
       <div className="Appointmentlist">
         <div className="AppointmentlistTable">
           <div className="PreregistrationButtons">
+            <Link to={`/ÖnKayıtEkle`}>
+              <button>
+                {" "}
+                <h4>Ön Kayıt Ekle</h4>{" "}
+              </button>
+            </Link>
+    
             <button
               onClick={() => {
                 setpreregistrationstatus(0);
-              }}
-            >
-              <h4>Yeni Ön Kayıtlar</h4>
-            </button>
-            <button
-              onClick={() => {
-                setpreregistrationstatus(1);
               }}
             >
               <h4>Onay Bekleyen Ön Kayıtlar</h4>
             </button>
             <button
               onClick={() => {
-                setpreregistrationstatus(2);
+                setpreregistrationstatus(1);
               }}
             >
               <h>Onaylanmış Ön Kayıtlar</h>
             </button>
             <button
               onClick={() => {
-                setpreregistrationstatus(3);
+                setpreregistrationstatus(2);
               }}
             >
               <h4>Onaylanmamış Ön Kayıtlar</h4>

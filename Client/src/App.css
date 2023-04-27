@@ -637,7 +637,7 @@ input[id=appointmenttext]:focus {
   color: #374767;
 }
 
-#doctors {
+#selectionlist {
   width: 80%;
   border: 1px solid #e4e5e7;
   height: 30px;
@@ -1103,7 +1103,7 @@ input:checked+#switchlabel:after {
   height: 50px;
   justify-content: space-around;
   align-items: center;
-  background-color: #404040;
+  background-color: #31826c;
   margin-bottom: 5 px;
 }
 
@@ -1133,7 +1133,7 @@ justify-content: space-around;
   width: 100%;
   justify-content: space-around;
   height: 40px;
-  background-color: #9bd3c4;
+  background-color: rgb(111, 188, 178);
   
   margin-top: 10px;
 }
