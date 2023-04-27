@@ -255,7 +255,7 @@ app.post("/addNewPatient", (req, res) => {
         (err, result) => {
           if (err) {
             console.log(
-              "On kayitli hastanin IDsini Kayitli hastaya cevirirken hata  olustu",
+              "On kayitli hastanin IDsini Kayitli hastaya cevirirken hata  oluştu",
               err
             );
           } else console.log("tedaviplanislemler ID degistirildi");
