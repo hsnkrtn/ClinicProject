@@ -50,8 +50,7 @@ function Appointmentlist() {
       }).then((res) => {
         alert("Ön Kayıt Silindi");
       });
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   return (
@@ -68,7 +67,7 @@ function Appointmentlist() {
                 <h4>Ön Kayıt Ekle</h4>{" "}
               </button>
             </Link>
-    
+
             <button
               onClick={() => {
                 setpreregistrationstatus(0);

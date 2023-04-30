@@ -100,7 +100,7 @@ function Preregistration() {
             <section>
               {" "}
               <label for="fname">
-                <h4>Doktor *</h4>
+                <h4>Hekim *</h4>
               </label>
               <select id="selectionlist" onChange={(e) => setDoctor(e.target.value)}>
                 <option value="-">-</option>

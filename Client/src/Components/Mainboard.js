@@ -7,13 +7,14 @@ function Mainboard() {
     backgroundColor: "#CCE2FF",
     marginLeft: 75,
     top: 50,
-    flex: 1
+    flex: 1,
   };
   const mainboard = {
     backgroundColor: "#CCE2FF",
     marginLeft: 250,
     top: 50,
-    flex: 1  };
+    flex: 1,
+  };
 
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
 
@@ -22,16 +23,7 @@ function Mainboard() {
       className="mainboard"
       style={hidesidebar ? mainboardextend : mainboard}
     >
-
-
-<div className="Addpatient"  >
-
-
-</div>
-
-
-
-
+      <div className="Addpatient"></div>
     </div>
   );
 }

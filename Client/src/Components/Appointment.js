@@ -128,7 +128,7 @@ function Appointment() {
             <section>
               {" "}
               <label for="fname">
-                <h4>Doktor *</h4>
+                <h4>Hekim *</h4>
               </label>
               <select id="doctors" onChange={(e) => setDoctor(e.target.value)}>
                 <option value="Kadir">Kadir</option>

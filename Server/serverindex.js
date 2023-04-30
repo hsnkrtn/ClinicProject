@@ -40,8 +40,12 @@ app.post("/addNewAppointment", (req, res) => {
 
 // Randevulari Al
 app.get("/GetAppointmentList", (req, res) => {
+  const selectedappointmentstartday = req.query.selectedappointmentstartday;
+  const selectedappointmentsendday = req.query.selectedappointmentsendday;
+  const appointmentstatus = req.query.appointmentstatus;
+
   db.query(
-    "SELECT *, DATE_FORMAT(randevu_guntarih, '%d-%m-%Y') AS randevu_gun, DATE_FORMAT(randevu_baslangic_saat, '%h:%i') AS randevu_baslangic, DATE_FORMAT(randevu_bitis_saat, '%h:%i') AS randevu_bitis FROM  clinic.randevular",
+    `SELECT *, DATE_FORMAT(randevu_guntarih, '%d-%m-%Y') AS randevu_gun, DATE_FORMAT(randevu_baslangic_saat, '%h:%i') AS randevu_baslangic, DATE_FORMAT(randevu_bitis_saat, '%h:%i') AS randevu_bitis FROM  clinic.randevular  WHERE randevu_guntarih BETWEEN "${selectedappointmentstartday}" AND "${selectedappointmentsendday}" AND randevu_durum ="${appointmentstatus}"`,
     (err, result) => {
       if (err) {
         console.log(err);
@@ -52,6 +56,37 @@ app.get("/GetAppointmentList", (req, res) => {
     }
   );
 });
+// Randevu durumu güncelle
+app.post("/updateAppointmentstatus", (req, res) => {
+  const appointmentID = req.body.appointmentID;
+  const patient = req.body.patient;
+  const appointmentStatus = req.body.appointmentStatus;
+
+  db.query(
+    `UPDATE clinic.randevular SET randevu_durum = "${appointmentStatus}" WHERE hasta_unique_id = "${patient}" AND randevu_unique_id = "${appointmentID}"`,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else res.send(result);
+    }
+  );
+});
+//Randevu sil
+app.post("/deleteAppointment", (req, res) => {
+  const appointmentID = req.body.appointmentID;
+  const patient = req.body.patient;
+  db.query(
+    `DELETE FROM clinic.randevular WHERE  hasta_unique_id  = "${patient}" AND randevu_unique_id= "${appointmentID}" `,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else res.send(result);
+
+      console.log("Randevu silindi", appointmentID, patient);
+    }
+  );
+});
+
 // On Kayit Ekle
 app.post("/addNewregistration", (req, res) => {
   const name = req.body.name;
@@ -150,6 +185,21 @@ app.post("/updatetreatmentstatus", (req, res) => {
       if (err) {
         console.log(err);
       } else res.send(result);
+    }
+  );
+});
+// Ön kayıtlı hasta durumunu güncelle
+
+app.post("/updatepregistrationstatus", (req, res) => {
+  const patient = req.body.patient;
+  const status = req.body.status;
+  db.query(
+    `UPDATE clinic.onkayitlar SET on_kayit_durum = "${status}" WHERE onkayitlihasta_unique_id = "${patient}"`,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else res.send(result);
+      console.log("Ön kayıt Durumu Onaylanmış olarak güncellendi");
     }
   );
 });

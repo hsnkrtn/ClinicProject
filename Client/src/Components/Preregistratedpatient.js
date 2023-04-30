@@ -58,9 +58,20 @@ function Preregistratedpatient() {
     });
     setPatienttreatmentoperations(result.data);
   };
+  // Update pregistrationstatus
+  function updatepregistrationstatus(status, patient) {
+    Axios.post(`${URL}/updatepregistrationstatus`, {
+      patient: patient,
+      status: status,
+    }).then((res) => {
+      alert("Ön Kayıt Onaylanmadı");
+      setPageupdated(!pageupdated);
+    });
+  }
+
   // status 2 onaylanlanmış, 3 onaylanmamış ,1 onay bekliyor , 0 yeni kayıt
 
-  function updatesTreatmenttatus(status, treatment) {
+  function updatesTreatmentstatus(status, treatment) {
     Axios.post(`${URL}/updatetreatmentstatus`, {
       treatment: treatment,
       status: status,
@@ -70,7 +81,7 @@ function Preregistratedpatient() {
     });
   }
   // Tedavı planı islemini sil
-  function deteleTreatmentOperation(treatment, operation) {
+  function deleteTreatmentOperation(treatment, operation) {
     Axios.post(`${URL}/deleteTreatmentoperation`, {
       treatment: treatment,
       operation: operation,
@@ -79,7 +90,7 @@ function Preregistratedpatient() {
       setPageupdated(!pageupdated);
     });
   }
-  function deteleTreatment(treatment) {
+  function deleteTreatment(treatment) {
     Axios.post(`${URL}/deleteTreatment`, {
       treatment: treatment,
     }).then((res) => {
@@ -100,8 +111,16 @@ function Preregistratedpatient() {
             <button className="addPatientbutton" style={{ width: "200px" }}>
               Hasta Olarak Ekle
             </button>{" "}
-          </Link>
-
+          </Link>{" "}
+          <button
+            className="addPatientbutton"
+            style={{ width: "200px" }}
+            onClick={() => {
+              updatepregistrationstatus(2, patientinformation);
+            }}
+          >
+            Ön Kayıt Onaylanmadı
+          </button>{" "}
           <div className="PreregistrationButtons">
             <button className="addTreatment">Tedavi Plani ekle</button>
 
@@ -153,7 +172,7 @@ function Preregistratedpatient() {
                         <button
                           style={{ backgroundColor: "green" }}
                           onClick={() => {
-                            updatesTreatmenttatus(
+                            updatesTreatmentstatus(
                               1,
                               patient.onkayit_tedaviplanlari_tedaviplaniunique_id
                             );
@@ -170,7 +189,7 @@ function Preregistratedpatient() {
                         <button
                           style={{ backgroundColor: "gray" }}
                           onClick={() => {
-                            updatesTreatmenttatus(
+                            updatesTreatmentstatus(
                               0,
                               patient.onkayit_tedaviplanlari_tedaviplaniunique_id
                             );
@@ -190,7 +209,7 @@ function Preregistratedpatient() {
                         <button
                           style={{ backgroundColor: "red" }}
                           onClick={() => {
-                            updatesTreatmenttatus(
+                            updatesTreatmentstatus(
                               2,
                               patient.onkayit_tedaviplanlari_tedaviplaniunique_id
                             );
@@ -206,7 +225,7 @@ function Preregistratedpatient() {
                       <button
                         style={{ backgroundColor: "gray" }}
                         onClick={() => {
-                          deteleTreatment(
+                          deleteTreatment(
                             patient.onkayit_tedaviplanlari_tedaviplaniunique_id
                           );
                         }}
@@ -263,7 +282,7 @@ function Preregistratedpatient() {
                               <button
                                 style={{ backgroundColor: "red" }}
                                 onClick={() => {
-                                  deteleTreatmentOperation(
+                                  deleteTreatmentOperation(
                                     patienttreatmentoperation.tedaviplanislem_tedavi_plani,
                                     patienttreatmentoperation.tedaviplanislem_unique_id
                                   );
