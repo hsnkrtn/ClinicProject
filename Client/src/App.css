@@ -1146,15 +1146,40 @@ input:checked+#switchlabel:after {
   justify-content: space-around;
   height: 40px;
   background-color: rgb(111, 188, 178);
-
   margin-top: 10px;
 }
 
 
 /* Scheduler */
-.Scheduler {
+.scheduler {
+  position: relative;
   display: flex;
   flex-direction: row;
   gap: 5px;
   list-style: none;
+}
+
+.scheduler-weekdays {
+  height: 50px;
+}
+
+.scheduler li {
+width: 100px;
+
+}
+
+.scheduler-cells li {
+  height: 25px;
+}
+
+
+
+.scheduler-hours {
+  position: absolute;
+  top: 50px;
+  left:10%;
+}
+
+.scheduler-hours li {
+  height: 25px;
 }

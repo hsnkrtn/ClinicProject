@@ -18,28 +18,30 @@ function Scheduler() {
   const currentmonth = new Date().getMonth();
 
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
-  const [year, setYear] = useState(2024);
-  const [month, setMonth] = useState(1);
+  const [year, setYear] = useState(2021);
+  const [month, setMonth] = useState(0); // 0 ocak
   const [day, setDay] = useState(1);
-  const selecteddate = `${year}${month}${day}`;
+  const [daysinmonth, setDaysinmonth] = useState([]);
+  const [pageupdated, setPageupdated] = useState(false);
 
-  let firstdayofmonth = new Date(year, month, 1).getDay();// Ayın hangi gün ile başladığını veriyor 0-6 arası. 0 Pazar günü.
+  const selecteddate = `${year}${month}${day}`;
+  let firstdayofmonth = new Date(year, month, 1).getDay(); // Ayın hangi gün ile başladığını veriyor 0-6 arası. 0 Pazar günü.
   let lastdateofmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
 
   function getFebdays() {
     return year % 4 === 0 ? 29 : 28;
   }
 
-  const NofDays = [31, getFebdays(), 31, 30, 31, 30, 31, 30, 31, 30, 31, 30];
+  const NofDays = [31, getFebdays(), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
   const weekdays = [
+    "Pazar",
     "Pazartesi",
     "Salı",
     "Çarşamba",
     "Perşembe",
     "Cuma",
     "Cumartesi",
-    "Pazar",
   ];
   const months = [
     "Ocak",
@@ -55,39 +57,82 @@ function Scheduler() {
     "Kasım",
     "Aralık",
   ];
+
+  function getNofdays() {
+    if (year !== "") {
+      let firstdayofthemonth = new Date(year, month, 1).getDay();
+      console.log("ayinilkgunu", firstdayofthemonth);
+
+      for (let i = firstdayofthemonth; i > 0; i--) {
+        daysinmonth.push(NofDays[month] - i + 1);
+      }
+    }
+    for (let i = 1; i <= NofDays[month]; i++) {
+      daysinmonth.push(i);
+    }
+
+    return daysinmonth;
+  }
+
+  const hours = [
+    "09.00",
+    "10.00",
+    "11.00",
+    "12.00",
+    "13.00",
+    "14.00",
+    "15.00",
+    "16.00",
+    "17.00",
+    "18.00",
+    "19.00",
+    "20.00",
+    "21.00",
+    "22.00",
+  ];
+
   useState(() => {
+    getNofdays();
     console.log("ilkgun", firstdayofmonth);
     console.log("songun", lastdateofmonth);
-  }, [year]);
+  }, [year, pageupdated]);
 
   return (
     <div
       className="mainboard"
       style={hidesidebar ? mainboardextend : mainboard}
     >
+      {" "}
       <div>
-        <input
-          type="number"
-          id="year"
-          min="2000"
-          max="2100"
-          onChange={(e) => setYear(e.target.value)}
-        ></input>
-        <ul className="Scheduler">
-          year{year}
-          days{" "}
-          {NofDays.map((number, index) => {
-            return <h1>{number}</h1>;
+        {" "}
+        {year}
+        {year && (
+          <ul className="scheduler">
+            {weekdays.map((day, index) => {
+              return (
+                <li>
+                  <div className="scheduler-weekdays">
+                    {" "}
+                    <h3> {day}</h3>
+                    <h4>{daysinmonth[index]}</h4>
+                    {"  "}
+                  </div>
+
+                  {/* <ul className="scheduler-cells">
+                    {hours.map((hour, index) => {
+                      return <li></li>;
+                    })}
+                  </ul> */}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+        {/* <ul className="scheduler-hours">
+          {hours.map((hour, index) => {
+            return <li>{hour}</li>;
           })}
-          {weekdays.map((day, index) => {
-            return (
-              <li>
-                {day}
-                <ul>{weekdays.map((numberofday, index) => {})}</ul>
-              </li>
-            );
-          })}
-        </ul>
+        </ul> */}
       </div>{" "}
     </div>
   );
