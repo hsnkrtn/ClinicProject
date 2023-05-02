@@ -28,12 +28,42 @@ app.post("/addNewAppointment", (req, res) => {
   const date = req.body.date;
   const starttime = req.body.starttime;
   const endtime = req.body.endtime;
+  const appointmentdefaultstatus = 0;
+  let AP_ID = generateRandomID();
+
+  function generateRandomID() {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let ID = "RN";
+    const charactersLength = characters.length;
+    for (let i = 0; i < 6; i++) {
+      ID += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    function checkID() {
+      db.query("SELECT * FROM  clinic.randevular", (err, result) => {
+        result.map((appointment, index) => {
+          if (appointment.randevu_unique_id != ID) {
+            return true;
+          } else
+            console.log(
+              "Gerçekten tebrikler 2.176.782.336 tane ID arasından nasıl olduysa eşleşen ID buldunuz(Randevu Ekle)"
+            );
+          return false;
+        });
+      });
+    }
+    checkID();
+    if (checkID) {
+      return ID;
+    } else generateRandomID();
+  }
+
   db.query(
-    `INSERT INTO clinic.randevular (hasta_unique_id,randevu_adi_soyadi,randevu_hasta_tel,randevu_hasta_mail,randevu_doktor,randevu_yapilacak_islem,randevu_guntarih,randevu_baslangic_saat,randevu_bitis_saat) VALUES ("${patientID}","${name}","${phone}","${email}","${doctor}","${comment}","${date}","${starttime}","${endtime}")`,
+    `INSERT INTO clinic.randevular (hasta_unique_id,randevu_unique_id,randevu_adi_soyadi,randevu_hasta_tel,randevu_hasta_mail,randevu_doktor,randevu_yapilacak_islem,randevu_guntarih,randevu_baslangic_saat,randevu_bitis_saat,randevu_durum) VALUES ("${patientID}","${AP_ID}","${name}","${phone}","${email}","${doctor}","${comment}","${date}","${starttime}","${endtime}","${appointmentdefaultstatus}")`,
     (err, response) => {
       if (err) {
         console.log(err);
       } else res.send("Randevu veritabanına kaydedildi");
+      console.log("Randevu veritabanına kaydedildi");
     }
   );
 });

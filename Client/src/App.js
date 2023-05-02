@@ -2,6 +2,7 @@ import "./App.css";
 
 import { useState, createContext, lazy, Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Scheduler from "./Components/Scheduler";
 
 const Sidebar = lazy(() => import("./Components/Sidebar"));
 const Addpatient = lazy(() => import("./Components/Addpatient"));
@@ -63,6 +64,7 @@ function App() {
               <Route path={`/PlanEkle`} element={<AgendaPlan />} />
               <Route path={`/HastaEkle`} element={<Addpatient />} />
               <Route path={`/Ajanda`} element={<Agenda />} />
+              <Route path={`/Scheduler`} element={<Scheduler />} />
             </Routes>{" "}
           </Suspense>
         </Sidebarinfo.Provider>

@@ -1149,3 +1149,12 @@ input:checked+#switchlabel:after {
 
   margin-top: 10px;
 }
+
+
+/* Scheduler */
+.Scheduler {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  list-style: none;
+}
