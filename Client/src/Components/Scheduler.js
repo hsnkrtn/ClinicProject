@@ -18,7 +18,7 @@ function Scheduler() {
   const currentmonth = new Date().getMonth();
 
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
-  const [year, setYear] = useState(2021);
+  const [year, setYear] = useState(2024);
   const [month, setMonth] = useState(0); // 0 ocak
   const [day, setDay] = useState(1);
   const [daysinmonth, setDaysinmonth] = useState([]);
@@ -35,13 +35,13 @@ function Scheduler() {
   const NofDays = [31, getFebdays(), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
   const weekdays = [
-    "Pazar",
     "Pazartesi",
     "Salı",
     "Çarşamba",
     "Perşembe",
     "Cuma",
     "Cumartesi",
+    "Pazar",
   ];
   const months = [
     "Ocak",
@@ -63,7 +63,11 @@ function Scheduler() {
       let firstdayofthemonth = new Date(year, month, 1).getDay();
       console.log("ayinilkgunu", firstdayofthemonth);
 
-      for (let i = firstdayofthemonth; i > 0; i--) {
+      for (
+        let i = firstdayofthemonth !== 0 ? firstdayofthemonth : 7;
+        i > 1;
+        i--
+      ) {
         daysinmonth.push(NofDays[month] - i + 1);
       }
     }
@@ -103,39 +107,41 @@ function Scheduler() {
       style={hidesidebar ? mainboardextend : mainboard}
     >
       {" "}
-      <div>
+      <div className="clinic-scheduler">
         {" "}
         {year}
-        {year && (
-          <ul className="scheduler">
-            {weekdays.map((day, index) => {
-              return (
-                <li>
-                  <div className="scheduler-weekdays">
-                    {" "}
-                    <h3> {day}</h3>
-                    <h4>{daysinmonth[index]}</h4>
-                    {"  "}
-                  </div>
-
-                  {/* <ul className="scheduler-cells">
-                    {hours.map((hour, index) => {
-                      return <li></li>;
-                    })}
-                  </ul> */}
-                </li>
-              );
-            })}
-          </ul>
-        )}
-        {/* <ul className="scheduler-hours">
-          {hours.map((hour, index) => {
-            return <li>{hour}</li>;
+        {months[month]}
+        <ul className="scheduler">
+          {weekdays.map((day, index) => {
+            return (
+              <li>
+                <h5>{day}</h5>
+              </li>
+            );
           })}
-        </ul> */}
+        </ul>
+        <ul className="scheduler-weekdays-numbers">
+          {daysinmonth.map((daynumber, index) => {
+            return <li>{daynumber}</li>;
+          })}
+        </ul>
       </div>{" "}
     </div>
   );
 }
 
 export default Scheduler;
+{
+  /* <ul className="scheduler-cells">
+                    {hours.map((hour, index) => {
+                      return <li></li>;
+                    })}
+                  </ul> */
+}
+{
+  /* <ul className="scheduler-hours">
+          {hours.map((hour, index) => {
+            return <li>{hour}</li>;
+          })}
+        </ul> */
+}

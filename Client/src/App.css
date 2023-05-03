@@ -1151,35 +1151,40 @@ input:checked+#switchlabel:after {
 
 
 /* Scheduler */
-.scheduler {
+.clinic-scheduler {
+  display: flex;
+  flex-direction: column;
   position: relative;
+  width: 700px;
+
+}
+
+.scheduler {
   display: flex;
   flex-direction: row;
-  gap: 5px;
   list-style: none;
+
 }
 
-.scheduler-weekdays {
-  height: 50px;
-}
 
 .scheduler li {
-width: 100px;
+  width: 100px;
 
 }
 
-.scheduler-cells li {
-  height: 25px;
+
+
+
+
+
+.scheduler-weekdays-numbers {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+
 }
 
+.scheduler-weekdays-numbers li {
+  width: 100px;
 
-
-.scheduler-hours {
-  position: absolute;
-  top: 50px;
-  left:10%;
-}
-
-.scheduler-hours li {
-  height: 25px;
 }
