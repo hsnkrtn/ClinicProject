@@ -213,7 +213,7 @@ function Appointmentlist() {
                           }}
                         >
                           {" "}
-                          <span>
+                          <span> 
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                           </span>
                         </button>

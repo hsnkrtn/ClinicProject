@@ -34,6 +34,8 @@ function Preregistratedpatient() {
   useEffect(() => {
     getTreatment();
     getTreatmentoperations();
+
+    console.log("staaatus", treatmentstatus);
   }, [pageupdated, treatmentstatus]);
 
   // Hasta tedavi ID si al

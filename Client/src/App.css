@@ -1151,7 +1151,7 @@ input:checked+#switchlabel:after {
 
 
 /* Scheduler */
-.clinic-scheduler {
+.scheduler-container {
   display: flex;
   flex-direction: column;
   position: relative;
@@ -1174,9 +1174,6 @@ input:checked+#switchlabel:after {
 
 
 
-
-
-
 .scheduler-weekdays-numbers {
   display: flex;
   flex-wrap: wrap;
@@ -1186,5 +1183,20 @@ input:checked+#switchlabel:after {
 
 .scheduler-weekdays-numbers li {
   width: 100px;
+
+}
+
+.scheduler-datepicker {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  position: relative;
+  background-color: red;
+  justify-content: space-around;
+}
+
+#datepicker-period {
+  width: 100px;
+
 
 }
