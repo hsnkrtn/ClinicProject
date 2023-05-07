@@ -35,6 +35,7 @@ function Scheduler() {
   let howmanydaysinpreviousmonth = new Date(year, month, 0).getDate(); // gecen ayın kaç gün olduğunu veriyor
   let howmanydaysinmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
   let firstdayofthemonth = new Date(year, month, 1).getDay(); // Ayin ilk basladigi gunu veriyor 0 pazar
+  let todaysday = new Date(year, month, day - 1).getDay();
 
   const weekdays = [
     "Pazartesi",
@@ -77,8 +78,8 @@ function Scheduler() {
         }
         break;
       case 3:
-        if (month === 11) {
-          setMonth(0);
+        if (month === 0) {
+          setMonth(11);
           setYear(year - 1);
         } else {
           setMonth(month - 1);
@@ -156,7 +157,7 @@ function Scheduler() {
     };
     fetchData();
     console.log(howmanydaysinmonth);
-    console.log("tarih", date);
+    console.log("tarih", currentDay);
   }, [month, pageupdated, selectedperiod, day]);
 
   return (
@@ -237,19 +238,29 @@ function Scheduler() {
                   </li>
                 ));
               case 1:
-                return weekdays.map((day, index) => (
-                  <li key={index}>
-                    <h5>{day}</h5>
-                  </li>
-                ));
-              default:
-                return null;
+                return weekdays
+                  .filter((weekday, index) => {
+                    return index === todaysday;
+                  })
+                  .map((day, index) => (
+                    <li key={index}>
+                      <h5>{day}</h5>
+                    </li>
+                  ));
             }
           })()}
         </ul>
         <ul className="scheduler-weekdays-numbers">
           {daysinperiod.map((daynumber, index) => {
-            return <li>{daynumber}</li>;
+            return (
+              <li
+                onClick={() => {
+                  console.log(daynumber, index);
+                }}
+              >
+                {daynumber}
+              </li>
+            );
           })}
         </ul>
       </div>
