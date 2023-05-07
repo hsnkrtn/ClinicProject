@@ -14,27 +14,27 @@ function Scheduler() {
     top: 50,
   };
 
-  const currentYear = new Date().getFullYear();
-  const currentmonth = new Date().getMonth();
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth();
+  const currentDay = today.getDate();
 
+  const { date } = useContext(Sidebarinfo);
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
-  const [year, setYear] = useState(2024);
-  const [month, setMonth] = useState(1); // 0 ocak
-  const [day, setDay] = useState(1);
-  const [daysinmonth, setDaysinmonth] = useState([]);
+
+  const [year, setYear] = useState(currentYear);
+  const [month, setMonth] = useState(currentMonth); // 0 ocak
+  const [day, setDay] = useState(currentDay);
+
+  const [daysinperiod, setDaysinperiod] = useState([]); // Secilen period icindeki gunler
   const [pageupdated, setPageupdated] = useState(false);
+  const [selectedperiod, setSelectedperiod] = useState(3); // 1 gün  2 hafta 3 ay
 
-  const [selectedperiod, setSelectedperiod] = useState(1);
+  const todaysdate = `${year}-${month + 1}-${day}`;
 
-  const selecteddate = `${year}${month}${day}`;
-  let firstdayofmonth = new Date(year, month, 1).getDay(); // Ayın hangi gün ile başladığını veriyor 0-6 arası. 0 Pazar günü.
-  let lastdateofmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
-
-  function getFebdays() {
-    return year % 4 === 0 ? 29 : 28;
-  }
-
-  const NofDays = [31, getFebdays(), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  let howmanydaysinpreviousmonth = new Date(year, month, 0).getDate(); // gecen ayın kaç gün olduğunu veriyor
+  let howmanydaysinmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
+  let firstdayofthemonth = new Date(year, month, 1).getDay(); // Ayin ilk basladigi gunu veriyor 0 pazar
 
   const weekdays = [
     "Pazartesi",
@@ -59,24 +59,78 @@ function Scheduler() {
     "Kasım",
     "Aralık",
   ];
+  function setdateTotoday() {
+    setMonth(currentMonth);
+    setYear(currentYear);
+    setDay(currentDay);
+  }
 
-  const getAlldays = async () => {
-    setDaysinmonth([]);
+  // Önceki ay
+  const prevDate = (selectedperiod) => {
+    switch (selectedperiod) {
+      case 1:
+        if (day === 0) {
+          setDay(howmanydaysinpreviousmonth);
+          setMonth(month - 1);
+        } else {
+          setDay(day - 1);
+        }
+        break;
+      case 3:
+        if (month === 11) {
+          setMonth(0);
+          setYear(year - 1);
+        } else {
+          setMonth(month - 1);
+        }
+        break;
+    }
   };
+
+  // sonraki ay
+  const nextDate = (selectedperiod) => {
+    switch (selectedperiod) {
+      case 1:
+        if (day === howmanydaysinmonth) {
+          setDay(0);
+          setMonth(month + 1);
+        } else {
+          setDay(day + 1);
+        }
+        break;
+      case 2:
+        if (day === howmanydaysinmonth) {
+          setDay(0);
+          setMonth(month + 1);
+        } else {
+          setDay(day + 1);
+        }
+        break;
+      case 3:
+        if (month === 11) {
+          setMonth(0);
+          setYear(year + 1);
+        } else {
+          setMonth(month + 1);
+        }
+        break;
+    }
+  };
+
   function getNofdays() {
-    let daysinmonth = [];
-    let firstdayofthemonth = new Date(year, month, 1).getDay();
+    let daysinperiod = [];
     for (
       let i = firstdayofthemonth !== 0 ? firstdayofthemonth : 7;
       i > 1;
       i--
     ) {
-      daysinmonth.push(NofDays[month] - i + 1);
+      daysinperiod.push(howmanydaysinpreviousmonth - i + 2);
     }
-    for (let i = 1; i <= NofDays[month]; i++) {
-      daysinmonth.push(i);
+    for (let i = 1; i <= howmanydaysinmonth; i++) {
+      daysinperiod.push(i);
     }
-    return daysinmonth;
+
+    return daysinperiod;
   }
   const hours = [
     "09.00",
@@ -98,12 +152,12 @@ function Scheduler() {
   useEffect(() => {
     const fetchData = () => {
       const result = getNofdays();
-      setDaysinmonth(result);
+      setDaysinperiod(result);
     };
     fetchData();
-
-    console.log("ay", month);
-  }, [month, pageupdated, selectedperiod]);
+    console.log(howmanydaysinmonth);
+    console.log("tarih", date);
+  }, [month, pageupdated, selectedperiod, day]);
 
   return (
     <div
@@ -114,19 +168,25 @@ function Scheduler() {
       <div className="scheduler-container">
         <div className="scheduler-datepicker">
           <section>
-            <button>bos beles</button>{" "}
             <button
               onClick={() => {
-                month > 0 ? setMonth(month - 1) : setMonth(11);
+                prevDate(selectedperiod);
               }}
             >
               <span>
                 <i class="fa fa-chevron-left" aria-hidden="true"></i>
               </span>
-            </button>
+            </button>{" "}
             <button
               onClick={() => {
-                month < 11 ? setMonth(month + 1) : setMonth(0);
+                setdateTotoday(selectedperiod);
+              }}
+            >
+              Bugün
+            </button>{" "}
+            <button
+              onClick={() => {
+                nextDate(selectedperiod);
               }}
             >
               <span>
@@ -136,8 +196,7 @@ function Scheduler() {
           </section>
 
           <section>
-            {" "}
-            {months[month]} {daysinmonth[0]} , {year}
+            {`bugunn ${todaysdate}`}= {months[month]} {daysinperiod[0]} , {year}
           </section>
           <section>
             <button
@@ -168,16 +227,28 @@ function Scheduler() {
         </div>
 
         <ul className="scheduler">
-          {weekdays.map((day, index) => {
-            return (
-              <li>
-                <h5>{day}</h5>
-              </li>
-            );
-          })}
+          {(() => {
+            switch (selectedperiod) {
+              case 3:
+              case 2:
+                return weekdays.map((day, index) => (
+                  <li key={index}>
+                    <h5>{day}</h5>
+                  </li>
+                ));
+              case 1:
+                return weekdays.map((day, index) => (
+                  <li key={index}>
+                    <h5>{day}</h5>
+                  </li>
+                ));
+              default:
+                return null;
+            }
+          })()}
         </ul>
         <ul className="scheduler-weekdays-numbers">
-          {daysinmonth.map((daynumber, index) => {
+          {daysinperiod.map((daynumber, index) => {
             return <li>{daynumber}</li>;
           })}
         </ul>
