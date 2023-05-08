@@ -19,19 +19,29 @@ function CalendarScheduler() {
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
 
   const [year, setYear] = useState(2023);
-  const [month, setMonth] = useState(0); // 0 ocak
+  const [month, setMonth] = useState(1); // 0 ocak
   const [day, setDay] = useState(1);
 
-  //   const calendarMatrix = new Array(6).fill().map(() => {
-  //     return new Array(7).fill().map(() => {
-  //       return new Date(year, month, day);
-  //     });
-  //   });
+  function getDay(takenyear, takenmonth, takenday) {
+
+
+    
+
+
+
+  }
+
   var calendarMatrix = new Array(6);
+  let howmanydaysinmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
+  let k = 0;
+
   for (var i = 0; i < calendarMatrix.length; i++) {
     calendarMatrix[i] = new Array(7);
     for (var j = 0; j < calendarMatrix[i].length; j++) {
-      calendarMatrix[i][j] = new Date(year, month, day+i+j);
+      if (k < howmanydaysinmonth) {
+        calendarMatrix[i][j] = getDay(year, month, day + k);
+      }
+      k++;
     }
   }
   useEffect(() => {
