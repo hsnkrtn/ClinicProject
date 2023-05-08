@@ -18,6 +18,7 @@ const AgendaPlan = lazy(() => import("./Components/AgendaPlan"));
 const Appointmentlist = lazy(() => import("./Components/Appointmentlist"));
 const Mainboard = lazy(() => import("./Components/Mainboard"));
 const Appointment = lazy(() => import("./Components/Appointment"));
+const CalendarScheduler = lazy(() => import("./Components/CalendarScheduler"));
 
 export const Sidebarinfo = createContext();
 
@@ -65,6 +66,7 @@ function App() {
               <Route path={`/HastaEkle`} element={<Addpatient />} />
               <Route path={`/Ajanda`} element={<Agenda />} />
               <Route path={`/Scheduler`} element={<Scheduler />} />
+              <Route path={`/CalendarScheduler`} element={<CalendarScheduler />} />
             </Routes>{" "}
           </Suspense>
         </Sidebarinfo.Provider>
