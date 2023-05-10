@@ -22,19 +22,23 @@ function CalendarScheduler() {
   const currentMonth = today.getMonth();
   const currentDay = today.getDate();
 
+  const [fullmatrix, setFullmatrix] = useState([]);
   const [year, setYear] = useState(currentYear);
   const [month, setMonth] = useState(currentMonth); // 0 ocak
-  const [day, setDay] = useState(currentDay);
+  const [day, setDay] = useState(1);
+
   let firstdayofthemonth = new Date(year, month, 1).getDay(); // Ayin ilk basladigi gunu veriyor 0 pazar
+  // let firstdayofthemonth = 5; // Ayin ilk basladigi gunu veriyor 0 pazar
 
   const weekdays = [
+    "Pazar",
+
     "Pazartesi",
     "Salı",
     "Çarşamba",
     "Perşembe",
     "Cuma",
     "Cumartesi",
-    "Pazar",
   ];
   function getDays(takenyear, takenmonth, takenday) {
     const date = new Date(takenyear, takenmonth, takenday);
@@ -62,34 +66,55 @@ function CalendarScheduler() {
     console.log("oncekiay", howmanydaysinpreviousmonth);
     return howmanydaysinpreviousmonth;
   }
-  var calendarMatrix = new Array(6);
-  let howmanydaysinmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
-  let firstdate = 0; // burada yanlis var düzeltilmesi lazım. Ayın sayısı kadar dönderiyor
-  let howmanydaysinpreviousmonth = getPreviousdays(year, month, day);
 
-  for (var i = 0; i < calendarMatrix.length; i++) {
-    calendarMatrix[i] = new Array(7);
+  function getCalendarMatrixDays() {
+    let howmanydaysinmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
+    let firstdayofthecurrentmonth = 1; // burada yanlis var düzeltilmesi lazım. Ayın sayısı kadar dönderiyor
+    let diffbetweenmatrixandmonth =
+      42 - (howmanydaysinmonth + firstdayofthemonth);
+    let nextmonthsdays = 1;
+    let howmanydaysinpreviousmonth = getPreviousdays(year, month, 1);
+    var calendarMatrix = new Array(6);
 
-    for (var j = 0; j < calendarMatrix[i].length; j++) {
-      if (firstdate < howmanydaysinmonth) {
-        if (firstdayofthemonth > 0) {
+    for (var i = 0; i < calendarMatrix.length; i++) {
+      calendarMatrix[i] = new Array(7);
+
+      for (var j = 0; j < calendarMatrix[i].length; j++) {
+        if (
+          firstdayofthemonth > 0 &&
+          firstdayofthecurrentmonth < howmanydaysinmonth
+        ) {
           calendarMatrix[i][j] = getDays(
             year,
             month - 1,
             howmanydaysinpreviousmonth - firstdayofthemonth + 1
           );
-          firstdate = -1;
-        } else calendarMatrix[i][j] = getDays(year, month, day + firstdate);
+          firstdayofthemonth--;
+        } else if (firstdayofthecurrentmonth < howmanydaysinmonth) {
+          calendarMatrix[i][j] = getDays(
+            year,
+            month,
+            firstdayofthecurrentmonth
+          );
+          firstdayofthecurrentmonth++;
+        } else if (diffbetweenmatrixandmonth > 0) {
+          calendarMatrix[i][j] = getDays(year, month + 1, nextmonthsdays);
 
-        console.log("each", calendarMatrix[i][j]);
+          diffbetweenmatrixandmonth--;
+          nextmonthsdays++;
+        }
       }
-
-      firstdate++;
-      firstdayofthemonth--;
     }
+
+    return calendarMatrix;
   }
+
   useEffect(() => {
-    console.log("matrix", calendarMatrix);
+    const fetchData = () => {
+      const result = getCalendarMatrixDays();
+      setFullmatrix(result);
+    };
+    fetchData();
   });
 
   return (
@@ -109,7 +134,7 @@ function CalendarScheduler() {
           })}
         </ul>
         <ul className="scheduler-weekdays-numbers">
-          {calendarMatrix.map((calendarMatrixdays, index) => {
+          {fullmatrix.map((calendarMatrixdays, index) => {
             return calendarMatrixdays.map((matrixday, index) => {
               return (
                 <li>
