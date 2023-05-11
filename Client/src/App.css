@@ -1155,7 +1155,7 @@ input:checked+#switchlabel:after {
   display: flex;
   flex-direction: column;
   position: relative;
-  width: 700px;
+  width: 707px;
 
 }
 
@@ -1178,11 +1178,14 @@ input:checked+#switchlabel:after {
   display: flex;
   flex-wrap: wrap;
   list-style: none;
-
+  gap: 1px;
 }
 
 .scheduler-weekdays-numbers li {
+  display: flex;
+  flex-direction: column;
   width: 100px;
+  background-color: #31826c;
 
 }
 

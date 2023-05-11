@@ -26,10 +26,26 @@ function CalendarScheduler() {
   const [year, setYear] = useState(currentYear);
   const [month, setMonth] = useState(currentMonth); // 0 ocak
   const [day, setDay] = useState(1);
+  const [week, setWeek] = useState(0);
+  const [selectedperiod, setSelectedperiod] = useState(2); // 1 gün  2 hafta 3 ay
+  let howmanydaysinmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
 
   let firstdayofthemonth = new Date(year, month, 1).getDay(); // Ayin ilk basladigi gunu veriyor 0 pazar
   // let firstdayofthemonth = 5; // Ayin ilk basladigi gunu veriyor 0 pazar
-
+  const months = [
+    "Ocak",
+    "Şubat",
+    "Mart",
+    "Nisan",
+    "Mayıs",
+    "Haziran",
+    "Temmuz",
+    "Ağustos",
+    "Eylül",
+    "Ekim",
+    "Kasım",
+    "Aralık",
+  ];
   const weekdays = [
     "Pazar",
 
@@ -69,9 +85,9 @@ function CalendarScheduler() {
 
   function getCalendarMatrixDays() {
     let howmanydaysinmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
-    let firstdayofthecurrentmonth = 1; // burada yanlis var düzeltilmesi lazım. Ayın sayısı kadar dönderiyor
+    let firstdayofthecurrentmonth = 1;
     let diffbetweenmatrixandmonth =
-      42 - (howmanydaysinmonth + firstdayofthemonth);
+      42 - (howmanydaysinmonth + firstdayofthemonth); // 7x6 lik bi dizi icin 42 ile esitlendi
     let nextmonthsdays = 1;
     let howmanydaysinpreviousmonth = getPreviousdays(year, month, 1);
     var calendarMatrix = new Array(6);
@@ -97,7 +113,7 @@ function CalendarScheduler() {
             firstdayofthecurrentmonth
           );
           firstdayofthecurrentmonth++;
-        } else if (diffbetweenmatrixandmonth > 0) {
+        } else if (diffbetweenmatrixandmonth >= 0) {
           calendarMatrix[i][j] = getDays(year, month + 1, nextmonthsdays);
 
           diffbetweenmatrixandmonth--;
@@ -105,17 +121,100 @@ function CalendarScheduler() {
         }
       }
     }
+    // Secilen periyot haftalik (2) ise veya gün(1) ise
 
-    return calendarMatrix;
+    if (selectedperiod === 2) {
+      let weekrow = calendarMatrix.filter((periodday, index) => {
+        if (index === week) {
+          return periodday;
+        }
+      });
+      return weekrow;
+    } else if (selectedperiod === 1) {
+      let weekrow = calendarMatrix
+        .filter((periodday, index) => {
+          if (index === week) {
+            return periodday;
+          }
+        })
+        .map((selectedweekdays, index) => {
+          return selectedweekdays.filter((selectedday, index) => {
+            if (index === day) {
+              return selectedday;
+            }
+          });
+        });
+      return weekrow;
+    }
   }
+  // sonraki ay
 
+  const nextDate = () => {
+    switch (selectedperiod) {
+      case 1:
+        if (day === 7) {
+          setWeek(week + 1);
+          if (week === 6) {
+            setWeek(0);
+            setMonth(month + 1);
+          }
+        } else {
+          setDay(day + 1);
+        }
+        break;
+      case 2:
+        if (week === 5) {
+          setWeek(0);
+          setMonth(month + 1);
+          if (month === 11) {
+            setYear(year + 1);
+            setMonth(0);
+          }
+        } else {
+          setWeek(week + 1);
+        }
+        break;
+    }
+  }; // Önceki ay
+  const prevDate = () => {
+    switch (selectedperiod) {
+      case 1:
+        if (month === 0) {
+          setMonth(11);
+          setYear(year - 1);
+        } else {
+          setMonth(month - 1);
+        }
+        break;
+      case 2:
+        if (week === 0) {
+          setWeek(5);
+          setMonth(month - 1);
+          if (month === 0) {
+            setYear(year - 1);
+            setMonth(11);
+          }
+        } else {
+          setWeek(week - 1);
+        }
+        break;
+    }
+  };
+  function setdateTotoday() {
+    setMonth(currentMonth);
+    setYear(currentYear);
+    setDay(currentDay);
+  }
   useEffect(() => {
     const fetchData = () => {
       const result = getCalendarMatrixDays();
       setFullmatrix(result);
+      console.log("fullmatix", fullmatrix);
     };
     fetchData();
-  });
+
+    console.log("firstlineofmatrix", typeof fullmatrix);
+  }, [month, year, week, day, selectedperiod]);
 
   return (
     <div
@@ -124,6 +223,64 @@ function CalendarScheduler() {
     >
       <div className="scheduler-container">
         {" "}
+        <div className="scheduler-datepicker">
+          <section>
+            {months[month]} {year}
+            <button
+              onClick={() => {
+                prevDate();
+              }}
+            >
+              <span>
+                <i class="fa fa-chevron-left" aria-hidden="true"></i>
+              </span>
+            </button>{" "}
+            <button
+              onClick={() => {
+                setdateTotoday();
+              }}
+            >
+              Bugün
+            </button>{" "}
+            <button
+              onClick={() => {
+                nextDate();
+              }}
+            >
+              <span>
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+              </span>
+            </button>{" "}
+          </section>
+
+          <section></section>
+          <section>
+            <button
+              onClick={() => {
+                setSelectedperiod(1);
+              }}
+            >
+              {" "}
+              Gün
+            </button>
+            <button
+              onClick={() => {
+                setSelectedperiod(2);
+              }}
+            >
+              {" "}
+              Hafta
+            </button>
+            <button
+              onClick={() => {
+                setSelectedperiod(3);
+              }}
+            >
+              {" "}
+              Ay
+            </button>
+          </section>
+        </div>
         <ul className="scheduler">
           {weekdays.map((day, index) => {
             return (
