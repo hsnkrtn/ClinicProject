@@ -25,7 +25,7 @@ function CalendarScheduler() {
   const [fullmatrix, setFullmatrix] = useState([]);
   const [year, setYear] = useState(currentYear);
   const [month, setMonth] = useState(currentMonth); // 0 ocak
-  const [day, setDay] = useState(1);
+  const [dayindex, setDayindex] = useState(0);
   const [week, setWeek] = useState(0);
   const [selectedperiod, setSelectedperiod] = useState(2); // 1 gün  2 hafta 3 ay
   let howmanydaysinmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
@@ -139,7 +139,7 @@ function CalendarScheduler() {
         })
         .map((selectedweekdays, index) => {
           return selectedweekdays.filter((selectedday, index) => {
-            if (index === day) {
+            if (index === dayindex) {
               return selectedday;
             }
           });
@@ -152,14 +152,15 @@ function CalendarScheduler() {
   const nextDate = () => {
     switch (selectedperiod) {
       case 1:
-        if (day === 7) {
+        if (dayindex === 6) {
           setWeek(week + 1);
+          setDayindex(0);
           if (week === 6) {
             setWeek(0);
             setMonth(month + 1);
           }
         } else {
-          setDay(day + 1);
+          setDayindex(dayindex + 1);
         }
         break;
       case 2:
@@ -179,11 +180,15 @@ function CalendarScheduler() {
   const prevDate = () => {
     switch (selectedperiod) {
       case 1:
-        if (month === 0) {
-          setMonth(11);
-          setYear(year - 1);
+        if (dayindex === 0) {
+          setWeek(week - 1);
+          setDayindex(6);
+          if (week === 0) {
+            setWeek(6);
+            setMonth(month - 1);
+          }
         } else {
-          setMonth(month - 1);
+          setDayindex(dayindex - 1);
         }
         break;
       case 2:
@@ -203,7 +208,7 @@ function CalendarScheduler() {
   function setdateTotoday() {
     setMonth(currentMonth);
     setYear(currentYear);
-    setDay(currentDay);
+
   }
   useEffect(() => {
     const fetchData = () => {
@@ -214,7 +219,7 @@ function CalendarScheduler() {
     fetchData();
 
     console.log("firstlineofmatrix", typeof fullmatrix);
-  }, [month, year, week, day, selectedperiod]);
+  }, [month, year, week, dayindex, selectedperiod]);
 
   return (
     <div
