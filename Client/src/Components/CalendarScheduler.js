@@ -28,7 +28,7 @@ function CalendarScheduler() {
   const [dayindex, setDayindex] = useState(0);
   const [week, setWeek] = useState(0);
   const [selectedperiod, setSelectedperiod] = useState(2); // 1 gün  2 hafta 3 ay
-  let howmanydaysinmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
+  let howmanydaysincurrentmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
 
   let firstdayofthemonth = new Date(year, month, 1).getDay(); // Ayin ilk basladigi gunu veriyor 0 pazar
   // let firstdayofthemonth = 5; // Ayin ilk basladigi gunu veriyor 0 pazar
@@ -82,31 +82,33 @@ function CalendarScheduler() {
     console.log("oncekiay", howmanydaysinpreviousmonth);
     return howmanydaysinpreviousmonth;
   }
-
   function getCalendarMatrixDays() {
+    let firstweekdayofthemonth = new Date(year, month, 1).getDay(); // Ayin ilk basladigi gunu veriyor 0 pazar
+
     let howmanydaysinmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
-    let firstdayofthecurrentmonth = 1;
+    let firstdayofthecurrentmonth = 1; // burada yanlis var düzeltilmesi lazım. Ayın sayısı kadar dönderiyor
     let diffbetweenmatrixandmonth =
-      42 - (howmanydaysinmonth + firstdayofthemonth); // 7x6 lik bi dizi icin 42 ile esitlendi
+      42 - (howmanydaysinmonth + firstweekdayofthemonth);
     let nextmonthsdays = 1;
     let howmanydaysinpreviousmonth = getPreviousdays(year, month, 1);
     var calendarMatrix = new Array(6);
+    var calendarWeej = new Array(6);
 
     for (var i = 0; i < calendarMatrix.length; i++) {
       calendarMatrix[i] = new Array(7);
 
       for (var j = 0; j < calendarMatrix[i].length; j++) {
         if (
-          firstdayofthemonth > 0 &&
+          firstweekdayofthemonth > 0 &&
           firstdayofthecurrentmonth < howmanydaysinmonth
         ) {
           calendarMatrix[i][j] = getDays(
             year,
             month - 1,
-            howmanydaysinpreviousmonth - firstdayofthemonth + 1
+            howmanydaysinpreviousmonth - firstweekdayofthemonth + 1
           );
-          firstdayofthemonth--;
-        } else if (firstdayofthecurrentmonth < howmanydaysinmonth) {
+          firstweekdayofthemonth--;
+        } else if (firstdayofthecurrentmonth <= howmanydaysinmonth) {
           calendarMatrix[i][j] = getDays(
             year,
             month,
@@ -121,7 +123,6 @@ function CalendarScheduler() {
         }
       }
     }
-    // Secilen periyot haftalik (2) ise veya gün(1) ise
 
     if (selectedperiod === 2) {
       let weekrow = calendarMatrix.filter((periodday, index) => {
@@ -146,6 +147,9 @@ function CalendarScheduler() {
         });
       return weekrow;
     }
+    if (selectedperiod === 3) {
+      return calendarMatrix;
+    }
   }
   // sonraki ay
 
@@ -165,15 +169,15 @@ function CalendarScheduler() {
         break;
       case 2:
         if (week === 5) {
-          setWeek(0);
-          setMonth(month + 1);
-          if (month === 11) {
-            setYear(year + 1);
-            setMonth(0);
-          }
+          setWeek((week) => 0);
+          setMonth((month) => month + 1);
         } else {
-          setWeek(week + 1);
+          setWeek((week) => week + 1);
         }
+        break;
+      case 3:
+        setMonth(month + 1);
+
         break;
     }
   }; // Önceki ay
@@ -181,7 +185,7 @@ function CalendarScheduler() {
     switch (selectedperiod) {
       case 1:
         if (dayindex === 0) {
-          setWeek(week - 1);
+          setWeek(week - 1); // buraya bak alttaki ifle iliskilendir
           setDayindex(6);
           if (week === 0) {
             setWeek(6);
@@ -203,12 +207,15 @@ function CalendarScheduler() {
           setWeek(week - 1);
         }
         break;
+      case 3:
+        setMonth(month - 1);
+
+        break;
     }
   };
   function setdateTotoday() {
     setMonth(currentMonth);
     setYear(currentYear);
-
   }
   useEffect(() => {
     const fetchData = () => {
@@ -230,7 +237,7 @@ function CalendarScheduler() {
         {" "}
         <div className="scheduler-datepicker">
           <section>
-            {months[month]} {year}
+            {months[month]} {year} {week}
             <button
               onClick={() => {
                 prevDate();
