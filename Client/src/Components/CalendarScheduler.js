@@ -88,67 +88,70 @@ function CalendarScheduler() {
     let howmanydaysinmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
     let firstdayofthecurrentmonth = 1; // burada yanlis var düzeltilmesi lazım. Ayın sayısı kadar dönderiyor
     let diffbetweenmatrixandmonth =
-      42 - (howmanydaysinmonth + firstweekdayofthemonth);
+      42 - howmanydaysinmonth ;
     let nextmonthsdays = 1;
     let howmanydaysinpreviousmonth = getPreviousdays(year, month, 1);
     var calendarMatrix = new Array(6);
-    var calendarWeej = new Array(6);
 
-    for (var i = 0; i < calendarMatrix.length; i++) {
-      calendarMatrix[i] = new Array(7);
+    if (selectedperiod === 3) {
+      for (var i = 0; i < calendarMatrix.length; i++) {
+        calendarMatrix[i] = new Array(7);
 
-      for (var j = 0; j < calendarMatrix[i].length; j++) {
-        if (
-          firstweekdayofthemonth > 0 &&
-          firstdayofthecurrentmonth < howmanydaysinmonth
-        ) {
-          calendarMatrix[i][j] = getDays(
-            year,
-            month - 1,
-            howmanydaysinpreviousmonth - firstweekdayofthemonth + 1
-          );
-          firstweekdayofthemonth--;
-        } else if (firstdayofthecurrentmonth <= howmanydaysinmonth) {
-          calendarMatrix[i][j] = getDays(
-            year,
-            month,
-            firstdayofthecurrentmonth
-          );
-          firstdayofthecurrentmonth++;
-        } else if (diffbetweenmatrixandmonth >= 0) {
-          calendarMatrix[i][j] = getDays(year, month + 1, nextmonthsdays);
+        for (var j = 0; j < calendarMatrix[i].length; j++) {
+          if (
+            firstweekdayofthemonth > 0 &&
+            firstdayofthecurrentmonth < howmanydaysinmonth
+          ) {
+            calendarMatrix[i][j] = getDays(
+              year,
+              month - 1,
+              howmanydaysinpreviousmonth - firstweekdayofthemonth + 1
+            );
+            firstweekdayofthemonth--;
+          } else if (firstdayofthecurrentmonth <= howmanydaysinmonth) {
+            calendarMatrix[i][j] = getDays(
+              year,
+              month,
+              firstdayofthecurrentmonth
+            );
+            firstdayofthecurrentmonth++;
+          } else if (diffbetweenmatrixandmonth >= 0) {
+            calendarMatrix[i][j] = getDays(year, month + 1, nextmonthsdays);
 
-          diffbetweenmatrixandmonth--;
-          nextmonthsdays++;
+            diffbetweenmatrixandmonth--;
+            nextmonthsdays++;
+          }
         }
       }
+      return calendarMatrix;
     }
-
     if (selectedperiod === 2) {
+      for (var i = 0; i < calendarMatrix.length; i++) {
+        calendarMatrix[i] = new Array(7);
+
+        for (var j = 0; j < calendarMatrix[i].length; j++) {
+          if (firstdayofthecurrentmonth <= howmanydaysinmonth) {
+            calendarMatrix[i][j] = getDays(
+              year,
+              month,
+              firstdayofthecurrentmonth
+            );
+            firstdayofthecurrentmonth++;
+          } else if (diffbetweenmatrixandmonth >= 0) {
+            calendarMatrix[i][j] = getDays(year, month + 1, nextmonthsdays);
+
+            diffbetweenmatrixandmonth--;
+            nextmonthsdays++;
+          }
+        }
+      }
+
       let weekrow = calendarMatrix.filter((periodday, index) => {
         if (index === week) {
           return periodday;
         }
       });
       return weekrow;
-    } else if (selectedperiod === 1) {
-      let weekrow = calendarMatrix
-        .filter((periodday, index) => {
-          if (index === week) {
-            return periodday;
-          }
-        })
-        .map((selectedweekdays, index) => {
-          return selectedweekdays.filter((selectedday, index) => {
-            if (index === dayindex) {
-              return selectedday;
-            }
-          });
-        });
-      return weekrow;
-    }
-    if (selectedperiod === 3) {
-      return calendarMatrix;
     }
   }
   // sonraki ay
@@ -323,3 +326,31 @@ function CalendarScheduler() {
 }
 
 export default CalendarScheduler;
+
+// if (selectedperiod === 2) {
+//   let weekrow = calendarMatrix.filter((periodday, index) => {
+//     if (index === week) {
+//       return periodday;
+//     }
+//   });
+//   return weekrow;
+// } else if (selectedperiod === 1) {
+//   let weekrow = calendarMatrix
+//     .filter((periodday, index) => {
+//       if (index === week) {
+//         return periodday;
+//       }
+//     })
+//     .map((selectedweekdays, index) => {
+//       return selectedweekdays.filter((selectedday, index) => {
+//         if (index === dayindex) {
+//           return selectedday;
+//         }
+//       });
+//     });
+//   return weekrow;
+// }
+// if (selectedperiod === 3) {
+//   return calendarMatrix;
+// }
+// }
