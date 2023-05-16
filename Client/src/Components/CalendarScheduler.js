@@ -27,7 +27,7 @@ function CalendarScheduler() {
   const [month, setMonth] = useState(currentMonth); // 0 ocak
   const [dayindex, setDayindex] = useState(0);
   const [week, setWeek] = useState(0);
-  const [selectedperiod, setSelectedperiod] = useState(2); // 1 gün  2 hafta 3 ay
+  const [selectedperiod, setSelectedperiod] = useState(3); // 1 gün  2 hafta 3 ay
   let howmanydaysincurrentmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
 
   let firstdayofthemonth = new Date(year, month, 1).getDay(); // Ayin ilk basladigi gunu veriyor 0 pazar
@@ -47,13 +47,13 @@ function CalendarScheduler() {
     "Aralık",
   ];
   const weekdays = [
-    "Pazar",
     "Pazartesi",
     "Salı",
     "Çarşamba",
     "Perşembe",
     "Cuma",
     "Cumartesi",
+    "Pazar",
   ];
   function getDays(takenyear, takenmonth, takenday) {
     const date = new Date(takenyear, takenmonth, takenday);
@@ -82,8 +82,8 @@ function CalendarScheduler() {
     return howmanydaysinpreviousmonth;
   }
   function getCalendarMatrixDays() {
-    let firstweekdayofthemonth = new Date(year, month, 1).getDay(); // Ayin ilk basladigi gunu veriyor 0 pazar
-
+    let firstweekday = new Date(year, month, 1).getDay(); // Ayin ilk basladigi gunu veriyor 0 pazar
+    let firstweekdayofthemonth = firstweekday !== 0 ? firstweekday : 7;
     let howmanydaysinmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
     let firstdayofthecurrentmonth = 1; // burada yanlis var düzeltilmesi lazım. Ayın sayısı kadar dönderiyor
     let diffbetweenmatrixandmonth = 42 - howmanydaysinmonth;
@@ -96,8 +96,9 @@ function CalendarScheduler() {
         calendarMatrix[i] = new Array(7);
 
         for (var j = 0; j < calendarMatrix[i].length; j++) {
+          // gecen ayin gunlerini alir
           if (
-            firstweekdayofthemonth > 0 &&
+            firstweekdayofthemonth > 1 &&
             firstdayofthecurrentmonth < howmanydaysinmonth
           ) {
             calendarMatrix[i][j] = getDays(
@@ -106,14 +107,18 @@ function CalendarScheduler() {
               howmanydaysinpreviousmonth - firstweekdayofthemonth + 1
             );
             firstweekdayofthemonth--;
-          } else if (firstdayofthecurrentmonth <= howmanydaysinmonth) {
+          }
+          // Oldugumuz ayin gunlerini alir
+          else if (firstdayofthecurrentmonth <= howmanydaysinmonth) {
             calendarMatrix[i][j] = getDays(
               year,
               month,
               firstdayofthecurrentmonth
             );
             firstdayofthecurrentmonth++;
-          } else if (diffbetweenmatrixandmonth >= 0) {
+          }
+          // gelecek ayin gunlerini alir ve 7 x 6 lik matrixi tamamlar
+          else if (diffbetweenmatrixandmonth >= 0) {
             calendarMatrix[i][j] = getDays(year, month + 1, nextmonthsdays);
 
             diffbetweenmatrixandmonth--;
@@ -128,14 +133,29 @@ function CalendarScheduler() {
         calendarMatrix[i] = new Array(7);
 
         for (var j = 0; j < calendarMatrix[i].length; j++) {
-          if (firstdayofthecurrentmonth <= howmanydaysinmonth) {
+          // gecen ayin gunlerini alir
+          if (
+            firstweekdayofthemonth > 1 &&
+            firstdayofthecurrentmonth < howmanydaysinmonth
+          ) {
+            calendarMatrix[i][j] = getDays(
+              year,
+              month - 1,
+              howmanydaysinpreviousmonth - firstweekdayofthemonth + 1
+            );
+            firstweekdayofthemonth--;
+          }
+          // Oldugumuz ayin gunlerini alir
+          else if (firstdayofthecurrentmonth <= howmanydaysinmonth) {
             calendarMatrix[i][j] = getDays(
               year,
               month,
               firstdayofthecurrentmonth
             );
             firstdayofthecurrentmonth++;
-          } else if (diffbetweenmatrixandmonth >= 0) {
+          }
+          // gelecek ayin gunlerini alir ve 7 x 6 lik matrixi tamamlar
+          else if (diffbetweenmatrixandmonth >= 0) {
             calendarMatrix[i][j] = getDays(year, month + 1, nextmonthsdays);
 
             diffbetweenmatrixandmonth--;
