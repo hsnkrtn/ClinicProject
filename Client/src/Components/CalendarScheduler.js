@@ -48,7 +48,6 @@ function CalendarScheduler() {
   ];
   const weekdays = [
     "Pazar",
-
     "Pazartesi",
     "Salı",
     "Çarşamba",
@@ -87,8 +86,7 @@ function CalendarScheduler() {
 
     let howmanydaysinmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
     let firstdayofthecurrentmonth = 1; // burada yanlis var düzeltilmesi lazım. Ayın sayısı kadar dönderiyor
-    let diffbetweenmatrixandmonth =
-      42 - howmanydaysinmonth ;
+    let diffbetweenmatrixandmonth = 42 - howmanydaysinmonth;
     let nextmonthsdays = 1;
     let howmanydaysinpreviousmonth = getPreviousdays(year, month, 1);
     var calendarMatrix = new Array(6);
@@ -173,7 +171,12 @@ function CalendarScheduler() {
       case 2:
         if (week === 5) {
           setWeek((week) => 0);
-          setMonth((month) => month + 1);
+          if (month === 11) {
+            setMonth((month) => 0);
+            setYear((year) => year + 1);
+          } else {
+            setMonth((month) => month + 1);
+          }
         } else {
           setWeek((week) => week + 1);
         }
@@ -219,6 +222,7 @@ function CalendarScheduler() {
   function setdateTotoday() {
     setMonth(currentMonth);
     setYear(currentYear);
+    setWeek(0);
   }
   useEffect(() => {
     const fetchData = () => {
@@ -240,7 +244,6 @@ function CalendarScheduler() {
         {" "}
         <div className="scheduler-datepicker">
           <section>
-            {months[month]} {year} {week}
             <button
               onClick={() => {
                 prevDate();
@@ -266,6 +269,7 @@ function CalendarScheduler() {
                 <i class="fa fa-chevron-right" aria-hidden="true"></i>
               </span>
             </button>{" "}
+            {months[month]} {year} {week}
           </section>
 
           <section></section>
@@ -326,31 +330,3 @@ function CalendarScheduler() {
 }
 
 export default CalendarScheduler;
-
-// if (selectedperiod === 2) {
-//   let weekrow = calendarMatrix.filter((periodday, index) => {
-//     if (index === week) {
-//       return periodday;
-//     }
-//   });
-//   return weekrow;
-// } else if (selectedperiod === 1) {
-//   let weekrow = calendarMatrix
-//     .filter((periodday, index) => {
-//       if (index === week) {
-//         return periodday;
-//       }
-//     })
-//     .map((selectedweekdays, index) => {
-//       return selectedweekdays.filter((selectedday, index) => {
-//         if (index === dayindex) {
-//           return selectedday;
-//         }
-//       });
-//     });
-//   return weekrow;
-// }
-// if (selectedperiod === 3) {
-//   return calendarMatrix;
-// }
-// }
