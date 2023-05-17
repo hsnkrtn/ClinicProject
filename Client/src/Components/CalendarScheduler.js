@@ -25,9 +25,9 @@ function CalendarScheduler() {
   const [fullmatrix, setFullmatrix] = useState([]);
   const [year, setYear] = useState(currentYear);
   const [month, setMonth] = useState(currentMonth); // 0 ocak
-  const [dayindex, setDayindex] = useState(0);
+  const [dayindexinweek, setDayindexinweek] = useState(0);
   const [week, setWeek] = useState(0);
-  const [selectedperiod, setSelectedperiod] = useState(3); // 1 gün  2 hafta 3 ay
+  const [selectedperiod, setSelectedperiod] = useState(2); // 1 gün  2 hafta 3 ay
   let howmanydaysincurrentmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
 
   let firstdayofthemonth = new Date(year, month, 1).getDay(); // Ayin ilk basladigi gunu veriyor 0 pazar
@@ -91,7 +91,7 @@ function CalendarScheduler() {
     let howmanydaysinpreviousmonth = getPreviousdays(year, month, 1);
     var calendarMatrix = new Array(6);
 
-    if (selectedperiod === 3) {
+    if (selectedperiod === 1) {
       for (var i = 0; i < calendarMatrix.length; i++) {
         calendarMatrix[i] = new Array(7);
 
@@ -126,7 +126,20 @@ function CalendarScheduler() {
           }
         }
       }
-      return calendarMatrix;
+      let weekrow = calendarMatrix.filter((periodday, index) => {
+        if (index === week) {
+          return periodday;
+        }
+      });
+      let weekday = weekrow.map((wdi, index) => {
+        return wdi.filter((wkday, index) => {
+          if (index === dayindexinweek) {
+            return wkday;
+          }
+        });
+      });
+
+      return weekday;
     }
     if (selectedperiod === 2) {
       for (var i = 0; i < calendarMatrix.length; i++) {
@@ -163,7 +176,7 @@ function CalendarScheduler() {
           }
         }
       }
-
+      // secilen hafta indexini ayin haftalik indexi ile esleyip yeni bi array donderiyor
       let weekrow = calendarMatrix.filter((periodday, index) => {
         if (index === week) {
           return periodday;
@@ -171,21 +184,81 @@ function CalendarScheduler() {
       });
       return weekrow;
     }
+
+    if (selectedperiod === 3) {
+      for (var i = 0; i < calendarMatrix.length; i++) {
+        calendarMatrix[i] = new Array(7);
+
+        for (var j = 0; j < calendarMatrix[i].length; j++) {
+          // gecen ayin gunlerini alir
+          if (
+            firstweekdayofthemonth > 1 &&
+            firstdayofthecurrentmonth < howmanydaysinmonth
+          ) {
+            calendarMatrix[i][j] = getDays(
+              year,
+              month - 1,
+              howmanydaysinpreviousmonth - firstweekdayofthemonth + 1
+            );
+            firstweekdayofthemonth--;
+          }
+          // Oldugumuz ayin gunlerini alir
+          else if (firstdayofthecurrentmonth <= howmanydaysinmonth) {
+            calendarMatrix[i][j] = getDays(
+              year,
+              month,
+              firstdayofthecurrentmonth
+            );
+            firstdayofthecurrentmonth++;
+          }
+          // gelecek ayin gunlerini alir ve 7 x 6 lik matrixi tamamlar
+          else if (diffbetweenmatrixandmonth >= 0) {
+            calendarMatrix[i][j] = getDays(year, month + 1, nextmonthsdays);
+
+            diffbetweenmatrixandmonth--;
+            nextmonthsdays++;
+          }
+        }
+      }
+      let weekrow = calendarMatrix.filter((periodday, index) => {
+        if (index === week) {
+          return periodday;
+        }
+      });
+      let weekday = weekrow.map((wdi, index) => {
+        return wdi.filter((wkday, index) => {
+          if (index === dayindexinweek) {
+            return wkday;
+          }
+        });
+      });
+
+      return calendarMatrix;
+    }
   }
+
   // sonraki ay
 
   const nextDate = () => {
     switch (selectedperiod) {
       case 1:
-        if (dayindex === 6) {
-          setWeek(week + 1);
-          setDayindex(0);
-          if (week === 6) {
-            setWeek(0);
-            setMonth(month + 1);
+        if (dayindexinweek === 6) {
+          if (week === 5) {
+            if (month === 11) {
+              setYear((year) => year + 1);
+              setMonth(0);
+              setWeek(0);
+              setDayindexinweek(0);
+            } else {
+              setWeek(0);
+              setMonth((month) => month + 1);
+            }
+          } else {
+            setWeek((week) => week + 1);
+            setDayindexinweek(0);
           }
         } else {
-          setDayindex(dayindex + 1);
+          setDayindexinweek((dayindexinweek) => dayindexinweek + 1);
         }
         break;
       case 2:
@@ -210,15 +283,15 @@ function CalendarScheduler() {
   const prevDate = () => {
     switch (selectedperiod) {
       case 1:
-        if (dayindex === 0) {
+        if (dayindexinweek === 0) {
           setWeek(week - 1); // buraya bak alttaki ifle iliskilendir
-          setDayindex(6);
+          setDayindexinweek(6);
           if (week === 0) {
             setWeek(6);
             setMonth(month - 1);
           }
         } else {
-          setDayindex(dayindex - 1);
+          setDayindexinweek(dayindexinweek - 1);
         }
         break;
       case 2:
@@ -253,7 +326,7 @@ function CalendarScheduler() {
     fetchData();
 
     console.log("firstlineofmatrix", typeof fullmatrix);
-  }, [month, year, week, dayindex, selectedperiod]);
+  }, [month, year, week, dayindexinweek, selectedperiod]);
 
   return (
     <div
@@ -321,13 +394,36 @@ function CalendarScheduler() {
           </section>
         </div>
         <ul className="scheduler">
-          {weekdays.map((day, index) => {
-            return (
-              <li key={index}>
-                <h5>{day}</h5>
-              </li>
-            );
-          })}
+          {selectedperiod === 2
+            ? weekdays.map((day, index) => {
+                return (
+                  <li key={index}>
+                    <h5>{day}</h5>
+                  </li>
+                );
+              })
+            : selectedperiod === 1
+            ? weekdays
+                .filter((weekday, index) => {
+                  if (index === dayindexinweek) {
+                    return weekday;
+                  }
+                })
+                .map((day, index) => {
+                  return (
+                    <li key={index}>
+                      <h5>{day}</h5>
+                    </li>
+                  );
+                })
+            : // burasi ay cikartildiktan sonra silinecek
+              weekdays.map((day, index) => {
+                return (
+                  <li key={index}>
+                    <h5>{day}</h5>
+                  </li>
+                );
+              })}
         </ul>
         <ul className="scheduler-weekdays-numbers">
           {fullmatrix.map((calendarMatrixdays, index) => {
