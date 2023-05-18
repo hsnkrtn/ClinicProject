@@ -27,8 +27,10 @@ function CalendarScheduler() {
   const [month, setMonth] = useState(currentMonth); // 0 ocak
   const [day, setDay] = useState(currentDay); // 0 ocak
   const [dayindexinweek, setDayindexinweek] = useState(0);
+  const [tempdayindexinweek, settempDayindexinweek] = useState(0);
   const [week, setWeek] = useState(0);
-  const [selectedperiod, setSelectedperiod] = useState(3); // 1 gün  2 hafta 3 ay
+  const [tempweek, setTempweek] = useState(0);
+  const [selectedperiod, setSelectedperiod] = useState(2); // 1 gün  2 hafta 3 ay
   let howmanydaysincurrentmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
   let todaysdate = JSON.stringify(getDays(year, month, day));
 
@@ -126,6 +128,11 @@ function CalendarScheduler() {
             diffbetweenmatrixandmonth--;
             nextmonthsdays++;
           }
+
+          if (JSON.stringify(calendarMatrix[i][j]) === todaysdate) {
+            setTempweek(i);
+            settempDayindexinweek(j);
+          }
         }
       }
       let weekrow = calendarMatrix.filter((periodday, index) => {
@@ -175,6 +182,10 @@ function CalendarScheduler() {
 
             diffbetweenmatrixandmonth--;
             nextmonthsdays++;
+          }
+          if (JSON.stringify(calendarMatrix[i][j]) === todaysdate) {
+            setTempweek(i);
+            settempDayindexinweek(j);
           }
         }
       }
@@ -328,30 +339,16 @@ function CalendarScheduler() {
   function setdateTotoday() {
     setYear(currentYear);
     setMonth(currentMonth);
-    setwandd();
-
-    console.log("a", week, dayindexinweek, todaysdate);
+    setDayindexinweek(tempdayindexinweek);
+    setWeek(tempweek);
   }
-  const setwandd = () => {
-    for (let i = 0; i < 6; i++) {
-      for (let j = 0; j < 7; j++) {
-        if (JSON.stringify(fullmatrix[i][j]) === todaysdate) {
-          setWeek(i);
-          setDayindexinweek(j);
-          break;
-        }
-      }
-    }
-    console.log("aaa1", week, dayindexinweek);
-  };
+
   useEffect(() => {
     const fetchData = () => {
       const result = getCalendarMatrixDays();
       setFullmatrix(result);
-      console.log("fullmatix", fullmatrix);
     };
     fetchData();
-
     console.log("firstlineofmatrix", typeof fullmatrix);
   }, [month, year, week, dayindexinweek, selectedperiod]);
 
