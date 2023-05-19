@@ -1159,36 +1159,6 @@ input:checked+#switchlabel:after {
 
 }
 
-.scheduler {
-  display: flex;
-  flex-direction: row;
-  list-style: none;
-
-}
-
-
-.scheduler li {
-  width: 100px;
-
-}
-
-
-
-.scheduler-weekdays-numbers {
-  display: flex;
-  flex-wrap: wrap;
-  list-style: none;
-  gap: 1px;
-}
-
-.scheduler-weekdays-numbers li {
-  display: flex;
-  flex-direction: column;
-  width: 100px;
-  background-color: #31826c;
-
-}
-
 .scheduler-datepicker {
   display: flex;
   flex-direction: row;
@@ -1198,8 +1168,55 @@ input:checked+#switchlabel:after {
   justify-content: space-around;
 }
 
-#datepicker-period {
+.scheduler-weekdays {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+
+}
+
+
+.scheduler-weekdays li {
   width: 100px;
+  position: relative;
+}
 
 
+
+.scheduler-matrix-days {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  gap: 1px;
+}
+
+.scheduler-matrix-days li {
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+  background-color: #31826c;
+
+}
+
+.scheduler-matrix-dayswithours {
+
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  gap: 1px;
+  height: 200px;
+  overflow: scroll;
+
+}
+
+.scheduler-matrix-dayswithours::-webkit-scrollbar {
+  width: 0;
+}
+
+.scheduler-matrix-dayswithours li {
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+  height: 20px;
+  background-color: red;
 }
