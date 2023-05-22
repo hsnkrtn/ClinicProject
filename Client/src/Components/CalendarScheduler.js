@@ -436,46 +436,63 @@ function CalendarScheduler() {
                     console.log("dayss", matrixday);
                   }}
                 >
-                  <h5>
-                    {
-                      weekdays[
-                        matrixday.weekday !== 0 ? matrixday.weekday - 1 : 6
-                      ]
-                    }{" "}
-                  </h5>
-                  <h5>{matrixday.daysNumber} </h5>
-                  <h5> aa{matrixday.weekday} </h5>
-                  <h5>{months[matrixday.daysMonth]} </h5>
-                  <h5>{matrixday.daysYear}</h5>
+                  <div>
+                    {" "}
+                    <h5>
+                      {
+                        weekdays[
+                          matrixday.weekday !== 0 ? matrixday.weekday - 1 : 6
+                        ]
+                      }{" "}
+                    </h5>
+                  </div>
+                  <div className="weekdaysdetail">
+                    {" "}
+                    <h5>{matrixday.daysNumber} </h5>
+                    {/* <h5> aa{matrixday.weekday} </h5> */}
+                    <h5>{months[matrixday.daysMonth]} </h5>
+                    <h5>{matrixday.daysYear}</h5>{" "}
+                  </div>
                 </li>
               );
             });
           })}
         </ul>{" "}
-        <ul className="scheduler-matrix-dayswithours">
-           {fullmatrix.map((calendarMatrixdays, index) => {
-            return calendarMatrixdays.map((matrixday, index) => {
-              return (
-                <li>
-                  {" "}
-                  <ul>
-                     {hours.map((hour, a) => {
-                      return (
-                        <li
-                          onClick={() => {
-                            console.log(matrixday.daysNumber, hour);
-                          }}
-                        >
-                          {hour}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </li>
-              );
-            });
-          })}
-        </ul>
+        <div className="scheduler-matrix-dayswithhours">
+          <ul className="scheduler-matrix-dayswithhours-list">
+            {" "}
+            <div className="scheduler-matrix-dayswithhours-display">
+              {" "}
+              <ul className="hoursdisplay">
+                {hours.map((hour, a) => {
+                  return <li onClick={() => {}}>{hour}</li>;
+                })}
+              </ul>
+            </div>
+            {fullmatrix.map((calendarMatrixdays, index) => {
+              return calendarMatrixdays.map((matrixday, index) => {
+                return (
+                  <li>
+                    {" "}
+                    <ul className="scheduler-hours">
+                      {hours.map((hour, a) => {
+                        return (
+                          <li
+                            onClick={() => {
+                              console.log(matrixday.daysNumber, hour);
+                            }}
+                          >
+                            {hour}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </li>
+                );
+              });
+            })}
+          </ul>
+        </div>
       </div>{" "}
     </div>
   );

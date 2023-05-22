@@ -1155,7 +1155,7 @@ input:checked+#switchlabel:after {
   display: flex;
   flex-direction: column;
   position: relative;
-  width: 707px;
+  width: 1156px;
 
 }
 
@@ -1187,18 +1187,27 @@ input:checked+#switchlabel:after {
   display: flex;
   flex-wrap: wrap;
   list-style: none;
+  margin-left: 51px;
   gap: 1px;
 }
 
 .scheduler-matrix-days li {
   display: flex;
   flex-direction: column;
-  width: 100px;
+  width: 120px;
   background-color: #31826c;
+  align-items: center;
+}
+
+.weekdaysdetail {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+
 
 }
 
-.scheduler-matrix-dayswithours {
+.scheduler-matrix-dayswithhours-list {
 
   display: flex;
   flex-wrap: wrap;
@@ -1209,14 +1218,29 @@ input:checked+#switchlabel:after {
 
 }
 
-.scheduler-matrix-dayswithours::-webkit-scrollbar {
+.scheduler-matrix-dayswithhours-list::-webkit-scrollbar {
   width: 0;
 }
 
-.scheduler-matrix-dayswithours li {
+.scheduler-matrix-dayswithhours-list li {
   display: flex;
   flex-direction: column;
-  width: 100px;
+  width: 120px;
   height: 20px;
   background-color: red;
+ }
+
+.scheduler-matrix-dayswithhours-display {
+  width: 50px;
+  display: flex;
+  position: relative;
+}
+
+.hoursdisplay {
+  width: 100%;
+}
+
+.hoursdisplay li {
+  width: 100%;
+
 }
