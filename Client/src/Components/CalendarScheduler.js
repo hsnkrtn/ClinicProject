@@ -30,14 +30,17 @@ function CalendarScheduler() {
   const [week, setWeek] = useState(0);
   const [tempweek, setTempweek] = useState(0);
   const [selectedperiod, setSelectedperiod] = useState(2); // 1 gün  2 hafta 3 ay
-
   const [pageupdated, setPageupdated] = useState(false);
-
   let howmanydaysincurrentmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
   let todaysdate = JSON.stringify(getDays(year, month, day));
-
   let firstdayofthemonth = new Date(year, month, 1).getDay(); // Ayin ilk basladigi gunu veriyor 0 pazar
-  // let firstdayofthemonth = 5; // Ayin ilk basladigi gunu veriyor 0 pazar
+
+  const newEvent = {
+    date: "2023-05-23",
+    start_time: "10:00",
+    end_time: "11.30",
+  };
+
   const months = [
     "Ocak",
     "Şubat",
@@ -428,6 +431,7 @@ function CalendarScheduler() {
         </div>
         {/*  matrix burada gösteriyoruz  */}
         <ul className="scheduler-matrix-days">
+          <li>Saat/Gün</li>
           {fullmatrix.map((calendarMatrixdays, index) => {
             return calendarMatrixdays.map((matrixday, index) => {
               return (
@@ -461,14 +465,14 @@ function CalendarScheduler() {
         <div className="scheduler-matrix-dayswithhours">
           <ul className="scheduler-matrix-dayswithhours-list">
             {" "}
-            <div className="scheduler-matrix-dayswithhours-display">
+            <li className="scheduler-matrix-dayswithhours-display">
               {" "}
               <ul className="hoursdisplay">
                 {hours.map((hour, a) => {
                   return <li onClick={() => {}}>{hour}</li>;
                 })}
               </ul>
-            </div>
+            </li>
             {fullmatrix.map((calendarMatrixdays, index) => {
               return calendarMatrixdays.map((matrixday, index) => {
                 return (

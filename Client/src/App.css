@@ -1185,16 +1185,17 @@ input:checked+#switchlabel:after {
 
 .scheduler-matrix-days {
   display: flex;
+  position: relative;
+  width: 100%;
   flex-wrap: wrap;
   list-style: none;
-  margin-left: 51px;
-  gap: 1px;
-}
+ }
+
 
 .scheduler-matrix-days li {
   display: flex;
   flex-direction: column;
-  width: 120px;
+  width: 12.5%;
   background-color: #31826c;
   align-items: center;
 }
@@ -1207,13 +1208,20 @@ input:checked+#switchlabel:after {
 
 }
 
+.scheduler-matrix-dayswithhours {
+  position: relative;
+  width: 100%;
+
+}
+
 .scheduler-matrix-dayswithhours-list {
 
   display: flex;
+  position: relative;
+  width: 100%;
   flex-wrap: wrap;
   list-style: none;
-  gap: 1px;
-  height: 200px;
+   height: 200px;
   overflow: scroll;
 
 }
@@ -1225,15 +1233,9 @@ input:checked+#switchlabel:after {
 .scheduler-matrix-dayswithhours-list li {
   display: flex;
   flex-direction: column;
-  width: 120px;
+  width: 12.5%;
   height: 20px;
   background-color: red;
- }
-
-.scheduler-matrix-dayswithhours-display {
-  width: 50px;
-  display: flex;
-  position: relative;
 }
 
 .hoursdisplay {
@@ -1244,3 +1246,7 @@ input:checked+#switchlabel:after {
   width: 100%;
 
 }
+.scheduler-hours li{
+
+  width: 100%;
+} 
