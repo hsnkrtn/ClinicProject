@@ -35,11 +35,15 @@ function CalendarScheduler() {
   let todaysdate = JSON.stringify(getDays(year, month, day));
   let firstdayofthemonth = new Date(year, month, 1).getDay(); // Ayin ilk basladigi gunu veriyor 0 pazar
 
-  const newEvent = {
-    date: "2023-05-23",
-    start_time: "10:00",
-    end_time: "11.30",
-  };
+  const events = [
+    {
+      name: "Hasan Kurtini",
+      phone: "+905352789299",
+      date: "1-4-2023",
+      start_time: "10.00",
+      end_time: "11.30",
+    },
+  ];
 
   const months = [
     "Ocak",
@@ -66,6 +70,22 @@ function CalendarScheduler() {
   ];
 
   const hours = [
+    "00.00",
+    "00.30",
+    "01.00",
+    "01.30",
+    "02.00",
+    "02.30",
+    "03.00",
+    "03.30",
+    "04.00",
+    "04.30",
+    "05.00",
+    "05.30",
+    "06.00",
+    "06.30",
+    "07.00",
+    "07.30",
     "08.00",
     "08.30",
     "09.00",
@@ -90,6 +110,13 @@ function CalendarScheduler() {
     "19.00",
     "19.30",
     "20.00",
+    "20.30",
+    "21.00",
+    "21.30",
+    "22.00",
+    "22.30",
+    "23.00",
+    "23.30",
   ];
   function getDays(takenyear, takenmonth, takenday) {
     const date = new Date(takenyear, takenmonth, takenday);
@@ -480,12 +507,29 @@ function CalendarScheduler() {
                     {" "}
                     <ul className="scheduler-hours">
                       {hours.map((hour, a) => {
+                        let dayyy =
+                          matrixday.daysNumber +
+                          "-" +
+                          matrixday.daysMonth +
+                          "-" +
+                          matrixday.daysYear;
                         return (
                           <li
                             onClick={() => {
-                              console.log(matrixday.daysNumber, hour);
+                              console.log(dayyy);
                             }}
                           >
+                            {events.map((event, index) => {
+                              console.log(event.date, dayyy);
+
+                              if (
+                                dayyy === event.date &&
+                                event.start_time === hour
+                              ) {
+                                return "hasan";
+                              }
+                            })}
+
                             {hour}
                           </li>
                         );
