@@ -1234,7 +1234,7 @@ input:checked+#switchlabel:after {
   display: flex;
   flex-direction: column;
   width: 12.5%;
-  background-color:aqua;
+  background-color: aqua;
   box-sizing: border-box;
   border-right: 1px solid black;
   border-bottom: 1px solid black;
@@ -1254,4 +1254,11 @@ input:checked+#switchlabel:after {
 .scheduler-hours li {
   height: 25px;
   width: 100%;
+}
+
+.event {
+  height: 100%;
+  width: 100%;
+  background-color: red;
+
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import { Sidebarinfo } from "../App";
 
-function CalendarScheduler() {
+function CalendarScheduler(props) {
   const mainboardextend = {
     backgroundColor: "#CCE2FF",
     marginLeft: 75,
@@ -34,14 +34,36 @@ function CalendarScheduler() {
   let howmanydaysincurrentmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
   let todaysdate = JSON.stringify(getDays(year, month, day));
   let firstdayofthemonth = new Date(year, month, 1).getDay(); // Ayin ilk basladigi gunu veriyor 0 pazar
+  const events = props.eventlist;
 
-  const events = [
+  const a = [
     {
       name: "Hasan Kurtini",
       phone: "+905352789299",
-      date: "1-4-2023",
-      start_time: "10.00",
-      end_time: "11.30",
+      date: "2023-05-01",
+      start_time: "10:00",
+      end_time: "11:30",
+    },
+    {
+      name: "Hasan Kurtini",
+      phone: "+905352789299",
+      date: "2023-05-02",
+      start_time: "09:00",
+      end_time: "11:30",
+    },
+    {
+      name: "Hasan Kurtini",
+      phone: "+905352789299",
+      date: "2023-05-04",
+      start_time: "11:00",
+      end_time: "11:30",
+    },
+    {
+      name: "Hasan Kurtini",
+      phone: "+905352789299",
+      date: "2023-05-05",
+      start_time: "12:00",
+      end_time: "11:30",
     },
   ];
 
@@ -70,54 +92,55 @@ function CalendarScheduler() {
   ];
 
   const hours = [
-    "00.00",
-    "00.30",
-    "01.00",
-    "01.30",
-    "02.00",
-    "02.30",
-    "03.00",
-    "03.30",
-    "04.00",
-    "04.30",
-    "05.00",
-    "05.30",
-    "06.00",
-    "06.30",
-    "07.00",
-    "07.30",
-    "08.00",
-    "08.30",
-    "09.00",
-    "09.30",
-    "10.00",
-    "10.30",
-    "11.00",
-    "11.30",
-    "12.00",
-    "12.30",
-    "13.00",
-    "13.30",
-    "14.00",
-    "14.30",
-    "15.00",
-    "15.30",
-    "16.00",
-    "16.30",
-    "17.00",
-    "18.00",
-    "18.30",
-    "19.00",
-    "19.30",
-    "20.00",
-    "20.30",
-    "21.00",
-    "21.30",
-    "22.00",
-    "22.30",
-    "23.00",
-    "23.30",
+    "00:00",
+    "00:30",
+    "01:00",
+    "01:30",
+    "02:00",
+    "02:30",
+    "03:00",
+    "03:30",
+    "04:00",
+    "04:30",
+    "05:00",
+    "05:30",
+    "06:00",
+    "06:30",
+    "07:00",
+    "07:30",
+    "08:00",
+    "08:30",
+    "09:00",
+    "09:30",
+    "10:00",
+    "10:30",
+    "11:00",
+    "11:30",
+    "12:00",
+    "12:30",
+    "13:00",
+    "13:30",
+    "14:00",
+    "14:30",
+    "15:00",
+    "15:30",
+    "16:00",
+    "16:30",
+    "17:00",
+    "18:00",
+    "18:30",
+    "19:00",
+    "19:30",
+    "20:00",
+    "20:30",
+    "21:00",
+    "21:30",
+    "22:00",
+    "22:30",
+    "23:00",
+    "23:30",
   ];
+
   function getDays(takenyear, takenmonth, takenday) {
     const date = new Date(takenyear, takenmonth, takenday);
     const daysYear = date.getFullYear();
@@ -382,166 +405,157 @@ function CalendarScheduler() {
     setDayindexinweek(tempdayindexinweek);
     setWeek(tempweek);
   }
-
+  const fetchData = () => {
+    const result = getCalendarMatrixDays();
+    setFullmatrix(result);
+  };
   useEffect(() => {
-    const fetchData = () => {
-      const result = getCalendarMatrixDays();
-      setFullmatrix(result);
-    };
-    fetchData();
+    // fetchData();
+    setFullmatrix(getCalendarMatrixDays);
+    console.log("eventlist", events);
   }, [month, year, week, dayindexinweek, selectedperiod]);
 
   return (
-    <div
-      className="mainboard"
-      style={hidesidebar ? mainboardextend : mainboard}
-    >
-      <div className="scheduler-container">
-        {" "}
-        <div className="scheduler-datepicker">
-          <section>
-            <button
-              onClick={() => {
-                prevDate();
-              }}
-            >
-              <span>
-                <i class="fa fa-chevron-left" aria-hidden="true"></i>
-              </span>
-            </button>{" "}
-            <button
-              onClick={() => {
-                setdateTotoday();
-              }}
-            >
-              Bugün
-            </button>{" "}
-            <button
-              onClick={() => {
-                nextDate();
-              }}
-            >
-              <span>
-                <i class="fa fa-chevron-right" aria-hidden="true"></i>
-              </span>
-            </button>{" "}
-            {months[month]} {year} {week} {dayindexinweek}
-          </section>
+    <div className="scheduler-container">
+      {" "}
+      <div className="scheduler-datepicker">
+        <section>
+          <button
+            onClick={() => {
+              prevDate();
+            }}
+          >
+            <span>
+              <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            </span>
+          </button>{" "}
+          <button
+            onClick={() => {
+              setdateTotoday();
+            }}
+          >
+            Bugün
+          </button>{" "}
+          <button
+            onClick={() => {
+              nextDate();
+            }}
+          >
+            <span>
+              <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </span>
+          </button>{" "}
+          {months[month]} {year} {week} {dayindexinweek}
+        </section>
 
-          <section></section>
-          <section>
-            <button
-              onClick={() => {
-                setSelectedperiod(1);
-              }}
-            >
-              {" "}
-              Gün
-            </button>
-            <button
-              onClick={() => {
-                setSelectedperiod(2);
-              }}
-            >
-              {" "}
-              Hafta
-            </button>
-            <button
-              onClick={() => {
-                setSelectedperiod(3);
-              }}
-            >
-              {" "}
-              Ay
-            </button>
-          </section>
-        </div>
-        {/*  matrix burada gösteriyoruz  */}
-        <ul className="scheduler-matrix-days">
-          <li>Saat/Gün</li>
+        <section></section>
+        <section>
+          <button
+            onClick={() => {
+              setSelectedperiod(1);
+            }}
+          >
+            {" "}
+            Gün
+          </button>
+          <button
+            onClick={() => {
+              setSelectedperiod(2);
+            }}
+          >
+            {" "}
+            Hafta
+          </button>
+          <button
+            onClick={() => {
+              setSelectedperiod(3);
+            }}
+          >
+            {" "}
+            Ay
+          </button>
+        </section>
+      </div>
+      {/*  matrix burada gösteriyoruz  */}
+      <ul className="scheduler-matrix-days">
+        <li>Saat/Gün</li>
+        {fullmatrix.map((calendarMatrixdays, index) => {
+          return calendarMatrixdays.map((matrixday, index) => {
+            return (
+              <li
+                onClick={() => {
+                  console.log("dayss", matrixday);
+                }}
+              >
+                <div>
+                  {" "}
+                  <h5>
+                    {
+                      weekdays[
+                        matrixday.weekday !== 0 ? matrixday.weekday - 1 : 6
+                      ]
+                    }{" "}
+                  </h5>
+                </div>
+                <div className="weekdaysdetail">
+                  {" "}
+                  <h5>{matrixday.daysNumber} </h5>
+                  {/* <h5> aa{matrixday.weekday} </h5> */}
+                  <h5>{months[matrixday.daysMonth]} </h5>
+                  <h5>{matrixday.daysYear}</h5>{" "}
+                </div>
+              </li>
+            );
+          });
+        })}
+      </ul>{" "}
+      <div className="scheduler-matrix-dayswithhours">
+        <ul className="scheduler-matrix-dayswithhours-list">
+          {" "}
+          <li className="scheduler-matrix-dayswithhours-display">
+            {" "}
+            <ul className="hoursdisplay">
+              {hours.map((hour, a) => {
+                return <li onClick={() => {}}>{hour}</li>;
+              })}
+            </ul>
+          </li>
           {fullmatrix.map((calendarMatrixdays, index) => {
             return calendarMatrixdays.map((matrixday, index) => {
               return (
-                <li
-                  onClick={() => {
-                    console.log("dayss", matrixday);
-                  }}
-                >
-                  <div>
-                    {" "}
-                    <h5>
-                      {
-                        weekdays[
-                          matrixday.weekday !== 0 ? matrixday.weekday - 1 : 6
-                        ]
-                      }{" "}
-                    </h5>
-                  </div>
-                  <div className="weekdaysdetail">
-                    {" "}
-                    <h5>{matrixday.daysNumber} </h5>
-                    {/* <h5> aa{matrixday.weekday} </h5> */}
-                    <h5>{months[matrixday.daysMonth]} </h5>
-                    <h5>{matrixday.daysYear}</h5>{" "}
-                  </div>
+                <li>
+                  {" "}
+                  <ul className="scheduler-hours">
+                    {hours.map((hour, a) => {
+                      const eventsday = String(
+                        matrixday.daysNumber + 1
+                      ).padStart(2, "0");
+                      const eventsmonth = String(
+                        matrixday.daysMonth + 1
+                      ).padStart(2, "0");
+                      const eventsyear = matrixday.daysYear;
+                      const eventsdate = `${eventsday}-${eventsmonth}-${eventsyear}`;
+                      return (
+                        <li onClick={() => {}}>
+                          {events.map((event, index) => {
+                            if (
+                              event.on_kayit_baslangic === hour &&
+                              event.on_kayit_randevugun === eventsdate
+                            ) {
+                              console.log("ss",event.on_kayit_adi_soyadi);
+                              return <h5>{event.on_kayit_adi_soyadi}</h5>;
+                            }
+                          })}
+                         </li>
+                      );
+                    })}
+                  </ul>
                 </li>
               );
             });
           })}
-        </ul>{" "}
-        <div className="scheduler-matrix-dayswithhours">
-          <ul className="scheduler-matrix-dayswithhours-list">
-            {" "}
-            <li className="scheduler-matrix-dayswithhours-display">
-              {" "}
-              <ul className="hoursdisplay">
-                {hours.map((hour, a) => {
-                  return <li onClick={() => {}}>{hour}</li>;
-                })}
-              </ul>
-            </li>
-            {fullmatrix.map((calendarMatrixdays, index) => {
-              return calendarMatrixdays.map((matrixday, index) => {
-                return (
-                  <li>
-                    {" "}
-                    <ul className="scheduler-hours">
-                      {hours.map((hour, a) => {
-                        let dayyy =
-                          matrixday.daysNumber +
-                          "-" +
-                          matrixday.daysMonth +
-                          "-" +
-                          matrixday.daysYear;
-                        return (
-                          <li
-                            onClick={() => {
-                              console.log(dayyy);
-                            }}
-                          >
-                            {events.map((event, index) => {
-                              console.log(event.date, dayyy);
-
-                              if (
-                                dayyy === event.date &&
-                                event.start_time === hour
-                              ) {
-                                return "hasan";
-                              }
-                            })}
-
-                            {hour}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </li>
-                );
-              });
-            })}
-          </ul>
-        </div>
-      </div>{" "}
+        </ul>
+      </div>
     </div>
   );
 }

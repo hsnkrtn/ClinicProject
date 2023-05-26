@@ -4,6 +4,7 @@ import Axios from "axios";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { Sidebarinfo } from "../App";
+import CalendarScheduler from "./CalendarScheduler";
 
 function Appointmentlist() {
   const [preregistration, setpreregistration] = useState([]);
@@ -14,6 +15,7 @@ function Appointmentlist() {
   const [preregistrationstatus, setpreregistrationstatus] = useState(0);
   const [registerstarttime, setregisterstarttime] = useState(date);
   const [registerendtime, setregisterendtime] = useState(tommorrow);
+  const [calendarview, setCalendarview] = useState(false);
 
   const mainboardextend = {
     backgroundColor: "#CCE2FF",
@@ -41,7 +43,7 @@ function Appointmentlist() {
     };
 
     fetchData();
-  }, [preregistrationstatus, registerendtime]);
+  }, [preregistrationstatus,registerstarttime, registerendtime, calendarview]);
 
   async function DeletePreregister(patient) {
     try {
@@ -89,6 +91,13 @@ function Appointmentlist() {
             >
               <h4>Onaylanmamış Ön Kayıtlar</h4>
             </button>
+            <button
+              onClick={() => {
+                setCalendarview(!calendarview);
+              }}
+            >
+              <h4>Takvim Görüntüsü</h4>
+            </button>
           </div>
           <section className="registrationTimepicker">
             {registerstarttime && (
@@ -114,72 +123,88 @@ function Appointmentlist() {
             ></input>
           </section>
           {preregistration && (
-            <div className="AppointmentTable">
-              <section className="tableHead">
-                <ul className="tableHeadlist">
-                  <li id="tableNumber">#</li>
-                  <li id="tablePaientID">Ön Kayıt ID</li>
-                  <li id="tablePaientName">Hasta Adı</li>
-                  <li id="tablePhone">Telefon</li>
-                  <li id="tableDoctor">Hekim</li>
-                  <li id="tableComment">Hekim Yorumu</li>
-                  <li id="tableDate">Tarih</li>
-                  <li id="tableTime">Saat</li>
-                  <li id="tableActions">İşlemler</li>
-                </ul>
-              </section>
-
-              <section className="tableBody">
-                {preregistration.map((registration, index) => {
-                  return (
-                    <ul className="tableBodylist" key={index}>
-                      <li id="tableNumber">{registration.on_kayit_id}</li>
-                      <li id="tablePaientID">
-                        {registration.onkayitlihasta_unique_id}
-                      </li>
-                      <li id="tablePaientName">
-                        {registration.on_kayit_adi_soyadi}
-                      </li>
-                      <li id="tablePhone">{registration.on_kayit_tel}</li>
-                      <li id="tableDoctor">{registration.on_kayit_doktor}</li>
-                      <li id="tableCommentItem">
-                        {registration.on_kayit_hekim_yorum}
-                      </li>
-                      <li id="tableDate">{registration.on_kayit_randevugun}</li>
-                      <li id="tableTime">
-                        {registration.on_kayit_baslangic} -{" "}
-                        {registration.on_kayit_bitis}
-                      </li>
-                      <li id="tablebodyActions">
-                        <button
-                          style={{ backgroundColor: "#505050	" }}
-                          onClick={() => {
-                            DeletePreregister(
-                              registration.onkayitlihasta_unique_id
-                            );
-                          }}
-                        >
-                          <span>
-                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                          </span>
-                        </button>{" "}
-                        <Link
-                          key={registration.index}
-                          to={`/ÖnKayıtlihasta/${registration.onkayitlihasta_unique_id}`}
-                          state={registration}
-                        >
-                          <button style={{ backgroundColor: "#4B0082" }}>
-                            <span>
-                              <i class="fa fa-sign-out" aria-hidden="true"></i>
-                            </span>
-                          </button>{" "}
-                        </Link>
-                      </li>
+            <>
+              {calendarview ? (
+                <CalendarScheduler
+                  eventlist={preregistration}
+                ></CalendarScheduler>
+                
+              ) : (
+                <div className="AppointmentTable">
+                  <section className="tableHead">
+                    <ul className="tableHeadlist">
+                      <li id="tableNumber">#</li>
+                      <li id="tablePaientID">Ön Kayıt ID</li>
+                      <li id="tablePaientName">Hasta Adı</li>
+                      <li id="tablePhone">Telefon</li>
+                      <li id="tableDoctor">Hekim</li>
+                      <li id="tableComment">Hekim Yorumu</li>
+                      <li id="tableDate">Tarih</li>
+                      <li id="tableTime">Saat</li>
+                      <li id="tableActions">İşlemler</li>
                     </ul>
-                  );
-                })}
-              </section>
-            </div>
+                  </section>
+
+                  <section className="tableBody">
+                    {preregistration.map((registration, index) => {
+                      return (
+                        <ul className="tableBodylist" key={index}>
+                          <li id="tableNumber">{registration.on_kayit_id}</li>
+                          <li id="tablePaientID">
+                            {registration.onkayitlihasta_unique_id}
+                          </li>
+                          <li id="tablePaientName">
+                            {registration.on_kayit_adi_soyadi}
+                          </li>
+                          <li id="tablePhone">{registration.on_kayit_tel}</li>
+                          <li id="tableDoctor">
+                            {registration.on_kayit_doktor}
+                          </li>
+                          <li id="tableCommentItem">
+                            {registration.on_kayit_hekim_yorum}
+                          </li>
+                          <li id="tableDate">
+                            {registration.on_kayit_randevugun}
+                          </li>
+                          <li id="tableTime">
+                            {registration.on_kayit_baslangic} -{" "}
+                            {registration.on_kayit_bitis}
+                          </li>
+                          <li id="tablebodyActions">
+                            <button
+                              style={{ backgroundColor: "#505050	" }}
+                              onClick={() => {
+                                DeletePreregister(
+                                  registration.onkayitlihasta_unique_id
+                                );
+                              }}
+                            >
+                              <span>
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                              </span>
+                            </button>{" "}
+                            <Link
+                              key={registration.index}
+                              to={`/ÖnKayıtlihasta/${registration.onkayitlihasta_unique_id}`}
+                              state={registration}
+                            >
+                              <button style={{ backgroundColor: "#4B0082" }}>
+                                <span>
+                                  <i
+                                    class="fa fa-sign-out"
+                                    aria-hidden="true"
+                                  ></i>
+                                </span>
+                              </button>{" "}
+                            </Link>
+                          </li>
+                        </ul>
+                      );
+                    })}
+                  </section>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
