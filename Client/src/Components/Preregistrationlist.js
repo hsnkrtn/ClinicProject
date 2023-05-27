@@ -43,7 +43,7 @@ function Appointmentlist() {
     };
 
     fetchData();
-  }, [preregistrationstatus,registerstarttime, registerendtime, calendarview]);
+  }, [preregistrationstatus, registerstarttime, registerendtime, calendarview]);
 
   async function DeletePreregister(patient) {
     try {
@@ -128,7 +128,6 @@ function Appointmentlist() {
                 <CalendarScheduler
                   eventlist={preregistration}
                 ></CalendarScheduler>
-                
               ) : (
                 <div className="AppointmentTable">
                   <section className="tableHead">
@@ -153,9 +152,7 @@ function Appointmentlist() {
                           <li id="tablePaientID">
                             {registration.onkayitlihasta_unique_id}
                           </li>
-                          <li id="tablePaientName">
-                            {registration.on_kayit_adi_soyadi}
-                          </li>
+                          <li id="tablePaientName">{registration.ad_soyad}</li>
                           <li id="tablePhone">{registration.on_kayit_tel}</li>
                           <li id="tableDoctor">
                             {registration.on_kayit_doktor}
@@ -164,10 +161,10 @@ function Appointmentlist() {
                             {registration.on_kayit_hekim_yorum}
                           </li>
                           <li id="tableDate">
-                            {registration.on_kayit_randevugun}
+                            {registration.randevu_gun}
                           </li>
                           <li id="tableTime">
-                            {registration.on_kayit_baslangic} -{" "}
+                            {registration.baslangic_saati} -{" "}
                             {registration.on_kayit_bitis}
                           </li>
                           <li id="tablebodyActions">

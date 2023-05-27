@@ -538,15 +538,22 @@ function CalendarScheduler(props) {
                       return (
                         <li onClick={() => {}}>
                           {events.map((event, index) => {
+                            // console.log(
+                            //   event.baslangic_saati,
+                            //   hour,
+                            //   event.randevu_gun,
+                            //   eventsdate
+                            // );
+
                             if (
-                              event.on_kayit_baslangic === hour &&
-                              event.on_kayit_randevugun === eventsdate
+                              event.baslangic_saati === hour &&
+                              event.randevu_gun === eventsdate
                             ) {
-                              console.log("ss",event.on_kayit_adi_soyadi);
-                              return <h5>{event.on_kayit_adi_soyadi}</h5>;
+                              console.log("ss", event.ad_soyad);
+                              return <h5>{event.ad_soyad}</h5>;
                             }
                           })}
-                         </li>
+                        </li>
                       );
                     })}
                   </ul>

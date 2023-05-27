@@ -4,10 +4,12 @@ import Axios from "axios";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import App, { Sidebarinfo } from "../App";
+import CalendarScheduler from "./CalendarScheduler";
 
 function Appointmentlist() {
   const [AppointmentList, setAppointmentList] = useState([]);
   const [pageupdated, setPageupdated] = useState(false);
+  const [calendarview, setCalendarview] = useState(false);
 
   const { URL } = useContext(Sidebarinfo);
   const { date } = useContext(Sidebarinfo);
@@ -109,6 +111,13 @@ function Appointmentlist() {
             >
               <h4>Tamamlanmayan Randevular</h4>
             </button>
+            <button
+              onClick={() => {
+                setCalendarview(!calendarview);
+              }}
+            >
+              <h4>Takvim Görüntüsü</h4>
+            </button>
           </div>{" "}
           <section className="registrationTimepicker">
             {selectedappointmentsendday && (
@@ -134,95 +143,108 @@ function Appointmentlist() {
             ></input>
           </section>
           {AppointmentList && (
-            <div className="AppointmentTable">
+            <>
               {" "}
-              <section className="tableHead">
-                <ul className="tableHeadlist">
-                  <li id="tableNumber">#</li>
-                  <li id="tablePaientID">Hasta ID</li>
-                  <li id="tablePaientName">Hasta Adı</li>
-                  <li id="tablePhone">Telefon</li>
-                  <li id="tableDoctor">Hekim</li>
-                  <li id="tableComment">Yapılacak İşlem</li>
-                  <li id="tableDate">Tarih</li>
-                  <li id="tableTime">Saat</li>
-                  <li id="tableActions">Randevu İşlemleri</li>
-                </ul>
-              </section>
-              <section className="tableBody">
-                {AppointmentList.map((Appointment, index) => {
-                  return (
-                    <ul className="tableBodylist">
-                      <li id="tableNumber">{Appointment.randevu_id}</li>
-                      <li id="tablePaientID">{Appointment.hasta_unique_id}</li>
-                      <li id="tablePaientName">
-                        {Appointment.randevu_adi_soyadi}
-                      </li>
-                      <li id="tablePhone">{Appointment.randevu_hasta_tel}</li>
-                      <li id="tableDoctor">{Appointment.randevu_doktor}</li>
-                      <li id="tableCommentItem">
-                        {Appointment.randevu_yapilacak_islem}
-                      </li>
-                      <li id="tableDate">{Appointment.randevu_gun}</li>
-                      <li id="tableTime">
-                        {Appointment.randevu_baslangic} -{" "}
-                        {Appointment.randevu_bitis}
-                      </li>
-                      <li id="tableActionsButtons">
-                        {" "}
-                        {appointmentstatus !== 1 ? (
-                          <button
-                            onClick={() => {
-                              updateAppointmentstatus(
-                                Appointment.hasta_unique_id,
-                                Appointment.randevu_unique_id,
-                                1
-                              );
-                            }}
-                          >
-                            <span>
-                              <i class="fas fa-user-check"></i>
-                            </span>
-                          </button>
-                        ) : (
-                          <></>
-                        )}
-                        {appointmentstatus !== 2 ? (
-                          <button
-                            onClick={() => {
-                              updateAppointmentstatus(
-                                Appointment.hasta_unique_id,
-                                Appointment.randevu_unique_id,
-                                2
-                              );
-                            }}
-                          >
-                            <span>
-                              <i class="fas fa-user-times"></i>
-                            </span>
-                          </button>
-                        ) : (
-                          <></>
-                        )}
-                        <button
-                          onClick={() => {
-                            deleteAppointment(
-                              Appointment.hasta_unique_id,
-                              Appointment.randevu_unique_id
-                            );
-                          }}
-                        >
-                          {" "}
-                          <span> 
-                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                          </span>
-                        </button>
-                      </li>
+              {calendarview ? (
+                <CalendarScheduler
+                  eventlist={AppointmentList}
+                ></CalendarScheduler>
+              ) : (
+                <div className="AppointmentTable">
+                  {" "}
+                  <section className="tableHead">
+                    <ul className="tableHeadlist">
+                      <li id="tableNumber">#</li>
+                      <li id="tablePaientID">Hasta ID</li>
+                      <li id="tablePaientName">Hasta Adı</li>
+                      <li id="tablePhone">Telefon</li>
+                      <li id="tableDoctor">Hekim</li>
+                      <li id="tableComment">Yapılacak İşlem</li>
+                      <li id="tableDate">Tarih</li>
+                      <li id="tableTime">Saat</li>
+                      <li id="tableActions">Randevu İşlemleri</li>
                     </ul>
-                  );
-                })}
-              </section>
-            </div>
+                  </section>
+                  <section className="tableBody">
+                    {AppointmentList.map((Appointment, index) => {
+                      return (
+                        <ul className="tableBodylist">
+                          <li id="tableNumber">{Appointment.randevu_id}</li>
+                          <li id="tablePaientID">
+                            {Appointment.hasta_unique_id}
+                          </li>
+                          <li id="tablePaientName">
+                            {Appointment.ad_soyad}
+                          </li>
+                          <li id="tablePhone">
+                            {Appointment.randevu_hasta_tel}
+                          </li>
+                          <li id="tableDoctor">{Appointment.randevu_doktor}</li>
+                          <li id="tableCommentItem">
+                            {Appointment.randevu_yapilacak_islem}
+                          </li>
+                          <li id="tableDate">{Appointment.randevu_gun}</li>
+                          <li id="tableTime">
+                            {Appointment.baslangic_saati} -{" "}
+                            {Appointment.bitis_saati}
+                          </li>
+                          <li id="tableActionsButtons">
+                            {" "}
+                            {appointmentstatus !== 1 ? (
+                              <button
+                                onClick={() => {
+                                  updateAppointmentstatus(
+                                    Appointment.hasta_unique_id,
+                                    Appointment.randevu_unique_id,
+                                    1
+                                  );
+                                }}
+                              >
+                                <span>
+                                  <i class="fas fa-user-check"></i>
+                                </span>
+                              </button>
+                            ) : (
+                              <></>
+                            )}
+                            {appointmentstatus !== 2 ? (
+                              <button
+                                onClick={() => {
+                                  updateAppointmentstatus(
+                                    Appointment.hasta_unique_id,
+                                    Appointment.randevu_unique_id,
+                                    2
+                                  );
+                                }}
+                              >
+                                <span>
+                                  <i class="fas fa-user-times"></i>
+                                </span>
+                              </button>
+                            ) : (
+                              <></>
+                            )}
+                            <button
+                              onClick={() => {
+                                deleteAppointment(
+                                  Appointment.hasta_unique_id,
+                                  Appointment.randevu_unique_id
+                                );
+                              }}
+                            >
+                              {" "}
+                              <span>
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                              </span>
+                            </button>
+                          </li>
+                        </ul>
+                      );
+                    })}
+                  </section>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
