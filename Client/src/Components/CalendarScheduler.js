@@ -21,10 +21,13 @@ function CalendarScheduler(props) {
   const currentYear = today.getFullYear();
   const currentMonth = today.getMonth();
   const currentDay = today.getDate();
+  const events = props.data.eventlist;
+  const startDate = props.data.startDate;
+
   const [fullmatrix, setFullmatrix] = useState([]);
-  const [year, setYear] = useState(currentYear);
-  const [month, setMonth] = useState(currentMonth); // 0 ocak
-  const [day, setDay] = useState(currentDay); // 0 ocak
+  const [year, setYear] = useState("2023");
+  const [month, setMonth] = useState("06"); // 0 ocak
+  const [day, setDay] = useState("22"); // 0 ocak
   const [dayindexinweek, setDayindexinweek] = useState(0);
   const [tempdayindexinweek, settempDayindexinweek] = useState(0);
   const [week, setWeek] = useState(0);
@@ -34,7 +37,6 @@ function CalendarScheduler(props) {
   let howmanydaysincurrentmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
   let todaysdate = JSON.stringify(getDays(year, month, day));
   let firstdayofthemonth = new Date(year, month, 1).getDay(); // Ayin ilk basladigi gunu veriyor 0 pazar
-  const events = props.eventlist;
 
   const a = [
     {
@@ -271,6 +273,7 @@ function CalendarScheduler(props) {
           return periodday;
         }
       });
+
       return weekrow;
     }
 
@@ -411,8 +414,9 @@ function CalendarScheduler(props) {
   };
   useEffect(() => {
     // fetchData();
+
     setFullmatrix(getCalendarMatrixDays);
-    console.log("eventlist", events);
+    console.log("eventlist");
   }, [month, year, week, dayindexinweek, selectedperiod]);
 
   return (

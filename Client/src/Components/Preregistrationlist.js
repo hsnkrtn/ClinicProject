@@ -43,6 +43,7 @@ function Appointmentlist() {
     };
 
     fetchData();
+    console.log("timee",registerstarttime)
   }, [preregistrationstatus, registerstarttime, registerendtime, calendarview]);
 
   async function DeletePreregister(patient) {
@@ -126,7 +127,10 @@ function Appointmentlist() {
             <>
               {calendarview ? (
                 <CalendarScheduler
-                  eventlist={preregistration}
+                  data={{
+                    startDate: registerstarttime,
+                    eventlist: preregistration,
+                  }}
                 ></CalendarScheduler>
               ) : (
                 <div className="AppointmentTable">
@@ -160,9 +164,7 @@ function Appointmentlist() {
                           <li id="tableCommentItem">
                             {registration.on_kayit_hekim_yorum}
                           </li>
-                          <li id="tableDate">
-                            {registration.randevu_gun}
-                          </li>
+                          <li id="tableDate">{registration.randevu_gun}</li>
                           <li id="tableTime">
                             {registration.baslangic_saati} -{" "}
                             {registration.on_kayit_bitis}
