@@ -17,7 +17,7 @@ app.listen(3001, () => {
   console.log("working");
 });
 
-// Randevu Ekle
+// Randevu Ekle ve random ID olusturma
 app.post("/addNewAppointment", (req, res) => {
   const name = req.body.name;
   const patientID = req.body.patientID;
