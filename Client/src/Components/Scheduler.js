@@ -15,7 +15,7 @@ function Scheduler() {
     top: 50,
     flex: 1,
   };
-
+ 
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
   const today = new Date();
   const currentYear = today.getFullYear();
@@ -27,7 +27,7 @@ function Scheduler() {
   const [month, setMonth] = useState(currentMonth); // 0 ocak
   const [dayindex, setDayindex] = useState(0);
   const [week, setWeek] = useState(0);
-  const [selectedperiod, setSelectedperiod] = useState(3); // 1 gün  2 hafta 3 ay
+  const [selectedperiod, setSelectedperiod] = useState(3); // 1 gün  2 hafta 
   let howmanydaysincurrentmonth = new Date(year, month + 1, 0).getDate(); // Ayın kaç gün olduğunu veriyor
 
   let firstdayofthemonth = new Date(year, month, 1).getDay(); // Ayin ilk basladigi gunu veriyor 0 pazar
