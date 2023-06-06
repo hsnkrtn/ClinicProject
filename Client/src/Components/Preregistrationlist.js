@@ -9,7 +9,7 @@ import CalendarScheduler from "./CalendarScheduler";
 function Appointmentlist() {
   const [preregistration, setpreregistration] = useState([]);
   const { URL } = useContext(Sidebarinfo);
-  const { date } = useContext(Sidebarinfo);
+  const { date } = useContext(Sidebarinfo); 
   const { tommorrow } = useContext(Sidebarinfo);
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
   const [preregistrationstatus, setpreregistrationstatus] = useState(0);

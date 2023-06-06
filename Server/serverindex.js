@@ -58,7 +58,7 @@ app.post("/addNewAppointment", (req, res) => {
   }
 
   db.query(
-    `INSERT INTO clinic.randevular (hasta_unique_id,randevu_unique_id,ad_soyad,randevu_hasta_tel,randevu_hasta_mail,randevu_doktor,randevu_yapilacak_islem,randevu_guntarih,randevu_baslangic_saat,randevu_bitis_saat,randevu_durum) VALUES ("${patientID}","${AP_ID}","${name}","${phone}","${email}","${doctor}","${comment}","${date}","${starttime}","${endtime}","${appointmentdefaultstatus}")`,
+    `INSERT INTO clinic.randevular (hasta_unique_id,randevu_unique_id,ad_soyad,randevu_hasta_tel,randevu_hasta_mail,randevu_doktor,randevu_yapilacak_islem,etkinlik_tarih,etkinlik_baslangic_saat,etkinlik_bitis_saat,randevu_durum) VALUES ("${patientID}","${AP_ID}","${name}","${phone}","${email}","${doctor}","${comment}","${date}","${starttime}","${endtime}","${appointmentdefaultstatus}")`,
     (err, response) => {
       if (err) {
         console.log(err);
@@ -75,7 +75,7 @@ app.get("/GetAppointmentList", (req, res) => {
   const appointmentstatus = req.query.appointmentstatus;
 
   db.query(
-    `SELECT *, DATE_FORMAT(randevu_guntarih, '%d-%m-%Y') AS randevu_gun, DATE_FORMAT(randevu_baslangic_saat, '%h:%i') AS baslangic_saati, DATE_FORMAT(randevu_bitis_saat, '%h:%i') AS bitis_saati FROM  clinic.randevular  WHERE randevu_guntarih BETWEEN "${selectedappointmentstartday}" AND "${selectedappointmentsendday}" AND randevu_durum ="${appointmentstatus}"`,
+    `SELECT *, DATE_FORMAT(etkinlik_tarih, '%d-%m-%Y') AS randevu_gun, DATE_FORMAT(etkinlik_baslangic_saat, '%h:%i') AS baslangic_saati, DATE_FORMAT(etkinlik_bitis_saat, '%h:%i') AS bitis_saati FROM  clinic.randevular  WHERE etkinlik_tarih BETWEEN "${selectedappointmentstartday}" AND "${selectedappointmentsendday}" AND randevu_durum ="${appointmentstatus}"`,
     (err, result) => {
       if (err) {
         console.log(err);
@@ -157,7 +157,7 @@ app.post("/addNewregistration", (req, res) => {
   let OKH_ID = generateRandomID();
   console.log(OKH_ID);
   db.query(
-    `INSERT INTO clinic.onkayitlar (ad_soyad,onkayitlihasta_unique_id,on_kayit_tel,on_kayit_email,on_kayit_doktor,on_kayit_hekim_yorum,on_kayit_baslangic_saati,on_kayit_bitis_saati,on_kayit_gun,on_kayit_referans,on_kayit_durum) VALUES ("${name}","${OKH_ID}","${phone}","${email}","${doctor}","${comment}","${starttime}","${endtime}","${date}","${reference}","${status}")`,
+    `INSERT INTO clinic.onkayitlar (ad_soyad,onkayitlihasta_unique_id,on_kayit_tel,on_kayit_email,on_kayit_doktor,on_kayit_hekim_yorum,etkinlik_baslangic_saati,etkinlik_bitis_saati,etkinlik_tarih,on_kayit_referans,on_kayit_durum) VALUES ("${name}","${OKH_ID}","${phone}","${email}","${doctor}","${comment}","${starttime}","${endtime}","${date}","${reference}","${status}")`,
     (err, response) => {
       if (err) {
         console.log(err);
@@ -173,7 +173,7 @@ app.get("/GetPreregistrationsList", (req, res) => {
   const registerstarttime = req.query.registerstarttime;
 
   db.query(
-    `SELECT *, DATE_FORMAT(on_kayit_gun, '%d-%m-%Y') AS randevu_gun, DATE_FORMAT(on_kayit_baslangic_saati, '%h:%i') AS baslangic_saati, DATE_FORMAT(on_kayit_bitis_saati, '%h:%i') AS on_kayit_bitis FROM clinic.onkayitlar WHERE on_kayit_gun BETWEEN "${registerstarttime}" AND "${registerendtime}" AND on_kayit_durum ="${preregistrationstatus}"`,
+    `SELECT *, DATE_FORMAT(etkinlik_tarih, '%d-%m-%Y') AS randevu_gun, DATE_FORMAT(etkinlik_baslangic_saati, '%h:%i') AS baslangic_saati, DATE_FORMAT(etkinlik_bitis_saati, '%h:%i') AS on_kayit_bitis FROM clinic.onkayitlar WHERE etkinlik_tarih BETWEEN "${registerstarttime}" AND "${registerendtime}" AND on_kayit_durum ="${preregistrationstatus}"`,
     (err, result) => {
       if (err) {
         console.log(err);

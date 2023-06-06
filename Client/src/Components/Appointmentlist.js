@@ -173,9 +173,7 @@ function Appointmentlist() {
                           <li id="tablePaientID">
                             {Appointment.hasta_unique_id}
                           </li>
-                          <li id="tablePaientName">
-                            {Appointment.ad_soyad}
-                          </li>
+                          <li id="tablePaientName">{Appointment.ad_soyad}</li>
                           <li id="tablePhone">
                             {Appointment.randevu_hasta_tel}
                           </li>
