@@ -27,11 +27,16 @@ function App() {
   const [URL, setURL] = useState("http://localhost:3001");
   const [isDark, setisDark] = useState(false);
   const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth();
-  const day = today.getDate();
+  const year = today.getFullYear(); // içinde bulunduğumuz yıl
+  const month = today.getMonth(); // içinde bulunduğumuz ay ve 0 ocak
+  const day = today.getDate(); // içinde bulunduğumuz gün
+
   const daytommorrow = String(today.getDate() + 1).padStart(2, "0");
-  const date = `${year}-${month + 1}-${day}`;
+  const date = `${String(year)}-${String(today.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}-${String(today.getDate()).padStart(2, "0")}`; // gerçek zamanlı tarih yyyy-mm-dd
+
   const tommorrow = `${year}-${month}-${daytommorrow}`;
 
   const [initialweek, setInitialweek] = useState(null);
@@ -115,7 +120,6 @@ function App() {
 
   useEffect(() => {
     getCalendarMatrixDays();
-    console.log("hi from appjs", date, initialdayindex, initialweek);
   }, [initialweek, initialdayindex]);
 
   return (

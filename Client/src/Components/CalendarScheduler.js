@@ -20,23 +20,19 @@ function CalendarScheduler(props) {
   const { hidesidebar, setHidesidebar } = useContext(Sidebarinfo);
   const { URL } = useContext(Sidebarinfo);
   const { date } = useContext(Sidebarinfo);
-  const { initialdayindex } = useContext(Sidebarinfo);
-  const { initialweek } = useContext(Sidebarinfo);
+  const { initialdayindex } = useContext(Sidebarinfo); // bugünün haftanın hagni gününe denk geldiğini belirliyor
+  const { initialweek } = useContext(Sidebarinfo); // Bugünün haftasını belirliyor
 
-  const today = new Date();
-  const currentYear = today.getFullYear();
-  const currentMonth = today.getMonth();
-  const currentDay = today.getDate();
+  const [year, setYear] = useState(parseInt(date.slice(0, 4)));
+  const [month, setMonth] = useState(parseInt(date.slice(5, 7) - 1)); // app.js ten gelen date değişkeni yyyy-mm-dd çeviriyor ama fonksiyonda  ocak ayı 0 ile başladığı için -1 kullanıldı
+  const [day, setDay] = useState(parseInt(date.slice(8, 10)));
+  const [dayindexinweek, setDayindexinweek] = useState(initialdayindex);
+  const [week, setWeek] = useState(initialweek);
 
   const [fullmatrix, setFullmatrix] = useState([]);
   const [events, setEvents] = useState([]);
-  const [year, setYear] = useState(currentYear);
-  const [month, setMonth] = useState(currentMonth); // 0 ocak
-  const [day, setDay] = useState(currentDay);
-  const [dayindexinweek, setDayindexinweek] = useState(initialdayindex);
-  const [week, setWeek] = useState(initialweek);
   const [selectedperiod, setSelectedperiod] = useState(2); // 1 gün  2 hafta 3 ay
- 
+
   const a = [
     {
       name: "Hasan Kurtini",
@@ -317,8 +313,8 @@ function CalendarScheduler(props) {
     }
   };
   function setdateTotoday() {
-    setYear(currentYear);
-    setMonth(currentMonth);
+    setYear(parseInt(date.slice(0, 4)));
+    setMonth(parseInt(date.slice(5, 7) - 1));
     setDayindexinweek(initialdayindex);
     setWeek(initialweek);
   }
@@ -345,9 +341,7 @@ function CalendarScheduler(props) {
     getEvents();
 
     console.log("eventlist", date, year, month, day);
-  }, [selectedperiod, week]);
-
- 
+  }, [selectedperiod, week, dayindexinweek]);
 
   return (
     <div className="scheduler-container">
